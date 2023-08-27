@@ -594,6 +594,21 @@ def image_size(image):
     return shape[1], shape[0]
 
 
+def image_paste(image, background, origin):
+    """
+    Paste an image on background.
+    This method does not return a value, but instead updates the array "background".
+
+    Args:
+        image:
+        background:
+        origin: Upper-left corner, (x, y)
+    """
+    x, y = origin
+    w, h = image_size(image)
+    background[y:y + h, x:x + w] = image
+
+
 def rgb2gray(image):
     """
     Args:
@@ -620,7 +635,7 @@ def rgb2hsv(image):
     Returns:
         np.ndarray: Hue (0~360), Saturation (0~100), Value (0~100).
     """
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV).astype(np.float)
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV).astype(float)
     image *= (360 / 180, 100 / 255, 100 / 255)
     return image
 
@@ -684,6 +699,24 @@ def get_bbox(image, threshold=0):
         image = np.max(image, axis=2)
     x = np.where(np.max(image, axis=0) > threshold)[0]
     y = np.where(np.max(image, axis=1) > threshold)[0]
+    return x[0], y[0], x[-1] + 1, y[-1] + 1
+
+
+def get_bbox_reversed(image, threshold=0):
+    """
+    Similar to `get_bbox` but for black contents on white background.
+
+    Args:
+        image (np.ndarray): Screenshot.
+        threshold (int): Color >= threshold will be considered white
+
+    Returns:
+        tuple: (upper_left_x, upper_left_y, bottom_right_x, bottom_right_y)
+    """
+    if image_channel(image) == 3:
+        image = np.min(image, axis=2)
+    x = np.where(np.min(image, axis=0) < threshold)[0]
+    y = np.where(np.min(image, axis=1) < threshold)[0]
     return x[0], y[0], x[-1] + 1, y[-1] + 1
 
 

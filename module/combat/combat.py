@@ -203,7 +203,9 @@ class Combat(Level, HPBalancer, Retirement, SubmarineCall, CombatAuto, CombatMan
             logger.info('EMERGENCY_REPAIR_AVAILABLE')
             if not len(self.hp):
                 return False
-            if np.min(np.array(self.hp)[np.array(self.hp) > 0.001]) < self.config.HpControl_RepairUseSingleThreshold \
+            hp = np.array(self.hp)
+            hp = hp[hp > 0.001]
+            if (len(hp) and np.min(hp) < self.config.HpControl_RepairUseSingleThreshold) \
                     or np.max(self.hp[:3]) < self.config.HpControl_RepairUseMultiThreshold \
                     or np.max(self.hp[3:]) < self.config.HpControl_RepairUseMultiThreshold:
                 logger.info('Use emergency repair')
@@ -425,17 +427,26 @@ class Combat(Level, HPBalancer, Retirement, SubmarineCall, CombatAuto, CombatMan
                 continue
             if self.handle_get_items(drop=drop):
                 continue
-            if not exp_info and self.handle_battle_status(drop=drop):
-                battle_status = True
-                continue
             if self.handle_popup_confirm('COMBAT_STATUS'):
                 if battle_status and not exp_info:
                     logger.info('Locking a new ship')
                     self.config.GET_SHIP_TRIGGERED = True
                 continue
-            if self.handle_exp_info():
-                exp_info = True
-                continue
+            if not battle_status:
+                if not exp_info and self.handle_battle_status(drop=drop):
+                    battle_status = True
+                    continue
+                if self.handle_exp_info():
+                    exp_info = True
+                    continue
+            else:
+                # Check exp_info first if battle_status has been clicked.
+                if self.handle_exp_info():
+                    exp_info = True
+                    continue
+                if not exp_info and self.handle_battle_status(drop=drop):
+                    battle_status = True
+                    continue
             if self.handle_urgent_commission(drop=drop):
                 continue
             if self.handle_guild_popup_cancel():
