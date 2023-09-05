@@ -357,6 +357,8 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
 
             if self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=3):
                 enough_coins = self.shop_buy_amount_exec(button)
+                if not enough_coins:
+                    self.device.click(CLICK_SAFE_AREA)
                 self.interval_reset(SHOP_BUY_CONFIRM_AMOUNT)
                 continue
 
