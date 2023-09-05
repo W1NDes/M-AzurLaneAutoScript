@@ -12,7 +12,7 @@ from module.ui.ui import UI
 
 OCR_SHOP_YELLOW_COINS = Digit(SHOP_YELLOW_COINS, letter=(239, 239, 239), threshold=160, name='OCR_SHOP_YELLOW_COINS')
 OCR_SHOP_PURPLE_COINS = Digit(SHOP_PURPLE_COINS, letter=(255, 255, 255), name='OCR_SHOP_PURPLE_COINS')
-
+OCR_OS_SHOP_PURPLE_COINS = Digit(OS_SHOP_PURPLE_COINS, letter=(255, 255, 255), name='OCR_OS_SHOP_PURPLE_COINS')
 
 class OSStatus(UI):
     @property
@@ -76,4 +76,8 @@ class OSStatus(UI):
 
     def get_purple_coins(self) -> int:
         amount = OCR_SHOP_PURPLE_COINS.ocr(self.device.image)
+        return amount
+
+    def get_purple_coins_in_os_shop(self) -> int:
+        amount = OCR_OS_SHOP_PURPLE_COINS.ocr(self.device.image)
         return amount
