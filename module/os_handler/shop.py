@@ -303,10 +303,10 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         return self.os_shop_get_items(name=True)
 
     @Config.when(SERVER=None)
-    def os_shop_get_item_to_buy_in_port(self):
+    def os_shop_get_item_to_buy_in_port(self) -> list:
         """
         Returns:
-            Item:
+            list[Item]:
         """
         self.os_shop_get_coins_in_os_shop()
         items = self.os_shop_get_items(name=True)
@@ -323,7 +323,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
                 self.os_shop_items.items = items
                 return items
             
-        return None
+        return []
 
     def os_shop_buy_execute(self, button, skip_first_screenshot=True):
         """
@@ -411,8 +411,12 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         count = 0
         for _ in range(2):
             buttons = select_func()
+
+            if buttons is None or len(buttons) == 0:
+                logger.info('No items need to be purchased')
+                continue
             for button in buttons:
-                if button is None or count >= 5:
+                if count >= 5:
                     logger.info('Shop buy finished')
                     return count
                 else:
