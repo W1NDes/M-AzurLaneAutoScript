@@ -11,7 +11,7 @@ from module.os_handler.ui import OSShopUI
 from module.statistics.item import ItemGrid
 from module.base.decorator import Config
 from module.ui.scroll import Scroll
-from module.shop.assets import *
+from module.shop.assets import AMOUNT_MAX, AMOUNT_MINUS, AMOUNT_PLUS, SHOP_BUY_CONFIRM_AMOUNT, SHOP_BUY_CONFIRM as OS_SHOP_BUY_CONFIRM
 from module.shop.clerk import OCR_SHOP_AMOUNT
 
 OS_SHOP_SCROLL = Scroll(OS_SHOP_SCROLL_AREA, color=(156, 182, 239))
@@ -50,7 +50,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         self._shop_yellow_coins = self.get_yellow_coins()
         self._shop_purple_coins = self.get_purple_coins_in_os_shop()
         logger.info(f'Yellow coins: {self._shop_yellow_coins}, purple coins: {self._shop_purple_coins}')
-        
+
     @cached_property
     @Config.when(SERVER='tw')
     def os_shop_items(self):
@@ -122,13 +122,13 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         else:
             logger.info('No shop items found')
             return []
-        
+
     def _get_os_shop_cost(self) -> list:
         """
         Returns the coordinates of the upper left corner of each coin icon.
 
         Returns:
-            list: 
+            list:
         """
         result = TEMPLATE_YELLOW_COINS.match_multi(self.image_crop((360, 320, 410, 720)))
         result += TEMPLATE_PURPLE_COINS.match_multi(self.image_crop((360, 320, 410, 720)))
@@ -152,7 +152,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
 
         return ButtonGrid(
             origin=(356, y), delta=(160, 0), button_shape=(98, 98), grid_shape=(5, 1), name='OS_SHOP_GRID')
-    
+
     def _get_os_shop_items(self, cost) -> ItemGrid:
         """
         Returns shop items.
@@ -195,7 +195,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         else:
             logger.info('No shop items found')
             return []
-    
+
     @Config.when(SERVER=None)
     def os_shop_get_items(self, name=True) -> list:
         """
@@ -322,7 +322,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
             else:
                 self.os_shop_items.items = items
                 return items
-            
+
         return []
 
     def os_shop_buy_execute(self, button, skip_first_screenshot=True):
@@ -355,11 +355,17 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
                 self.interval_reset(PORT_SUPPLY_CHECK)
                 continue
 
-            if self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=3):
+            if self.appear(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=3) or \
+                    self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=3):
                 enough_coins = self.shop_buy_amount_exec(button)
-                if not enough_coins:
-                    self.device.click(CLICK_SAFE_AREA)
+
+                while not enough_coins and \
+                        not self.appear(PORT_SUPPLY_CHECK, offset=(20, 20)) and \
+                        self.appear_then_click(CLICK_SAFE_AREA, interval=3):
+                    pass
+
                 self.interval_reset(SHOP_BUY_CONFIRM_AMOUNT)
+                self.interval_reset(PORT_SUPPLY_CHECK)
                 continue
 
             if enough_coins and not success and self.appear(PORT_SUPPLY_CHECK, offset=(20, 20), interval=5):
@@ -369,7 +375,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
             # End
             if not enough_coins or (success and self.appear(PORT_SUPPLY_CHECK, offset=(20, 20))):
                 break
-        
+
         return success
 
     def os_shop_buy(self, select_func):
@@ -423,7 +429,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
                     if not self.os_shop_buy_execute(button):
                         logger.warning('Failed to buy item')
                         return count
-                    self.os_shop_get_coins()
+                    self.os_shop_get_coins_in_os_shop()
                     count += 1
                     continue
 
@@ -443,28 +449,33 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         Returns:
             bool: True if buy success, False if not enough coins.
         """
-        self.appear_then_click(AMOUNT_MAX, offset=(50, 50))
-        self.device.sleep((0.3, 0.5))
-        self.device.screenshot()
-        limit = OCR_SHOP_AMOUNT.ocr(self.device.image)
-        if not limit:
-            logger.critical('OCR_SHOP_AMOUNT resulted in zero (0); '
-                            'asset may be compromised')
-            raise ScriptError
-        
         _currency = self._shop_yellow_coins - (self.config.OS_CL1_YELLOW_COINS_PRESERVE if self.is_cl1_enabled else 0) \
-                if item.cost == 'YellowCoins' else self._shop_purple_coins
-
-        if(_currency < item.price):
+            if item.cost == 'YellowCoins' else self._shop_purple_coins
+        if (_currency < item.price):
             return False
+        
+        if self.appear(AMOUNT_MAX, offset=(50, 50)):
+            limit = None
+            for _ in range(3):
+                self.appear_then_click(AMOUNT_MAX, offset=(50, 50))
+                self.device.sleep((0.3, 0.5))
+                self.device.screenshot()
+                limit = OCR_SHOP_AMOUNT.ocr(self.device.image)
+                if limit and limit > 1:
+                    break
+            if not limit:
+                logger.critical('OCR_SHOP_AMOUNT resulted in zero (0); '
+                                'asset may be compromised')
+                raise ScriptError
 
-        total = int(_currency // item.price)
-        diff = limit - total
-        if diff > 0:
-            limit = total
+            total = int(_currency // item.price)
+            diff = limit - total
+            if diff > 0:
+                limit = total
 
-        self.ui_ensure_index(limit, letter=OCR_SHOP_AMOUNT, prev_button=AMOUNT_MINUS, next_button=AMOUNT_PLUS,
-                             skip_first_screenshot=True)
+            self.ui_ensure_index(limit, letter=OCR_SHOP_AMOUNT, prev_button=AMOUNT_MINUS, next_button=AMOUNT_PLUS,
+                                skip_first_screenshot=True)
+            
         self.device.click(SHOP_BUY_CONFIRM_AMOUNT)
 
         return True
@@ -494,10 +505,10 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         """
         for i in range(4):
             count = 0
-            self.os_shop_side_navbar_ensure(upper=i+1)
+            self.os_shop_side_navbar_ensure(upper=i + 1)
             OS_SHOP_SCROLL.set_top(main=self)
 
-            while 1:
+            while True:
                 count += self.os_shop_buy_2(select_func=self.os_shop_get_item_to_buy_in_port)
                 if count >= 5:
                     break
@@ -507,7 +518,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
                 else:
                     OS_SHOP_SCROLL.next_page(main=self, page=0.66)
                     continue
-            
+
         return count > 0 or len(self.os_shop_items.items) == 0
 
     def handle_akashi_supply_buy(self, grid):
