@@ -8,8 +8,9 @@ from module.os_handler.assets import *
 from module.os_handler.map_event import MapEventHandler
 from module.os_handler.os_status import OSStatus
 from module.os_handler.ui import OSShopUI
-from module.statistics.item import ItemGrid
+from module.os_handler.selector import Selector
 from module.base.decorator import Config
+from module.statistics.item import ItemGrid
 from module.ui.scroll import Scroll
 from module.shop.assets import AMOUNT_MAX, AMOUNT_MINUS, AMOUNT_PLUS, SHOP_BUY_CONFIRM_AMOUNT, SHOP_BUY_CONFIRM as OS_SHOP_BUY_CONFIRM
 from module.shop.clerk import OCR_SHOP_AMOUNT
@@ -37,7 +38,7 @@ class OSShopPrice(DigitYuv):
         return result
 
 
-class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
+class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
     _shop_yellow_coins = 0
     _shop_purple_coins = 0
 
@@ -46,6 +47,13 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         self._shop_purple_coins = self.get_purple_coins()
         logger.info(f'Yellow coins: {self._shop_yellow_coins}, purple coins: {self._shop_purple_coins}')
 
+    @Config.when(SERVER='tw')
+    def os_shop_get_coins_in_os_shop(self):
+        self._shop_yellow_coins = self.get_yellow_coins()
+        self._shop_purple_coins = self.get_purple_coins()
+        logger.info(f'Yellow coins: {self._shop_yellow_coins}, purple coins: {self._shop_purple_coins}')
+
+    @Config.when(SERVER=None)
     def os_shop_get_coins_in_os_shop(self):
         self._shop_yellow_coins = self.get_yellow_coins()
         self._shop_purple_coins = self.get_purple_coins_in_os_shop()
@@ -53,7 +61,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
 
     @cached_property
     @Config.when(SERVER='tw')
-    def os_shop_items(self):
+    def os_shop_items(self) -> ItemGrid:
         """
         Returns:
             ItemGrid:
@@ -69,7 +77,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
 
     @cached_property
     @Config.when(SERVER='en')
-    def os_shop_items(self):
+    def os_shop_items(self) -> ItemGrid:
         """
         Returns:
             ItemGrid:
@@ -85,7 +93,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
 
     @cached_property
     @Config.when(SERVER=None)
-    def os_shop_items(self):
+    def os_shop_items(self) -> ItemGrid:
         """
         Returns:
             ItemGrid:
@@ -207,54 +215,26 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         """
         costs = self._get_os_shop_cost()
         items = []
-
         for cost in costs:
             shop_items = self._get_os_shop_items(cost)
+            if self.config.SHOP_EXTRACT_TEMPLATE:
+                shop_items.extract_template(self.device.image, './assets/shop/os')
             shop_items.predict(self.device.image, name=name, amount=name, cost=True, price=True)
             shop_items = shop_items.items
 
             if len(shop_items):
                 row = [str(item) for item in shop_items]
                 logger.info(f'Shop items found: {row}')
-                items += self.items_filter_in_os_shop(shop_items)
+                items += shop_items
             else:
                 logger.info('No shop items found')
 
         return items
 
-    def items_filter_in_os_shop(self, items) -> list:
+    def os_shop_get_item_to_buy_in_akashi(self) -> list:
         """
-        Returns items that can be bought.
-
-        Args:
-            items: Items to be filtered.
-
         Returns:
             list[Item]:
-        """
-        _items = []
-        prise_yellow_coin = 0
-        prise_purple_coin = 0
-
-        for item in items:
-            if self.is_cl1_enabled and item.name == 'PurpleCoins':
-                continue
-            if item.cost == 'YellowCoins' and prise_yellow_coin + item.price <= \
-                    self._shop_yellow_coins - (self.config.OS_CL1_YELLOW_COINS_PRESERVE if self.is_cl1_enabled else 0):
-                prise_yellow_coin += item.price
-                _items.append(item)
-                continue
-            if item.cost == 'PurpleCoins' and prise_purple_coin + item.price <= self._shop_purple_coins:
-                prise_purple_coin += item.price
-                _items.append(item)
-                continue
-
-        return _items
-
-    def os_shop_get_item_to_buy_in_akashi(self):
-        """
-        Returns:
-            Item:
         """
         self.os_shop_get_coins()
         items = self.os_shop_get_items_in_akashi(name=True)
@@ -269,40 +249,8 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
             else:
                 break
 
-        try:
-            selection = self.config.OpsiGeneral_AkashiShopFilter.replace(' ', '').replace('\n', '').split('>')
-        except Exception:
-            logger.warning(f'Invalid OS akashi buy filter string: {self.config.OpsiGeneral_AkashiShopFilter}')
-            return None
+        return self.items_filter_in_os_shop(items)
 
-        # TODO: Better filter for Akashi shop.
-        for select in selection:
-            for item in items:
-                if select not in item.name:
-                    continue
-                if item.cost == 'YellowCoins':
-                    if item.price > self._shop_yellow_coins:
-                        continue
-                if item.cost == 'PurpleCoins':
-                    if item.price > self._shop_purple_coins:
-                        continue
-
-                return item
-
-        return None
-
-    @Config.when(SERVER='tw')
-    def os_shop_get_item_to_buy_in_port(self):
-        """
-        Returns:
-            Item:
-        """
-        self.os_shop_get_coins()
-        logger.attr('CL1 enabled', self.is_cl1_enabled)
-
-        return self.os_shop_get_items(name=True)
-
-    @Config.when(SERVER=None)
     def os_shop_get_item_to_buy_in_port(self) -> list:
         """
         Returns:
@@ -320,12 +268,12 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
                 items = self.os_shop_get_items(name=True)
                 continue
             else:
-                self.os_shop_items.items = items
-                return items
+                self.os_shop_items.items = self.items_filter_in_os_shop(items)
+                return self.os_shop_items.items
 
         return []
 
-    def os_shop_buy_execute(self, button, skip_first_screenshot=True):
+    def os_shop_buy_execute(self, button, skip_first_screenshot=True) -> bool:
         """
         Args:
             button: Item to buy
@@ -378,32 +326,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
 
         return success
 
-    def os_shop_buy(self, select_func):
-        """
-        Args:
-            select_func:
-
-        Returns:
-            int: Items bought.
-
-        Pages:
-            in: PORT_SUPPLY_CHECK
-        """
-        count = 0
-        for _ in range(12):
-            button = select_func()
-            if button is None:
-                logger.info('Shop buy finished')
-                return count
-            else:
-                self.os_shop_buy_execute(button)
-                count += 1
-                continue
-
-        logger.warning('Too many items to buy, stopped')
-        return count
-
-    def os_shop_buy_2(self, select_func) -> int:
+    def os_shop_buy(self, select_func) -> int:
         """
         Args:
             select_func:
@@ -422,7 +345,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
                 logger.info('No items need to be purchased')
                 continue
             for button in buttons:
-                if count >= 5:
+                if count >= 10:
                     logger.info('Shop buy finished')
                     return count
                 else:
@@ -453,7 +376,7 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
             if item.cost == 'YellowCoins' else self._shop_purple_coins
         if (_currency < item.price):
             return False
-        
+
         if self.appear(AMOUNT_MAX, offset=(50, 50)):
             limit = None
             for _ in range(3):
@@ -472,11 +395,11 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
             diff = limit - total
             if diff > 0:
                 limit = total
-
             self.ui_ensure_index(limit, letter=OCR_SHOP_AMOUNT, prev_button=AMOUNT_MINUS, next_button=AMOUNT_PLUS,
-                                skip_first_screenshot=True)
-            
-        self.device.click(SHOP_BUY_CONFIRM_AMOUNT)
+                                 skip_first_screenshot=True)
+
+        self.appear_then_click(OS_SHOP_BUY_CONFIRM, offset=(20, 20))
+        self.appear_then_click(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20))
 
         return True
 
@@ -503,23 +426,25 @@ class OSShopHandler(OSStatus, OSShopUI, MapEventHandler):
         Pages:
             in: PORT_SUPPLY_CHECK
         """
+        _count = 0
         for i in range(4):
             count = 0
-            self.os_shop_side_navbar_ensure(upper=i + 1)
-            OS_SHOP_SCROLL.set_top(main=self)
+            self.os_shop_side_navbar_ensure(bottom=i + 1)
+            OS_SHOP_SCROLL.set_bottom(main=self)
 
             while True:
-                count += self.os_shop_buy_2(select_func=self.os_shop_get_item_to_buy_in_port)
-                if count >= 5:
+                count += self.os_shop_buy(select_func=self.os_shop_get_item_to_buy_in_port)
+                if count >= 10:
                     break
-                elif OS_SHOP_SCROLL.at_bottom(main=self):
+                elif OS_SHOP_SCROLL.at_top(main=self):
                     logger.info('OS shop reach bottom, stop')
                     break
                 else:
-                    OS_SHOP_SCROLL.next_page(main=self, page=0.66)
+                    OS_SHOP_SCROLL.prev_page(main=self, page=0.66)
                     continue
+            _count += count
 
-        return count > 0 or len(self.os_shop_items.items) == 0
+        return _count > 0 or len(self.os_shop_items.items) == 0
 
     def handle_akashi_supply_buy(self, grid):
         """
