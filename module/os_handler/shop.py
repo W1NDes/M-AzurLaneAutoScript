@@ -47,18 +47,6 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         self._shop_purple_coins = self.get_purple_coins()
         logger.info(f'Yellow coins: {self._shop_yellow_coins}, purple coins: {self._shop_purple_coins}')
 
-    @Config.when(SERVER='tw')
-    def os_shop_get_coins_in_os_shop(self):
-        self._shop_yellow_coins = self.get_yellow_coins()
-        self._shop_purple_coins = self.get_purple_coins()
-        logger.info(f'Yellow coins: {self._shop_yellow_coins}, purple coins: {self._shop_purple_coins}')
-
-    @Config.when(SERVER=None)
-    def os_shop_get_coins_in_os_shop(self):
-        self._shop_yellow_coins = self.get_yellow_coins()
-        self._shop_purple_coins = self.get_purple_coins_in_os_shop()
-        logger.info(f'Yellow coins: {self._shop_yellow_coins}, purple coins: {self._shop_purple_coins}')
-
     @cached_property
     @Config.when(SERVER='tw')
     def os_shop_items(self) -> ItemGrid:
@@ -256,7 +244,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         Returns:
             list[Item]:
         """
-        self.os_shop_get_coins_in_os_shop()
+        self.os_shop_get_coins()
         items = self.os_shop_get_items(name=True)
         logger.attr('CL1 enabled', self.is_cl1_enabled)
 
@@ -287,6 +275,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         self.interval_clear(PORT_SUPPLY_CHECK)
         self.interval_clear(SHOP_BUY_CONFIRM)
         self.interval_clear(SHOP_BUY_CONFIRM_AMOUNT)
+        self.interval_clear(OS_SHOP_BUY_CONFIRM)
 
         while True:
             if skip_first_screenshot:
@@ -299,20 +288,14 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                 success = True
                 continue
 
-            if self.appear_then_click(SHOP_BUY_CONFIRM, offset=(20, 20), interval=3):
-                self.interval_reset(PORT_SUPPLY_CHECK)
-                continue
-
             if self.appear(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=3) or \
+                    self.appear(SHOP_BUY_CONFIRM, offset=(20, 20), interval=3) or \
                     self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=3):
-                enough_coins = self.shop_buy_amount_exec(button)
+                if not enough_coins:
+                    self.device.click(CLICK_SAFE_AREA)
+                    continue
 
-                while not enough_coins and \
-                        not self.appear(PORT_SUPPLY_CHECK, offset=(20, 20)) and \
-                        self.appear_then_click(CLICK_SAFE_AREA, interval=3):
-                    pass
-
-                self.interval_reset(SHOP_BUY_CONFIRM_AMOUNT)
+                enough_coins = self.shop_buy_exec(button)
                 self.interval_reset(PORT_SUPPLY_CHECK)
                 continue
 
@@ -352,14 +335,14 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                     if not self.os_shop_buy_execute(button):
                         logger.warning('Failed to buy item')
                         return count
-                    self.os_shop_get_coins_in_os_shop()
+                    self.os_shop_get_coins()
                     count += 1
                     continue
 
         logger.warning('Too many items to buy, stopped')
         return count
 
-    def shop_buy_amount_exec(self, item) -> bool:
+    def shop_buy_exec(self, item) -> bool:
         """
         Execute shop buy amount and buy item.
 
@@ -398,6 +381,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
             self.ui_ensure_index(limit, letter=OCR_SHOP_AMOUNT, prev_button=AMOUNT_MINUS, next_button=AMOUNT_PLUS,
                                  skip_first_screenshot=True)
 
+        self.appear_then_click(SHOP_BUY_CONFIRM, offset=(20, 20))
         self.appear_then_click(OS_SHOP_BUY_CONFIRM, offset=(20, 20))
         self.appear_then_click(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20))
 
