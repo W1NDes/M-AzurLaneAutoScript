@@ -1,5 +1,6 @@
 from module.base.button import ButtonGrid
-from module.base.decorator import cached_property, del_cached_property
+from module.base.decorator import cached_property
+from module.combat.assets import GET_ITEMS_1, GET_ITEMS_2, GET_ITEMS_3
 from module.exception import ScriptError
 from module.logger import logger
 from module.map_detection.utils import Points
@@ -342,7 +343,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         logger.warning('Too many items to buy, stopped')
         return count
 
-    def shop_buy_exec(self, item) -> bool:
+    def shop_buy_exec(self, item, skip_first_screenshot=True) -> bool:
         """
         Execute shop buy amount and buy item.
 
@@ -355,11 +356,62 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         Returns:
             bool: True if buy success, False if not enough coins.
         """
-        _currency = self._shop_yellow_coins - (self.config.OS_CL1_YELLOW_COINS_PRESERVE if self.is_cl1_enabled else 0) \
+        currency = self._shop_yellow_coins - (self.config.OS_CL1_YELLOW_COINS_PRESERVE if self.is_cl1_enabled else 0) \
             if item.cost == 'YellowCoins' else self._shop_purple_coins
-        if (_currency < item.price):
+        if (currency < item.price):
             return False
 
+        self.interval_clear(SHOP_BUY_CONFIRM)
+        self.interval_clear(OS_SHOP_BUY_CONFIRM)
+        self.interval_clear(SHOP_BUY_CONFIRM_AMOUNT)
+        amount_fin = False
+        success = False
+
+        while True:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            if self.appear(GET_ITEMS_1, interval=1) or \
+                    self.appear(GET_ITEMS_2, interval=1) or \
+                    self.appear(GET_ITEMS_3, interval=1):
+                success = True
+                break
+
+            if not amount_fin:
+                amount_fin = self.amount_handler(currency, item.price)
+                continue
+
+            if amount_fin and self.appear_then_click(SHOP_BUY_CONFIRM, offset=(20, 20), interval=1):
+                self.interval_reset(SHOP_BUY_CONFIRM)
+                continue
+
+            if amount_fin and self.appear_then_click(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=1):
+                self.interval_reset(OS_SHOP_BUY_CONFIRM)
+                continue
+
+            if amount_fin and self.appear_then_click(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=1):
+                self.interval_reset(SHOP_BUY_CONFIRM_AMOUNT)
+                continue
+
+        return success
+
+    def amount_handler(self, currency, price, skip_first_screenshot=True) -> bool:
+        """
+        Handler item amount to buy.
+
+        Args:
+            currency (int): Coins currently had.
+            price (int): Item price.
+            skip_first_screenshot (bool, optional): Defaults to True.
+
+        Raises:
+            ScriptError: OCR_SHOP_AMOUNT
+
+        Returns:
+            bool: True if amount handler finished.
+        """
         if self.appear(AMOUNT_MAX, offset=(50, 50)):
             limit = None
             for _ in range(3):
@@ -373,18 +425,16 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                 logger.critical('OCR_SHOP_AMOUNT resulted in zero (0); '
                                 'asset may be compromised')
                 raise ScriptError
-
-            total = int(_currency // item.price)
+            if limit == 1:
+                return True
+            
+            total = int(currency // price)
             diff = limit - total
             if diff > 0:
                 limit = total
             self.ui_ensure_index(limit, letter=OCR_SHOP_AMOUNT, prev_button=AMOUNT_MINUS, next_button=AMOUNT_PLUS,
-                                 skip_first_screenshot=True)
-
-        self.appear_then_click(SHOP_BUY_CONFIRM, offset=(20, 20))
-        self.appear_then_click(OS_SHOP_BUY_CONFIRM, offset=(20, 20))
-        self.appear_then_click(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20))
-
+                skip_first_screenshot=skip_first_screenshot)
+            
         return True
 
     @Config.when(SERVER='tw')
