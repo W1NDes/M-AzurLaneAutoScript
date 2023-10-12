@@ -23,6 +23,7 @@ TEMPLATE_YELLOW_COINS = Template('./assets/shop/os_cost/YellowCoins_1.png')
 TEMPLATE_PURPLE_COINS = Template('./assets/shop/os_cost/PurpleCoins_1.png')
 TEMPLATE_YELLOW_COINS_SOLD_OUT = Template('./assets/shop/os_cost_sold_out/YellowCoins.png')
 TEMPLATE_PURPLE_COINS_SOLD_OUT = Template('./assets/shop/os_cost_sold_out/PurpleCoins.png')
+TEMPLATES = [TEMPLATE_YELLOW_COINS, TEMPLATE_PURPLE_COINS, TEMPLATE_YELLOW_COINS_SOLD_OUT, TEMPLATE_PURPLE_COINS_SOLD_OUT]
 
 
 class OSShopPrice(DigitYuv):
@@ -50,7 +51,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
 
     @cached_property
     @Config.when(SERVER='tw')
-    def os_shop_items(self) -> ItemGrid:
+    def os_akashi_shop_items(self) -> ItemGrid:
         """
         Returns:
             ItemGrid:
@@ -66,7 +67,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
 
     @cached_property
     @Config.when(SERVER='en')
-    def os_shop_items(self) -> ItemGrid:
+    def os_akashi_shop_items(self) -> ItemGrid:
         """
         Returns:
             ItemGrid:
@@ -82,7 +83,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
 
     @cached_property
     @Config.when(SERVER=None)
-    def os_shop_items(self) -> ItemGrid:
+    def os_akashi_shop_items(self) -> ItemGrid:
         """
         Returns:
             ItemGrid:
@@ -105,12 +106,12 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
             list[Item]:
         """
         if self.config.SHOP_EXTRACT_TEMPLATE:
-            self.os_shop_items.extract_template(self.device.image, './assets/shop/os')
-        self.os_shop_items.predict(self.device.image, name=name, amount=name, cost=True, price=True)
+            self.os_akashi_shop_items.extract_template(self.device.image, './assets/shop/os')
+        self.os_akashi_shop_items.predict(self.device.image, name=name, amount=name, cost=True, price=True)
 
-        items = self.os_shop_items.items
+        items = self.os_akashi_shop_items.items
         if len(items):
-            min_row = self.os_shop_items.grids[0, 0].area[1]
+            min_row = self.os_akashi_shop_items.grids[0, 0].area[1]
             row = [str(item) for item in items if item.button[1] == min_row]
             logger.info(f'Shop row 1: {row}')
             row = [str(item) for item in items if item.button[1] != min_row]
@@ -127,15 +128,38 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         Returns:
             list:
         """
-        result = TEMPLATE_YELLOW_COINS.match_multi(self.image_crop((360, 320, 410, 720)))
-        result += TEMPLATE_PURPLE_COINS.match_multi(self.image_crop((360, 320, 410, 720)))
-        result += TEMPLATE_YELLOW_COINS_SOLD_OUT.match_multi(self.image_crop((360, 320, 410, 720)))
-        result += TEMPLATE_PURPLE_COINS_SOLD_OUT.match_multi(self.image_crop((360, 320, 410, 720)))
+        
+        result = sum([template.match_multi(self.image_crop((360, 320, 410, 720))) for template in TEMPLATES],[])
         logger.info(f'Costs: {result}')
-
         return Points([(0., m.area[1]) for m in result]).group(threshold=5)
 
-    def _get_shop_grid(self, cost) -> ButtonGrid:
+    @cached_property
+    @Config.when(SERVER='tw')
+    def os_shop_items(self) -> ItemGrid:
+        """
+        Returns:
+            ItemGrid:
+        """
+        shop_grid = ButtonGrid(
+            origin=(238, 220), delta=(188, 225), button_shape=(98, 98), grid_shape=(4, 2), name='SHOP_GRID')
+        os_shop_items = ItemGrid(
+            shop_grid, templates={}, amount_area=(60, 74, 96, 95), price_area=(52, 132, 132, 165))
+        os_shop_items.price_ocr = OSShopPrice([], letter=(255, 223, 57), threshold=32, name='Price_ocr')
+        os_shop_items.load_template_folder('./assets/shop/os')
+        os_shop_items.load_cost_template_folder('./assets/shop/os_cost')
+        return os_shop_items
+
+    @cached_property
+    @Config.when(SERVER=None)
+    def os_shop_items(self) -> ItemGrid:
+        os_shop_items = ItemGrid(
+            grids=None, templates={}, amount_area=(77, 77, 96, 96), price_area=(52, 132, 130, 165))
+        os_shop_items.price_ocr = OSShopPrice([], letter=(255, 223, 57), threshold=32, name='Price_ocr')
+        os_shop_items.load_template_folder('./assets/shop/os')
+        os_shop_items.load_cost_template_folder('./assets/shop/os_cost')
+        return os_shop_items
+
+    def _get_os_shop_grid(self, cost) -> ButtonGrid:
         """
         Returns shop grid.
 
@@ -149,24 +173,6 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
 
         return ButtonGrid(
             origin=(356, y), delta=(160, 0), button_shape=(98, 98), grid_shape=(5, 1), name='OS_SHOP_GRID')
-
-    def _get_os_shop_items(self, cost) -> ItemGrid:
-        """
-        Returns shop items.
-
-        Args:
-            cost: The coordinates of the upper left corner of coin icon.
-
-        Returns:
-            ItemGrid:
-        """
-        os_shop_items = ItemGrid(
-            self._get_shop_grid(cost), templates={}, amount_area=(77, 77, 96, 96), price_area=(52, 132, 130, 165))
-        os_shop_items.price_ocr = OSShopPrice([], letter=(255, 223, 57), threshold=32, name='Price_ocr')
-        os_shop_items.load_template_folder('./assets/shop/os')
-        os_shop_items.load_cost_template_folder('./assets/shop/os_cost')
-
-        return os_shop_items
 
     @Config.when(SERVER='tw')
     def os_shop_get_items(self, name=True) -> list:
@@ -202,14 +208,15 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         Returns:
             list[Item]:
         """
-        costs = self._get_os_shop_cost()
         items = []
+        costs = self._get_os_shop_cost()
+
         for cost in costs:
-            shop_items = self._get_os_shop_items(cost)
+            self.os_shop_items.grids = self._get_os_shop_grid(cost)
             if self.config.SHOP_EXTRACT_TEMPLATE:
-                shop_items.extract_template(self.device.image, './assets/shop/os')
-            shop_items.predict(self.device.image, name=name, amount=name, cost=True, price=True)
-            shop_items = shop_items.items
+                self.os_shop_items.extract_template(self.device.image, './assets/shop/os')
+            self.os_shop_items.predict(self.device.image, name=name, amount=name, cost=True, price=True)
+            shop_items = self.os_shop_items.items
 
             if len(shop_items):
                 row = [str(item) for item in shop_items]
@@ -236,9 +243,9 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                 items = self.os_shop_get_items_in_akashi(name=True)
                 continue
             else:
-                break
+                return self.items_filter_in_os_shop(items)
 
-        return self.items_filter_in_os_shop(items)
+        return []
 
     def os_shop_get_item_to_buy_in_port(self) -> list:
         """
@@ -257,8 +264,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                 items = self.os_shop_get_items(name=True)
                 continue
             else:
-                self.os_shop_items.items = self.items_filter_in_os_shop(items)
-                return self.os_shop_items.items
+                return self.items_filter_in_os_shop(items)
 
         return []
 
@@ -289,15 +295,28 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                 success = True
                 continue
 
-            if self.appear(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=3) or \
-                    self.appear(SHOP_BUY_CONFIRM, offset=(20, 20), interval=3) or \
-                    self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=3):
-                if not enough_coins:
-                    self.device.click(CLICK_SAFE_AREA)
-                    continue
+            if not enough_coins and (self.appear(OS_SHOP_BUY_CONFIRM, offset=(20, 20)) or \
+                    self.appear(SHOP_BUY_CONFIRM, offset=(20, 20)) or \
+                    self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20))):
+                self.device.click(CLICK_SAFE_AREA)
+                continue
 
+            if enough_coins and self.appear(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=3):
                 enough_coins = self.shop_buy_exec(button)
                 self.interval_reset(PORT_SUPPLY_CHECK)
+                self.interval_reset(OS_SHOP_BUY_CONFIRM)
+                continue
+
+            if enough_coins and self.appear(SHOP_BUY_CONFIRM, offset=(20, 20), interval=3):
+                enough_coins = self.shop_buy_exec(button)
+                self.interval_reset(PORT_SUPPLY_CHECK)
+                self.interval_reset(SHOP_BUY_CONFIRM)
+                continue
+
+            if enough_coins and self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=3):
+                enough_coins = self.shop_buy_exec(button)
+                self.interval_reset(PORT_SUPPLY_CHECK)
+                self.interval_reset(SHOP_BUY_CONFIRM_AMOUNT)
                 continue
 
             if enough_coins and not success and self.appear(PORT_SUPPLY_CHECK, offset=(20, 20), interval=5):
@@ -328,19 +347,21 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
             if buttons is None or len(buttons) == 0:
                 logger.info('No items need to be purchased')
                 continue
-            for button in buttons:
-                if count >= 10:
-                    logger.info('Shop buy finished')
-                    return count
-                else:
-                    if not self.os_shop_buy_execute(button):
-                        logger.warning('Failed to buy item')
+            else:
+                for button in buttons:
+                    if count >= 10:
+                        logger.info('Shop buy finished')
                         return count
-                    self.os_shop_get_coins()
-                    count += 1
-                    continue
+                    else:
+                        if not self.os_shop_buy_execute(button):
+                            logger.warning('Failed to buy item')
+                            return count
+                        self.os_shop_get_coins()
+                        count += 1
+                        continue
 
-        logger.warning('Too many items to buy, stopped')
+        if count == 0:
+            logger.warning('Nothing was purchased, stopped')
         return count
 
     def shop_buy_exec(self, item, skip_first_screenshot=True) -> bool:
@@ -373,21 +394,24 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
             else:
                 self.device.screenshot()
 
-            if self.appear(GET_ITEMS_1, interval=1) or \
-                    self.appear(GET_ITEMS_2, interval=1) or \
-                    self.appear(GET_ITEMS_3, interval=1):
+            if self.appear(GET_ITEMS_1) or \
+                    self.appear(GET_ITEMS_2) or \
+                    self.appear(GET_ITEMS_3):
                 success = True
                 break
 
-            if not amount_fin:
-                amount_fin = self.amount_handler(currency, item.price)
-                continue
+            if not amount_fin and self.appear(SHOP_BUY_CONFIRM_AMOUNT, offset=(20, 20), interval=1):
+                if self.amount_handler(currency, item.price):
+                    amount_fin = True
+                    continue
+                else:
+                    return success
 
-            if amount_fin and self.appear_then_click(SHOP_BUY_CONFIRM, offset=(20, 20), interval=1):
+            if self.appear_then_click(SHOP_BUY_CONFIRM, offset=(20, 20), interval=1):
                 self.interval_reset(SHOP_BUY_CONFIRM)
                 continue
 
-            if amount_fin and self.appear_then_click(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=1):
+            if self.appear_then_click(OS_SHOP_BUY_CONFIRM, offset=(20, 20), interval=1):
                 self.interval_reset(OS_SHOP_BUY_CONFIRM)
                 continue
 
@@ -412,6 +436,12 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
         Returns:
             bool: True if amount handler finished.
         """
+        total = int(currency // price)
+        if total == 0:
+            return False
+        if total == 1:
+            return True
+        
         if self.appear(AMOUNT_MAX, offset=(50, 50)):
             limit = None
             for _ in range(3):
@@ -425,16 +455,13 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
                 logger.critical('OCR_SHOP_AMOUNT resulted in zero (0); '
                                 'asset may be compromised')
                 raise ScriptError
-            if limit == 1:
-                return True
-            
-            total = int(currency // price)
+
             diff = limit - total
             if diff > 0:
                 limit = total
             self.ui_ensure_index(limit, letter=OCR_SHOP_AMOUNT, prev_button=AMOUNT_MINUS, next_button=AMOUNT_PLUS,
-                skip_first_screenshot=skip_first_screenshot)
-            
+                                 skip_first_screenshot=skip_first_screenshot)
+
         return True
 
     @Config.when(SERVER='tw')
@@ -448,7 +475,7 @@ class OSShopHandler(OSStatus, OSShopUI, Selector, MapEventHandler):
             in: PORT_SUPPLY_CHECK
         """
         count = self.os_shop_buy(select_func=self.os_shop_get_item_to_buy_in_port)
-        return count > 0 or len(self.os_shop_items.items) == 0
+        return count > 0 or len(self.os_akashi_shop_items.items) == 0
 
     @Config.when(SERVER=None)
     def handle_port_supply_buy(self) -> bool:

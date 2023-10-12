@@ -66,8 +66,8 @@ class OperationSiren(OSMap):
             supply (bool): If needs to buy supplies.
         """
         logger.hr('OS port daily', level=1)
-        self.globe_goto(self.zone_nearest_azur_port(self.zone))
-        self.port_goto()
+        if not self.is_in_azur_port(self.zone):
+            self.globe_goto(self.zone_nearest_azur_port(self.zone))
         self.port_enter()
         if supply:
             self.port_supply_buy()
