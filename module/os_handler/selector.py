@@ -60,26 +60,6 @@ class Selector():
         Returns:
             bool: True if there are enough coins.
         """
-        if item.cost == 'YellowCoins' and self.prise_yellow_coin + item.price <= \
-                self._shop_yellow_coins - (self.config.OS_CL1_YELLOW_COINS_PRESERVE if self.is_cl1_enabled else 0):
-            self.prise_yellow_coin += item.price
-            return True
-        if item.cost == 'PurpleCoins' and self.prise_purple_coin + item.price <= self._shop_purple_coins:
-            self.prise_purple_coin += item.price
-            return True
-
-        return False
-
-    def enough_coins_in_akashi_shop(self, item) -> bool:
-        """
-        Check if there are enough coins to buy the item.
-
-        Args:
-            item:
-
-        Returns:
-            bool: True if there are enough coins.
-        """
         if item.cost == 'YellowCoins' and self.prise_yellow_coin + item.price <= self._shop_yellow_coins:
             self.prise_yellow_coin += item.price
             return True
@@ -117,7 +97,7 @@ class Selector():
         if not parser.strip():
             parser = GeneratedConfig.OpsiGeneral_AkashiShopFilter
         FILTER.load(parser)
-        return FILTER.apply(items, func=[self.check_cl1_purple_coins, self.enough_coins_in_akashi_shop])
+        return FILTER.apply(items, func=[self.check_cl1_purple_coins, self.enough_coins])
 
     def items_filter_in_os_shop(self, items) -> list:
         """
