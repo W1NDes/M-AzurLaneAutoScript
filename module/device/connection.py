@@ -149,7 +149,7 @@ class Connection(ConnectionAttr):
         raise RequestHumanTakeover
 
     @Config.when(DEVICE_OVER_HTTP=False)
-    def adb_shell(self, cmd, stream=False, recvall=True, timeout=10, rstrip=True):
+    def adb_shell(self, cmd, stream=False, recvall=True, timeout=60, rstrip=True):
         """
         Equivalent to `adb -s <serial> shell <*cmd>`
 
