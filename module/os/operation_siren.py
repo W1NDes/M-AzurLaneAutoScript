@@ -17,9 +17,11 @@ from module.os_handler.action_point import OCR_OS_ADAPTABILITY, ActionPointLimit
 from module.os_handler.assets import OS_MONTHBOSS_NORMAL, OS_MONTHBOSS_HARD, EXCHANGE_CHECK, EXCHANGE_ENTER, TARGET_ENTER, TARGET_ALL_ON, TARGET_RED_DOT
 from module.os_handler.target import OSTargetHandler
 from module.shop.shop_voucher import VoucherShop
+from module.base.decorator import Config
 
 
 class OperationSiren(OSMap):
+    @Config.when(SERVER='tw')
     def os_port_daily(self, supply=True):
         """
         Accept all missions and buy all supplies in all ports.
@@ -54,6 +56,24 @@ class OperationSiren(OSMap):
             self.port_quit()
 
         return mission_success, supply_success
+    
+    @Config.when(SERVER=None)
+    def os_port_daily(self, supply=True):
+        """
+        Accept all missions and buy all supplies in all ports.
+        If reach the maximum number of missions, skip accept missions in next port.
+        If not having enough yellow coins or purple coins, skip buying supplies in next port.
+
+        Args:
+            supply (bool): If needs to buy supplies.
+        """
+        logger.hr('OS port daily', level=1)
+        if not self.is_in_azur_port(self.zone):
+            self.globe_goto(self.zone_nearest_azur_port(self.zone))
+        self.port_enter()
+        if supply:
+            self.port_supply_buy()
+        self.port_quit()
 
     def os_port_mission(self):
         """

@@ -45,7 +45,7 @@ class Filter:
         """
         Args:
             objs (list): List of objects and strings
-            func (callable): A function to filter object.
+            List[func]|func (callable): A function or a list of funciton that to filter object.
                 Function should receive an object as arguments, and return a bool.
                 True means add it to output.
 
@@ -68,6 +68,9 @@ class Filter:
             for obj in objs:
                 if isinstance(obj, str):
                     out.append(obj)
+                elif isinstance(func, list):
+                    if all(f(obj) for f in func):
+                        out.append(obj)
                 elif func(obj):
                     out.append(obj)
                 else:
