@@ -1,4 +1,72 @@
 {
+  "Dashboard": {
+    "Oil": {
+      "Value": 0,
+      "Limit": 0,
+      "Color": "^000000",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Coin": {
+      "Value": 0,
+      "Limit": 0,
+      "Color": "^FFAA33",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Gem": {
+      "Value": 0,
+      "Color": "^FF3333",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Pt": {
+      "Value": 0,
+      "Color": "^00BFFF",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Cube": {
+      "Value": 0,
+      "Color": "^33FFFF",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "ActionPoint": {
+      "Value": 0,
+      "Total": 0,
+      "Color": "^0000FF",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "YellowCoin": {
+      "Value": 0,
+      "Color": "^FF8800",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "PurpleCoin": {
+      "Value": 0,
+      "Color": "^7700BB",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Core": {
+      "Value": 0,
+      "Color": "^AAAAAA",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Medal": {
+      "Value": 0,
+      "Color": "^FFDD00",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Merit": {
+      "Value": 0,
+      "Color": "^FFFF00",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "GuildCoin": {
+      "Value": 0,
+      "Color": "^AAAAAA",
+      "Record": "2020-01-01 00:00:00"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
   "Alas": {
     "Emulator": {
       "Serial": "auto",
@@ -1256,6 +1324,11 @@
       "Feed": true,
       "FeedFilter": "20000 > 10000 > 5000 > 3000 > 2000 > 1000"
     },
+    "BuyFurniture": {
+      "Enable": false,
+      "BuyOption": "all",
+      "LastRun": "2020-01-01 00:00:00"
+    },
     "Storage": {
       "Storage": {}
     }
@@ -1630,9 +1703,7 @@
       "ServerUpdate": "00:00"
     },
     "OpsiShop": {
-      "BuySupply": true,
-      "PresetFilter": "max_benefit_meta",
-      "CustomFilter": "Logger"
+      "BuySupply": true
     },
     "Storage": {
       "Storage": {}
@@ -1665,8 +1736,7 @@
     },
     "OpsiDaily": {
       "DoMission": true,
-      "UseTuningSample": true,
-      "CollectTargetReward": false
+      "UseTuningSample": true
     },
     "OpsiFleet": {
       "Fleet": 1,
@@ -1783,12 +1853,8 @@
     },
     "OpsiMeowfficerFarming": {
       "ActionPointPreserve": 1000,
-      "HazardLevel": 5
-    },
-    "OpsiTarget": {
-      "TargetFarming": false,
-      "TargetZone": 0,
-      "LastRun": "2020-01-01 00:00:00"
+      "HazardLevel": 5,
+      "TargetZone": 0
     },
     "OpsiFleet": {
       "Fleet": 1,

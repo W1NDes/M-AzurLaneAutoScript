@@ -1,4 +1,206 @@
 {
+  "Dashboard": {
+    "Oil": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Limit": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^000000"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Coin": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Limit": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^FFAA33"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Gem": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^FF3333"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Pt": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^00BFFF"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Cube": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^33FFFF"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "ActionPoint": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Total": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^0000FF"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "YellowCoin": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^FF8800"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "PurpleCoin": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^7700BB"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Core": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^AAAAAA"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Medal": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^FFDD00"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Merit": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^FFFF00"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "GuildCoin": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^AAAAAA"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
+    "Storage": {
+      "Storage": {
+        "type": "storage",
+        "value": {},
+        "valuetype": "ignore",
+        "display": "disabled"
+      }
+    }
+  },
   "Alas": {
     "Emulator": {
       "Serial": {
@@ -1675,16 +1877,18 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "display": "hide",
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -2006,15 +2210,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -2451,15 +2657,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -2862,8 +3070,8 @@
           "raid_20230629"
         ],
         "option_bold": [
-          "raid_20221027",
-          "raid_20230629"
+          "raid_20230629",
+          "raid_20221027"
         ],
         "cn": "raid_20230629",
         "en": "raid_20230629",
@@ -3380,8 +3588,8 @@
           "war_archives_20220414_cn"
         ],
         "option_bold": [
-          "war_archives_20201229_cn",
-          "war_archives_20220414_cn"
+          "war_archives_20220414_cn",
+          "war_archives_20201229_cn"
         ],
         "cn": "war_archives_20201229_cn",
         "en": "war_archives_20201229_cn",
@@ -3834,15 +4042,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -4296,15 +4506,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -4758,15 +4970,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -5220,15 +5434,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -5672,15 +5888,17 @@
           "event_20230817_cn",
           "event_20230914_cn",
           "event_20231026_cn",
-          "event_20231123_cn"
+          "event_20231123_cn",
+          "event_20231221_cn"
         ],
         "option_bold": [
-          "event_20231123_cn"
+          "event_20231221_cn",
+          "event_20221222_cn"
         ],
-        "cn": "event_20231123_cn",
-        "en": "event_20231123_cn",
-        "jp": "event_20231123_cn",
-        "tw": "event_20231123_cn"
+        "cn": "event_20231221_cn",
+        "en": "event_20231221_cn",
+        "jp": "event_20231221_cn",
+        "tw": "event_20221222_cn"
       },
       "Mode": {
         "type": "select",
@@ -6080,8 +6298,8 @@
           "raid_20230629"
         ],
         "option_bold": [
-          "raid_20221027",
-          "raid_20230629"
+          "raid_20230629",
+          "raid_20221027"
         ],
         "cn": "raid_20230629",
         "en": "raid_20230629",
@@ -6800,6 +7018,25 @@
       "FeedFilter": {
         "type": "textarea",
         "value": "20000 > 10000 > 5000 > 3000 > 2000 > 1000"
+      }
+    },
+    "BuyFurniture": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false
+      },
+      "BuyOption": {
+        "type": "select",
+        "value": "all",
+        "option": [
+          "set",
+          "all"
+        ]
+      },
+      "LastRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
       }
     },
     "Storage": {
@@ -8329,21 +8566,6 @@
       "BuySupply": {
         "type": "checkbox",
         "value": true
-      },
-      "PresetFilter": {
-        "type": "select",
-        "value": "max_benefit_meta",
-        "option": [
-          "max_benefit",
-          "max_benefit_meta",
-          "no_meta",
-          "all",
-          "custom"
-        ]
-      },
-      "CustomFilter": {
-        "type": "textarea",
-        "value": "Logger"
       }
     },
     "Storage": {
@@ -8450,10 +8672,6 @@
       "UseTuningSample": {
         "type": "checkbox",
         "value": true
-      },
-      "CollectTargetReward": {
-        "type": "checkbox",
-        "value": false
       }
     },
     "OpsiFleet": {
@@ -8843,21 +9061,10 @@
           6,
           10
         ]
-      }
-    },
-    "OpsiTarget": {
-      "TargetFarming": {
-        "type": "checkbox",
-        "value": false
       },
       "TargetZone": {
         "type": "input",
         "value": 0
-      },
-      "LastRun": {
-        "type": "datetime",
-        "value": "2020-01-01 00:00:00",
-        "validate": "datetime"
       }
     },
     "OpsiFleet": {

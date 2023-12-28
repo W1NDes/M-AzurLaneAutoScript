@@ -263,6 +263,234 @@
       "help": ""
     }
   },
+  "Oil": {
+    "_info": {
+      "name": "Oil._info.name",
+      "help": "Oil._info.help"
+    },
+    "Value": {
+      "name": "Oil.Value.name",
+      "help": "Oil.Value.help"
+    },
+    "Limit": {
+      "name": "Oil.Limit.name",
+      "help": "Oil.Limit.help"
+    },
+    "Color": {
+      "name": "Oil.Color.name",
+      "help": "Oil.Color.help"
+    },
+    "Record": {
+      "name": "Oil.Record.name",
+      "help": "Oil.Record.help"
+    }
+  },
+  "Coin": {
+    "_info": {
+      "name": "Coin._info.name",
+      "help": "Coin._info.help"
+    },
+    "Value": {
+      "name": "Coin.Value.name",
+      "help": "Coin.Value.help"
+    },
+    "Limit": {
+      "name": "Coin.Limit.name",
+      "help": "Coin.Limit.help"
+    },
+    "Color": {
+      "name": "Coin.Color.name",
+      "help": "Coin.Color.help"
+    },
+    "Record": {
+      "name": "Coin.Record.name",
+      "help": "Coin.Record.help"
+    }
+  },
+  "Gem": {
+    "_info": {
+      "name": "Gem._info.name",
+      "help": "Gem._info.help"
+    },
+    "Value": {
+      "name": "Gem.Value.name",
+      "help": "Gem.Value.help"
+    },
+    "Color": {
+      "name": "Gem.Color.name",
+      "help": "Gem.Color.help"
+    },
+    "Record": {
+      "name": "Gem.Record.name",
+      "help": "Gem.Record.help"
+    }
+  },
+  "Pt": {
+    "_info": {
+      "name": "Pt._info.name",
+      "help": "Pt._info.help"
+    },
+    "Value": {
+      "name": "Pt.Value.name",
+      "help": "Pt.Value.help"
+    },
+    "Color": {
+      "name": "Pt.Color.name",
+      "help": "Pt.Color.help"
+    },
+    "Record": {
+      "name": "Pt.Record.name",
+      "help": "Pt.Record.help"
+    }
+  },
+  "YellowCoin": {
+    "_info": {
+      "name": "YellowCoin._info.name",
+      "help": "YellowCoin._info.help"
+    },
+    "Value": {
+      "name": "YellowCoin.Value.name",
+      "help": "YellowCoin.Value.help"
+    },
+    "Color": {
+      "name": "YellowCoin.Color.name",
+      "help": "YellowCoin.Color.help"
+    },
+    "Record": {
+      "name": "YellowCoin.Record.name",
+      "help": "YellowCoin.Record.help"
+    }
+  },
+  "PurpleCoin": {
+    "_info": {
+      "name": "PurpleCoin._info.name",
+      "help": "PurpleCoin._info.help"
+    },
+    "Value": {
+      "name": "PurpleCoin.Value.name",
+      "help": "PurpleCoin.Value.help"
+    },
+    "Color": {
+      "name": "PurpleCoin.Color.name",
+      "help": "PurpleCoin.Color.help"
+    },
+    "Record": {
+      "name": "PurpleCoin.Record.name",
+      "help": "PurpleCoin.Record.help"
+    }
+  },
+  "ActionPoint": {
+    "_info": {
+      "name": "ActionPoint._info.name",
+      "help": "ActionPoint._info.help"
+    },
+    "Value": {
+      "name": "ActionPoint.Value.name",
+      "help": "ActionPoint.Value.help"
+    },
+    "Total": {
+      "name": "ActionPoint.Total.name",
+      "help": "ActionPoint.Total.help"
+    },
+    "Color": {
+      "name": "ActionPoint.Color.name",
+      "help": "ActionPoint.Color.help"
+    },
+    "Record": {
+      "name": "ActionPoint.Record.name",
+      "help": "ActionPoint.Record.help"
+    }
+  },
+  "Merit": {
+    "_info": {
+      "name": "Merit._info.name",
+      "help": "Merit._info.help"
+    },
+    "Value": {
+      "name": "Merit.Value.name",
+      "help": "Merit.Value.help"
+    },
+    "Color": {
+      "name": "Merit.Color.name",
+      "help": "Merit.Color.help"
+    },
+    "Record": {
+      "name": "Merit.Record.name",
+      "help": "Merit.Record.help"
+    }
+  },
+  "Cube": {
+    "_info": {
+      "name": "Cube._info.name",
+      "help": "Cube._info.help"
+    },
+    "Value": {
+      "name": "Cube.Value.name",
+      "help": "Cube.Value.help"
+    },
+    "Color": {
+      "name": "Cube.Color.name",
+      "help": "Cube.Color.help"
+    },
+    "Record": {
+      "name": "Cube.Record.name",
+      "help": "Cube.Record.help"
+    }
+  },
+  "Core": {
+    "_info": {
+      "name": "Core._info.name",
+      "help": "Core._info.help"
+    },
+    "Value": {
+      "name": "Core.Value.name",
+      "help": "Core.Value.help"
+    },
+    "Color": {
+      "name": "Core.Color.name",
+      "help": "Core.Color.help"
+    },
+    "Record": {
+      "name": "Core.Record.name",
+      "help": "Core.Record.help"
+    }
+  },
+  "Medal": {
+    "_info": {
+      "name": "Medal._info.name",
+      "help": "Medal._info.help"
+    },
+    "Value": {
+      "name": "Medal.Value.name",
+      "help": "Medal.Value.help"
+    },
+    "Color": {
+      "name": "Medal.Color.name",
+      "help": "Medal.Color.help"
+    },
+    "Record": {
+      "name": "Medal.Record.name",
+      "help": "Medal.Record.help"
+    }
+  },
+  "GuildCoin": {
+    "_info": {
+      "name": "GuildCoin._info.name",
+      "help": "GuildCoin._info.help"
+    },
+    "Value": {
+      "name": "GuildCoin.Value.name",
+      "help": "GuildCoin.Value.help"
+    },
+    "Color": {
+      "name": "GuildCoin.Color.name",
+      "help": "GuildCoin.Color.help"
+    },
+    "Record": {
+      "name": "GuildCoin.Record.name",
+      "help": "GuildCoin.Record.help"
+    }
+  },
   "Scheduler": {
     "_info": {
       "name": "Scheduler",
@@ -710,6 +938,7 @@
       "event_20230914_cn": "Effulgence Before Eclipse",
       "event_20231026_cn": "Tempesta and the Fountain of Youth",
       "event_20231123_cn": "The Ninja Scrolls: Azur Flash",
+      "event_20231221_cn": "Light-Chasing Sea of Stars",
       "raid_20200624": "Air Raid Drills with Essex Rerun",
       "raid_20210708": "Cross Wave rerun",
       "raid_20220127": "Mystery Investigation",
@@ -1389,6 +1618,26 @@
     "FeedFilter": {
       "name": "Snack Filter",
       "help": "Generally does not need to be modified or re-arranged but can do so if desired"
+    }
+  },
+  "BuyFurniture": {
+    "_info": {
+      "name": "Event furniture Settings",
+      "help": "Buy time-limited furniture from dorm furniture shop during the event"
+    },
+    "Enable": {
+      "name": "Buy event furniture",
+      "help": ""
+    },
+    "BuyOption": {
+      "name": "Buy Option",
+      "help": "buy set: buy one piece for each piece of furniture; buy all: Buy all furniture. Both buy options will remove the set of furniture from the forefront of the store. If buy set, remaining furniture will need to be manually buy. Difference in furniture price between the two options is not significant, Recommended to use buy all. This operation will not buy diamond furniture",
+      "set": "set",
+      "all": "all"
+    },
+    "LastRun": {
+      "name": "Last Check Time",
+      "help": "The time of the last check is recorded here to prevent the task from running repeatedly. Check interval is 7 days. This value is automatically recorded and generally does not need to be modified."
     }
   },
   "Meowfficer": {
@@ -2235,19 +2484,6 @@
     "BuySupply": {
       "name": "Buy From Port Shops",
       "help": "Buy all items from port shops\nShop inventory consists of a fixed pool that is reset monthly, items not bought during a cycle has the chance of re-appearing and blocking preferable high value items"
-    },
-    "PresetFilter": {
-      "name": "OpSi Shop Filter",
-      "help": "Generally does not need to be modified. Use \"High value items and META material\"` if Voucher Coins spilled or \"Without META materials\" if you are newcomer.\nHigh value items include ActionPoint, Logger and T4 or higher items; META materials include METABook and META enhance materials.",
-      "max_benefit": "High value items",
-      "max_benefit_meta": "High value items and META materials",
-      "no_meta": "Not to buy META materials",
-      "all": "All",
-      "custom": "custom"
-    },
-    "CustomFilter": {
-      "name": "Custom Research Priority",
-      "help": "To use your own filter, set \"OpSi Shop Filter Select\" to \"custom\". All options have been defined at  <https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/filter_string_en>"
     }
   },
   "OpsiVoucher": {
@@ -2272,10 +2508,6 @@
     "UseTuningSample": {
       "name": "Use Tuning Samples",
       "help": "Use all tuning samples and quality tuning samples"
-    },
-    "CollectTargetReward": {
-      "name": "Collect Achievement Rewards",
-      "help": ""
     }
   },
   "OpsiObscure": {
@@ -2345,24 +2577,10 @@
       "5": "5",
       "6": "6",
       "10": "Center Zones"
-    }
-  },
-  "OpsiTarget": {
-    "_info": {
-      "name": "Opsi Achievement",
-      "help": ""
-    },
-    "TargetFarming": {
-      "name": "Farm for Safe Zone Achievement",
-      "help": ""
     },
     "TargetZone": {
       "name": "Target Zone ID",
       "help": "Supports either Zone ID or Name in CN/EN/JP/TW, i.e. \"51\", \"NA Ocean SE Sector E\"\nIf specified, Alas will loop on this same zone after each clear\nUse default value 0 or clear the field to remove the specification\nZone information can be acquired from <./module/os/map_data.py>"
-    },
-    "LastRun": {
-      "name": "Last Collect Time",
-      "help": "This value is automatically recorded and generally does not need to be modified."
     }
   },
   "OpsiHazard1Leveling": {
@@ -2470,6 +2688,8 @@
       "Stop": "Stop",
       "ScrollON": "Auto Scroll ON",
       "ScrollOFF": "Auto Scroll OFF",
+      "DashboardON": "Fold",
+      "DashboardOFF": "Unfold",
       "ClearLog": "Clear Log",
       "Setting": "Setting",
       "CheckUpdate": "Check update",
@@ -2502,6 +2722,26 @@
     },
     "Overview": {
       "Scheduler": "Scheduler",
+      "Dashboard": "Gui.Overview.Dashboard",
+      "SecondsAgo": "Seconds ago",
+      "MinutesAgo": "Minutes ago",
+      "HoursAgo": "Hours ago",
+      "DaysAgo": "Days ago",
+      "MonthsAgo": "Months ago",
+      "YearsAgo": "Years ago",
+      "NoData": "No data",
+      "Oil": "Oil",
+      "Coin": "Coin",
+      "Gem": "Gem",
+      "Cube": "Cube",
+      "Pt": "Event Pt",
+      "YellowCoin": "Operation Supply Coin",
+      "PurpleCoin": "Special Item Token",
+      "ActionPoint": "Action Point",
+      "Merit": "Merit",
+      "Medal": "Medal",
+      "Core": "Core Data",
+      "GuildCoin": "Guild Coin",
       "Log": "Log",
       "Running": "Running",
       "Pending": "Pending",

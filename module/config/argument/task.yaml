@@ -203,6 +203,7 @@ Reward:
     Dorm:
       - Scheduler
       - Dorm
+      - BuyFurniture
     Meowfficer:
       - Scheduler
       - Meowfficer
@@ -305,7 +306,6 @@ Opsi:
     OpsiMeowfficerFarming:
       - Scheduler
       - OpsiMeowfficerFarming
-      - OpsiTarget
       - OpsiFleet
     OpsiHazard1Leveling:
       - Scheduler

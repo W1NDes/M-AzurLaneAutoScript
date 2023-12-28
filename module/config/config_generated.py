@@ -9,6 +9,69 @@ class GeneratedConfig:
     Auto generated configuration
     """
 
+    # Group `Oil`
+    Oil_Value = 0
+    Oil_Limit = 0
+    Oil_Color = '^000000'
+    Oil_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Coin`
+    Coin_Value = 0
+    Coin_Limit = 0
+    Coin_Color = '^FFAA33'
+    Coin_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Gem`
+    Gem_Value = 0
+    Gem_Color = '^FF3333'
+    Gem_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Pt`
+    Pt_Value = 0
+    Pt_Color = '^00BFFF'
+    Pt_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `YellowCoin`
+    YellowCoin_Value = 0
+    YellowCoin_Color = '^FF8800'
+    YellowCoin_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `PurpleCoin`
+    PurpleCoin_Value = 0
+    PurpleCoin_Color = '^7700BB'
+    PurpleCoin_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `ActionPoint`
+    ActionPoint_Value = 0
+    ActionPoint_Total = 0
+    ActionPoint_Color = '^0000FF'
+    ActionPoint_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Merit`
+    Merit_Value = 0
+    Merit_Color = '^FFFF00'
+    Merit_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Cube`
+    Cube_Value = 0
+    Cube_Color = '^33FFFF'
+    Cube_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Core`
+    Core_Value = 0
+    Core_Color = '^AAAAAA'
+    Core_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `Medal`
+    Medal_Value = 0
+    Medal_Color = '^FFDD00'
+    Medal_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
+    # Group `GuildCoin`
+    GuildCoin_Value = 0
+    GuildCoin_Color = '^AAAAAA'
+    GuildCoin_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `Scheduler`
     Scheduler_Enable = False  # True, False
     Scheduler_NextRun = datetime.datetime(2020, 1, 1, 0, 0)
@@ -213,6 +276,11 @@ class GeneratedConfig:
     Dorm_Feed = True
     Dorm_FeedFilter = '20000 > 10000 > 5000 > 3000 > 2000 > 1000'
 
+    # Group `BuyFurniture`
+    BuyFurniture_Enable = False
+    BuyFurniture_BuyOption = 'all'  # set, all
+    BuyFurniture_LastRun = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `Meowfficer`
     Meowfficer_BuyAmount = 1
     Meowfficer_FortChoreMeowfficer = True
@@ -384,8 +452,6 @@ class GeneratedConfig:
 
     # Group `OpsiShop`
     OpsiShop_BuySupply = True
-    OpsiShop_PresetFilter = 'max_benefit_meta'  # max_benefit, max_benefit_meta, no_meta, all, custom
-    OpsiShop_CustomFilter = 'Logger'
 
     # Group `OpsiVoucher`
     OpsiVoucher_Filter = 'LoggerAbyssal > LoggerObscure > Book > Coin > Fragment'
@@ -393,7 +459,6 @@ class GeneratedConfig:
     # Group `OpsiDaily`
     OpsiDaily_DoMission = True
     OpsiDaily_UseTuningSample = True
-    OpsiDaily_CollectTargetReward = False
 
     # Group `OpsiObscure`
     OpsiObscure_ForceRun = False
@@ -412,11 +477,7 @@ class GeneratedConfig:
     # Group `OpsiMeowfficerFarming`
     OpsiMeowfficerFarming_ActionPointPreserve = 1000
     OpsiMeowfficerFarming_HazardLevel = 5  # 3, 4, 5, 6, 10
-
-    # Group `OpsiTarget`
-    OpsiTarget_TargetFarming = False
-    OpsiTarget_TargetZone = 0
-    OpsiTarget_LastRun = datetime.datetime(2020, 1, 1, 0, 0)
+    OpsiMeowfficerFarming_TargetZone = 0
 
     # Group `OpsiHazard1Leveling`
     OpsiHazard1Leveling_TargetZone = 0  # 0, 44, 22

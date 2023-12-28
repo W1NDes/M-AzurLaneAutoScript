@@ -78,9 +78,6 @@ class AzurLaneAutoScript:
             self.save_error_log()
             logger.warning(f'Game stuck, {self.device.package} will be restarted in 10 seconds')
             logger.warning('If you are playing by hand, please stop Alas')
-            from module.handler.info_handler import InfoHandler
-            info_handler = InfoHandler(config=self.config,device=self.device)
-            info_handler.handle_urgent_commission()
             self.config.task_call('Restart')
             self.device.sleep(10)
             return False
