@@ -1,7 +1,6 @@
 from module.ocr.ocr import Digit
 from module.shop.assets import *
 from module.ui.ui import UI
-from module.log_res.log_res import LogRes
 
 OCR_SHOP_GOLD_COINS = Digit(SHOP_GOLD_COINS, letter=(239, 239, 239), name='OCR_SHOP_GOLD_COINS')
 OCR_SHOP_GEMS = Digit(SHOP_GEMS, letter=(255, 243, 82), name='OCR_SHOP_GEMS')
@@ -22,8 +21,6 @@ class ShopStatus(UI):
             in:
         """
         amount = OCR_SHOP_GOLD_COINS.ocr(self.device.image)
-        LogRes(self.config).Coin = amount
-        self.config.update()
         return amount
 
     def status_get_gems(self):
@@ -35,8 +32,6 @@ class ShopStatus(UI):
             in: page_shop, medal shop
         """
         amount = OCR_SHOP_GEMS.ocr(self.device.image)
-        LogRes(self.config).Gem = amount
-        self.config.update()
         return amount
 
     def status_get_medal(self):
@@ -48,8 +43,6 @@ class ShopStatus(UI):
             in: page_shop, medal shop
         """
         amount = OCR_SHOP_MEDAL.ocr(self.device.image)
-        LogRes(self.config).Medal = amount
-        self.config.update()
         return amount
 
     def status_get_merit(self):
@@ -61,8 +54,6 @@ class ShopStatus(UI):
             in: page_shop, merit shop
         """
         amount = OCR_SHOP_MERIT.ocr(self.device.image)
-        LogRes(self.config).Merit = amount
-        self.config.update()
         return amount
 
     def status_get_guild_coins(self):
@@ -74,8 +65,6 @@ class ShopStatus(UI):
             in: page_shop, guild shop
         """
         amount = OCR_SHOP_GUILD_COINS.ocr(self.device.image)
-        LogRes(self.config).GuildCoin = amount
-        self.config.update()
         return amount
 
     def status_get_core(self):
@@ -87,8 +76,6 @@ class ShopStatus(UI):
             in: page_shop, core shop
         """
         amount = OCR_SHOP_CORE.ocr(self.device.image)
-        LogRes(self.config).Core = amount
-        self.config.update()
         return amount
 
     def status_get_voucher(self):
