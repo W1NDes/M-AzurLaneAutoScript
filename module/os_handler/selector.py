@@ -120,4 +120,4 @@ class Selector():
         else:
             parser = OS_SHOP[preset]
         FILTER.load(parser)
-        return FILTER.apply(items, func=[self.enough_coins, self.check_cl1_purple_coins])
+        return FILTER.applys(items, funcs=[self.enough_coins, self.check_cl1_purple_coins])
