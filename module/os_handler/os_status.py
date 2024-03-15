@@ -13,7 +13,6 @@ from module.log_res.log_res import LogRes
 
 OCR_SHOP_YELLOW_COINS = Digit(SHOP_YELLOW_COINS, letter=(239, 239, 239), threshold=160, name='OCR_SHOP_YELLOW_COINS')
 OCR_SHOP_PURPLE_COINS = Digit(SHOP_PURPLE_COINS, letter=(255, 255, 255), name='OCR_SHOP_PURPLE_COINS')
-OCR_OS_SHOP_PURPLE_COINS = Digit(OS_SHOP_PURPLE_COINS, letter=(255, 255, 255), name='OCR_OS_SHOP_PURPLE_COINS')
 
 
 class OSStatus(UI):
@@ -56,7 +55,7 @@ class OSStatus(UI):
 
     def get_yellow_coins(self, skip_first_screenshot=True) -> int:
         timeout = Timer(2, count=3).start()
-        while True:
+        while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
@@ -78,7 +77,6 @@ class OSStatus(UI):
         return yellow_coins
 
     def get_purple_coins(self) -> int:
-        if self.appear(OS_SHOP_CHECK):
-            return OCR_OS_SHOP_PURPLE_COINS.ocr(self.device.image)
-        else:
-            return OCR_SHOP_PURPLE_COINS.ocr(self.device.image)
+        amount = OCR_SHOP_PURPLE_COINS.ocr(self.device.image)
+        LogRes(self.config).PurpleCoin = amount
+        return amount

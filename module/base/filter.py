@@ -1,4 +1,3 @@
-from functools import reduce
 import re
 
 from module.logger import logger
@@ -46,7 +45,7 @@ class Filter:
         """
         Args:
             objs (list): List of objects and strings
-            func (callable): A function that to filter object.
+            func (callable): A function to filter object.
                 Function should receive an object as arguments, and return a bool.
                 True means add it to output.
 
@@ -76,19 +75,6 @@ class Filter:
                     pass
 
         return out
-
-    def applys(self, objs, funcs):
-        """
-        Args:
-            objs (list): List of objects and strings
-            List[func(callable)] : A list of funciton that to filter object.
-                Function should receive an object as arguments, and return a bool.
-                True means add it to output.
-
-        Returns:
-            list: A list of objects and preset strings, such as [object, object, object, 'reset']
-        """
-        return self.apply(objs, func=lambda x: all(func(x)for func in funcs))
 
     def apply_filter_to_obj(self, obj, filter):
         """
