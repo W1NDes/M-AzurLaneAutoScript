@@ -124,7 +124,11 @@ class FleetOperator:
             stage = self.main.config.Campaign_Name
             logger.critical(f'Stage "{stage}" is a hard mode, '
                             f'please prepare your fleet "{str(self)}" in game before running Alas')
-            raise RequestHumanTakeover
+            if str(self) == "FLEET_1":                 
+                self.main.device.click_adb(1050,215)      
+            if str(self) == "FLEET_2":                   
+                self.main.device.click_adb(1050,330)      
+            # raise RequestHumanTakeover                  
 
     def clear(self, skip_first_screenshot=True):
         """
@@ -302,7 +306,8 @@ class FleetPreparation(InfoHandler):
                 fleet_2.raise_hard_not_satisfied()
             if self.config.Submarine_Fleet:
                 submarine.raise_hard_not_satisfied()
-
+        if fleet_1.is_hard():
+            h1 = True        
         # Skip fleet preparation in hard mode
         self.map_is_hard_mode = h1 or h2 or h3
         if self.map_is_hard_mode:

@@ -5832,10 +5832,20 @@
         "display": "hide"
       }
     },
+    "EventDaily": {
+      "StageFilter": {
+        "type": "textarea",
+        "value": "SP"
+      },
+      "LastStage": {
+        "type": "input",
+        "value": 0
+      }
+    },
     "Campaign": {
       "Name": {
         "type": "input",
-        "value": "sp",
+        "value": "dynamic",
         "display": "hide"
       },
       "Event": {

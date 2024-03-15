@@ -163,6 +163,7 @@ EventDaily:
       - EnemyPriority
     EventSp:
       - Scheduler
+      - EventDaily
       - Campaign
       - StopCondition
       - Fleet
