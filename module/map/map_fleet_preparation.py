@@ -306,8 +306,10 @@ class FleetPreparation(InfoHandler):
                 fleet_2.raise_hard_not_satisfied()
             if self.config.Submarine_Fleet:
                 submarine.raise_hard_not_satisfied()
+
         if fleet_1.is_hard():
             h1 = True        
+            
         # Skip fleet preparation in hard mode
         self.map_is_hard_mode = h1 or h2 or h3
         if self.map_is_hard_mode:
