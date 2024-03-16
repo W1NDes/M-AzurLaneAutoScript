@@ -32,8 +32,13 @@ class AzurLaneAutoScript:
         try:
             config = AzurLaneConfig(config_name=self.config_name)
             return config
-        except RequestHumanTakeover:
-            logger.critical('Request human takeover')
+        except RequestHumanTakeover: 
+            logger.critical('Request human takeover')  #解决部分不推送报错
+            handle_notify(
+                self.config.Error_OnePushConfig,
+                title=f"Alas <{self.config_name}> crashed",
+                content=f"<{self.config_name}> RequestHumanTakeover",
+            )
             exit(1)
         except Exception as e:
             logger.exception(e)
@@ -45,8 +50,13 @@ class AzurLaneAutoScript:
             from module.device.device import Device
             device = Device(config=self.config)
             return device
-        except RequestHumanTakeover:
+        except RequestHumanTakeover:   
             logger.critical('Request human takeover')
+            handle_notify(                              #解决部分不推送报错（如模拟器未开启
+                self.config.Error_OnePushConfig,
+                title=f"Alas <{self.config_name}> crashed",
+                content=f"<{self.config_name}> RequestHumanTakeover",
+            )
             exit(1)
         except Exception as e:
             logger.exception(e)
