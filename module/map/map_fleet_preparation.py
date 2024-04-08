@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import signal
-
+from cnocr import CnOcr, consts
 from module.base.button import Button
 from module.base.timer import Timer
 from module.base.utils import *
@@ -254,9 +254,13 @@ class FleetOperator:
             bool: If dropdown menu appears.
         """
         # Check the brightness of the rightest column of the bar area.
-        luma = rgb2gray(self.main.image_crop(self._bar.button))[:, -1]
-        # FLEET_PREPARATION is about 146~155
-        return np.sum(luma > 168) / luma.size > 0.5
+        array = self.main.image_crop(self._bar.button)
+        if not hasattr(self.main.device, 'cnOcr') or self.main.device.cnOcr is None:
+            self.main.device.cnOcr = CnOcr(model_name='densenet-lite-s-gru', cand_alphabet=consts.NUMBERS,root='./bin/cnocr_models')  # 所有参数都使用默认值
+        out = self.main.device.cnOcr.ocr(array)
+        data = [word for item in out for word in item if word in ['1', '2']]
+
+        return len(data) > 0
 
     def ensure_to_be(self, index):
         """
