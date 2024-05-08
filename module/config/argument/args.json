@@ -610,6 +610,20 @@
         "display": "hide"
       }
     },
+      "AutoRestart": {
+      "Enabled": {
+        "type": "checkbox",
+        "value": true
+      },
+      "AttemptsToRestart": {
+        "type": "input",
+        "value": 5
+      },
+      "NotifyWhenAutoRestart": {
+        "type": "checkbox",
+        "value": false
+      }
+    },
     "Storage": {
       "Storage": {
         "type": "storage",

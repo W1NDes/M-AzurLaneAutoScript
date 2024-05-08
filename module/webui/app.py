@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from functools import partial
 from typing import Dict, List, Optional
-
+from module.notify import handle_notify
 from pywebio import config as webconfig
 from pywebio.input import file_upload, input_group, input, select
 from pywebio.output import (
@@ -1565,7 +1565,48 @@ def clearup():
     task_handler.stop()
     logger.info("Alas closed.")
 
+g_instance_watcher: threading.Thread = None
+g_instance_restart_too_many_times: List[str] = list()
 
+def instance_watcher_thread():
+    global g_instance_restart_too_many_times
+    while 1:
+        time.sleep(10)
+        try:
+            for instance in alas_instance():
+                ins = ProcessManager.get_manager(instance)
+                config = AzurLaneConfig(ins.config_name)
+
+                enabled = deep_get(config.data, "Restart.InstanceRestart.Enabled", False)
+
+                if enabled and ins.state == 3 and not ins.alive:
+                    attempts = deep_get(config.data, "Restart.InstanceRestart.AttemptsToRestart", 3)
+                    has_restarted = deep_get(config.data, "Restart.InstanceRestart.HasRestarted", 0)
+                    enable_notify = deep_get(config.data, "Restart.InstanceRestart.NotifyWhenAutoRestart", False)
+                    push_config = deep_get(config.data, "Alas.Error.OnePushConfig")
+
+                    if has_restarted <= attempts and ins.config_name not in g_instance_restart_too_many_times:
+                        ins.start("alas")
+                        config.modified["Restart.InstanceRestart.HasRestarted"] = has_restarted + 1
+                        config.save()
+
+                        if enable_notify:
+                            handle_notify(
+                                push_config,
+                                title=f"Alas <{ins.config_name}> instance auto restarted",
+                                content=f"Critical error occurred, instance restarted",
+                            )
+                    else:
+                        config.modified["Restart.InstanceRestart.HasRestarted"] = 0
+                        config.save()
+                        g_instance_restart_too_many_times.append(ins.config_name)
+                        handle_notify(
+                            push_config,
+                            title=f"Alas <{ins.config_name}> instance restarted too many times",
+                            content=f"Too many critical error occurred, instance restarted too many times",
+                        )
+        except:
+            ...
 def app():
     parser = argparse.ArgumentParser(description="Alas web service")
     parser.add_argument(
@@ -1604,6 +1645,12 @@ def app():
     logger.attr("Password", True if key else False)
     logger.attr("CDN", cdn)
     logger.attr("IS_ON_PHONE_CLOUD", IS_ON_PHONE_CLOUD)
+
+    global g_instance_watcher
+    if g_instance_watcher is None:
+        g_instance_watcher = threading.Thread(target=instance_watcher_thread)
+        g_instance_watcher.start()
+
 
     def index():
         if key is not None and not login(key):
