@@ -17,6 +17,8 @@
 
 8.报错多次重启尝试(from 0xcc)
 
+# 文档
+
 **| [English](README_en.md) | 简体中文 | [日本語](README_jp.md) |**
 
 # AzurLaneAutoScript
