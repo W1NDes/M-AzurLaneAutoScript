@@ -1,3 +1,22 @@
+# ALAS-调整版，更符合个人使用习惯的调整
+> 本人水平一般，本仓库用于同步自用，在gitee有镜像仓库以便更新，有app pulls bot定期sync fork
+
+1.相比于源库增加了仪表盘 from zuosizhu
+
+2.异地登录不顶号40min（涉及长线等待和紧急委托处理）（支持CN,EN,JP）
+
+3.深渊海域全军覆没自动撤退
+
+4.每日SP图添加过滤器
+
+5.困难图自动配队
+
+6.adb连接报错推送
+
+7.修复新号选舰队时的识别问题
+
+8.报错多次重启尝试(from 0xcc)
+
 **| [English](README_en.md) | 简体中文 | [日本語](README_jp.md) |**
 
 # AzurLaneAutoScript
