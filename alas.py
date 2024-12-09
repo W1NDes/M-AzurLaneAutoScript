@@ -123,8 +123,10 @@ class AzurLaneAutoScript:
                             title=f"Alas <{self.config_name}> auto restarted",
                             content=f"Command \"{command}\" failed because GamePageUnknownError, but alas auto restarted",
                         )
-                    self.config.task_call('Restart')
+                        
                     self.GameRestartBecauseErrorTimes += 1
+                    logger.critical(f'left Restart Time: {self.AutoRestart_AttemptsToRestart-self.GameRestartBecauseErrorTimes}')
+                    self.config.task_call('Restart')
                     self.device.sleep(10)
                     return False
                 else:
@@ -163,6 +165,7 @@ class AzurLaneAutoScript:
                     )
                 self.config.task_call('Restart')
                 self.GameRestartBecauseErrorTimes += 1
+                logger.critical(f'left Restart Time: {self.AutoRestart_AttemptsToRestart-self.GameRestartBecauseErrorTimes}')
                 self.device.sleep(10)
                 return False
             else:
@@ -625,6 +628,7 @@ class AzurLaneAutoScript:
                                 )
                             self.config.task_call('Restart')
                             self.GameRestartBecauseErrorTimes += 1
+                            logger.critical(f'left Restart Time: {self.AutoRestart_AttemptsToRestart-self.GameRestartBecauseErrorTimes}')
                             self.device.sleep(10)
                 else:
                     self.GameRestartBecauseErrorTimes = 0
