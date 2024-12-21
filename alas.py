@@ -178,6 +178,31 @@ class AzurLaneAutoScript:
                 )
                 exit(1)
 
+        except MapWalkError as e:
+            if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes <= self.AutoRestart_AttemptsToRestart:
+                if self.AutoRestart_NotifyWhenAutoRestart:
+                    handle_notify(
+                        self.config.Error_OnePushConfig,
+                        title=f"Alas <{self.config_name}> crashed",
+                        content=f"<{self.config_name}> Exception occured",
+                    )
+                self.config.task_call('Restart')
+                self.GameRestartBecauseErrorTimes += 1
+                logger.critical(f'left Restart Time: {self.AutoRestart_AttemptsToRestart-self.GameRestartBecauseErrorTimes}')
+                self.device.sleep(10)
+                return False
+            else:
+                self.GameRestartBecauseErrorTimes = 0
+                logger.critical('MapWalkError')
+                logger.exception(e)
+                self.save_error_log()
+                handle_notify(
+                    self.config.Error_OnePushConfig,
+                    title=f"Alas <{self.config_name}> crashed",
+                    content=f"<{self.config_name}> Exception occured",
+                )
+                exit(1)
+
         except MapDetectionError as e:
             logger.error(e)
             self.save_error_log()
@@ -185,6 +210,7 @@ class AzurLaneAutoScript:
             self.config.task_call('Restart')
             self.device.sleep(10)
             return False
+        
         except Exception as e:
             logger.exception(e)
             self.save_error_log()
@@ -658,5 +684,6 @@ class AzurLaneAutoScript:
 
 
 if __name__ == '__main__':
+
     alas = AzurLaneAutoScript()
     alas.loop()
