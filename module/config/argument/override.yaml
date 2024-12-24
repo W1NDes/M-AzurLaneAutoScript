@@ -61,6 +61,12 @@ Event2:
     Event:
       type: state
     AmbushEvade: true
+Event3:
+  Campaign:
+    Mode: normal
+    Event:
+      type: state
+    AmbushEvade: true
 EventA:
   Scheduler:
     SuccessInterval: 30

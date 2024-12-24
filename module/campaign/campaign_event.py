@@ -103,6 +103,7 @@ class CampaignEvent(CampaignStatus):
         tasks = [
             'Event',
             'Event2',
+            'Event3',
             'Raid',
             'GemsFarming',
         ]

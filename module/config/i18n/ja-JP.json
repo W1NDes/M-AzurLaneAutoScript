@@ -74,6 +74,10 @@
       "name": "イベント海域-2",
       "help": ""
     },
+    "Event3": {
+      "name": "イベント海域-3",
+      "help": ""
+    },
     "Raid": {
       "name": "Raid",
       "help": ""

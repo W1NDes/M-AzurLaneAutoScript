@@ -20,7 +20,7 @@ class Fleet(Camera, AmbushHandler):
     siren_count = 0
     fleet_ammo = 5
     ammo_count = 3
-
+    walk_error_count = 0
     @property
     def fleet_1(self):
         if self.fleet_current_index != 1:
@@ -376,7 +376,15 @@ class Fleet(Camera, AmbushHandler):
                     continue
 
                 if self.handle_walk_out_of_step():
-                    raise MapWalkError('walk_out_of_step')
+                    logger.warning('handle_walk_out_of_step')
+                    self.walk_error_count += 1
+                    if self.walk_error_count >=5:
+                        self.walk_error_count = 0
+                        raise MapWalkError('walk_out_of_step')
+                    else:
+                        logger.warning(f'handle_walk_out_of_step: retry{self.walk_error_count}')
+                        continue
+                    # raise MapWalkError('walk_out_of_step')
 
                 # Arrive
                 arrive_predict = ''
