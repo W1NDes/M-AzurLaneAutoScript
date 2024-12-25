@@ -226,6 +226,9 @@ Reward:
     Reward:
       - Scheduler
       - Reward
+    Oilkeep:
+      - Scheduler
+      - Oilkeep
 
 # ==================== DailyMission ====================
 

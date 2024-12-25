@@ -297,7 +297,11 @@ class AzurLaneAutoScript:
     def reward(self):
         from module.reward.reward import Reward
         Reward(config=self.config, device=self.device).run()
-
+        
+    def oilkeep(self):
+        from module.oilkeep.oilkeep import Oilkeep
+        Oilkeep(config=self.config, device=self.device).run()
+        
     def shop_frequent(self):
         from module.shop.shop_reward import RewardShop
         RewardShop(config=self.config, device=self.device).run_frequent()
