@@ -56,7 +56,7 @@ class Oilkeep(UI):
             if self.appear_then_click(MAIL_OIL, offset=(30, 30), interval=3):
                 logger.info('MAIL_OIL entered')
                 continue
-            if mail_oil_add_count <= oil_add_need-1 and self.appear_then_click(MAIL_OIL_ADD, offset=(30, 30), interval=3):
+            if mail_oil_add_count <= oil_add_need-1 and self.appear_then_click_nocheck(MAIL_OIL_ADD, offset=(30, 30), interval=3):
                 mail_oil_add_count += 1
                 logger.info('MAIL_OIL_ADD')
                 continue
