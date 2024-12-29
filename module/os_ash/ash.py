@@ -51,11 +51,13 @@ class AshCombat(Combat):
         return False
 
     def handle_battle_preparation(self):
+        
         if super().handle_battle_preparation():
             return True
 
         if self.appear_then_click(ASH_START, offset=(30, 30), interval=2):
             return True
+
         if self.handle_get_items():
             return True
         if self.appear(BEACON_REWARD):
@@ -69,7 +71,58 @@ class AshCombat(Combat):
             raise AshBeaconFinished
 
         return False
+    def combat_preparation(self, balance_hp=False, emotion_reduce=False, auto='combat_auto', fleet_index=1):
+        META_NEED_PRE = False
+        COMBAT_ALL_PRE = False
+        ADD_BOAT_COUNT = 0
+        ADD_BOAT_IN_META = Button(area=(137, 139, 187, 213), color=(), button=(137, 139, 187, 213))
+        self.device.stuck_record_clear()
+        self.device.click_record_clear()
+        skip_first_screenshot = True
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+            if META_NEED_PRE is True:
+                if self.appear_then_click(META_PRE_1, offset=(30, 30), interval=2):
+                    continue
+                if self.appear_then_click(META_PRE_2, offset=(30, 30), interval=2):
+                    continue
+                if self.appear_then_click(META_PRE_3, offset=(30, 30), interval=2):
+                    continue
+                if self.appear_then_click(META_PRE_4, offset=(30, 30), interval=2):
+                    continue
+                if self.appear_then_click(META_PRE_5, offset=(30, 30), interval=2):
+                    continue
+                if self.appear_then_click(META_PRE_6, offset=(30, 30), interval=2):
+                    logger.info("Ash beacon all pred.")
+                    COMBAT_ALL_PRE = True
+                    self.device.sleep(2)
+                    continue
+                if self.appear_then_click_nocheck(ADD_BOAT_ENSURE, offset=(30, 30), interval=2):
+                    continue
+                if self.appear(ADD_BOAT_STATUS, interval=2):
+                    self.device.click(ADD_BOAT_IN_META)
+                    ADD_BOAT_COUNT += 1
+                    continue
 
+                if  COMBAT_ALL_PRE is True and ADD_BOAT_COUNT >=6:
+                    if self.appear_then_click(META_PRE_SAVE, offset=(30, 30), interval=2):
+                        META_NEED_PRE = False
+                        break
+            else:
+                if self.appear(META_PRE_SAVE, offset=(30, 30), interval=0, similarity=0.85,threshold=30):
+                    META_NEED_PRE = True
+                    logger.info("Ash beacon no pre.")
+                    continue
+                if self.appear_then_click(ASH_START, offset=(30, 30), interval=2):
+                    continue
+                if self.appear(META_TEAM_READY):
+                    logger.info("Ash beacon ready.")
+                    break
+        super().combat_preparation(balance_hp=balance_hp, emotion_reduce=emotion_reduce, auto=auto, fleet_index=fleet_index)
+            
     def combat(self, *args, expected_end=None, **kwargs):
         try:
             super().combat(*args, expected_end=expected_end, **kwargs)
