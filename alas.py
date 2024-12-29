@@ -633,6 +633,15 @@ class AzurLaneAutoScript:
                         content=f"<{self.config_name}> RequestHumanTakeover",
                         )
                         exit(1)
+                    except Exception as e:
+                        logger.exception(e)
+                        self.save_error_log()
+                        handle_notify(
+                            self.config.Error_OnePushConfig,
+                            title=f"Alas <{self.config_name}> crashed",
+                            content=f"<{self.config_name}> Exception occured",
+                        )
+                        exit(1)
                 self.config.task_delay(server_update=True)
                 del_cached_property(self, 'config')
                 continue
