@@ -63,7 +63,7 @@ class Oilkeep(UI):
             if mail_oil_add_count >= oil_add_need:
                 if self.appear_then_click(MAIL_OIL_GET, offset=(30, 30), interval=3):
                     logger.info('MAIL_OIL_GET')
-                if self.appear_then_click(NO_OIL_GET, offset=(30, 30), interval=3):   
+                if self.appear_then_click(NO_OIL_GET, offset=(2, 2), interval=3):   
                     logger.warning('there is no oil in mailroom')
                     break
                 if self.appear_then_click(MAIL_OIL_GET_ENSURE, offset=(30, 30), interval=3):   
