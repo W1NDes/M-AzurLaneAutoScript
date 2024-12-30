@@ -118,6 +118,8 @@ class AshCombat(Combat):
                     continue
                 if self.appear_then_click(ASH_START, offset=(30, 30), interval=2):
                     continue
+                if super().handle_combat_automation_confirm():
+                    continue
                 if self.appear(META_TEAM_READY):
                     logger.info("Ash beacon ready.")
                     break
