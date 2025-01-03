@@ -48,9 +48,9 @@ class ConnectionAttr:
         for _, v in deep_iter(d, depth=3):
             if not isinstance(v, dict):
                 continue
-            if 'oc' in v['type'] and v['value']:
+            if 'oc' in v['type'] and v['value']:#lock
                 count += 1
-        if count >= 3:
+        if count >= 0:
             for k, _ in deep_iter(d, depth=1):
                 if 'proxy' in k[0].split('_')[-1].lower():
                     del os.environ[k[0]]
