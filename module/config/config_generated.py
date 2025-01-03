@@ -387,12 +387,12 @@ class GeneratedConfig:
     # Group `SupplyPack`
     SupplyPack_Collect = True
     SupplyPack_DayOfWeek = 0  # 0, 1, 2, 3, 4, 5, 6
-    
-    # Group `Oilkeep`
-    Oilkeep_OilkeepLevel = 8000
-    
+
     # Group `Minigame`
     Minigame_Collect = False
+
+    # Group `Oilkeep`
+    Oilkeep_OilkeepLevel = 8000
 
     # Group `Daily`
     Daily_UseDailySkip = True
@@ -505,10 +505,10 @@ class GeneratedConfig:
 
     # Group `GameManager`
     GameManager_AutoRestart = True
-    
+
     # Group `AutoRestart`
     AutoRestart_Enabled = True
-    AutoRestart_AttemptsToRestart = 5
+    AutoRestart_AttemptsToRestart = 3
     AutoRestart_NotifyWhenAutoRestart = False
 
     # Group `InstanceRestart`

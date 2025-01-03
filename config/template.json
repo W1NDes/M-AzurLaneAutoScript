@@ -1494,9 +1494,9 @@
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Oilkeep",
-      "SuccessInterval": 0,
-      "FailureInterval": 120,
-      "ServerUpdate": "00:00"
+      "SuccessInterval": 30,
+      "FailureInterval": 30,
+      "ServerUpdate": "00:00, 06:00, 12:00, 18:00"
     },
     "Oilkeep": {
       "OilkeepLevel": 8000

@@ -23,9 +23,6 @@
 
 11.检测到低心情后修正心情值并停止（误差过大会告警）
 
-12.可以开关委托、科研、收获
-
-
 # 文档
 
 **| [English](README_en.md) | 简体中文 | [日本語](README_jp.md) |**
@@ -33,6 +30,7 @@
 # AzurLaneAutoScript
 
 #### Discord [![](https://img.shields.io/discord/720789890354249748?logo=discord&logoColor=ffffff&color=4e4c97)](https://discord.gg/AQN6GeJ) QQ群  ![](https://img.shields.io/badge/QQ%20Group-1087735381-4e4c97)
+
 Azur Lane bot with GUI (Supports CN, EN, JP, TW, able to support other servers), designed for 24/7 running scenes, can take over almost all Azur Lane gameplay. Azur Lane, as a mobile game, has entered the late stage of its life cycle. During the period from now to the server down, please reduce the time spent on the Azur Lane and leave everything to Alas.
 
 Alas is a free open source software, link: https://github.com/LmeSzinc/AzurLaneAutoScript
@@ -54,8 +52,6 @@ GUI development, thanks **[@18870](https://github.com/18870)** , say HURRAY.
 这里是一张GUI预览图：
 ![gui](https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/master/doc/README.assets/gui.png)
 
-
-
 ## 功能 Features
 
 - **出击**：主线图，活动图，共斗活动，紧急委托刷钻石。
@@ -71,31 +67,23 @@ GUI development, thanks **[@18870](https://github.com/18870)** , say HURRAY.
 - **大世界**：一条龙完成，接大世界每日，买空港口商店，做大世界每日，短猫相接，购买明石商店，每27分钟清理隐秘海域，清理深渊海域和塞壬要塞，~~计划作战模式是什么垃圾，感觉不如Alas......好用~~。
 - **大世界月初开荒**：大世界每月重置后，不需要购买作战记录仪（5000油道具）即可开荒。
 
-
-
 ## 安装 Installation [![](https://img.shields.io/github/downloads/LmeSzinc/AzurLaneAutoScript/total?color=4e4c97)](https://github.com/LmeSzinc/AzurLaneAutoScript/releases)
 
 [中文安装教程](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Installation_cn)，包含自动安装教程，使用教程，手动安装教程，远程控制教程。
 
 [设备支持文档](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Emulator_cn)，包含模拟器运行、云手机运行以及解锁各种骚方式运行。
 
-
-
 ## 正确地使用调度器
 
 - **理解 *任务* 和 *调度器* 的概念**
 
   在 Alas 中每个任务都是独立运行的，被一个统一的调度器调度，任务执行完成后会自动设置这个任务的下一次运行时间。例如，*科研* 任务执行了一个 4 小时的科研，调度器就会把 *科研* 任务推迟 4 小时，以达到无缝收菜的目的。
-
 - **理解 *自动心情控制* 机制**
 
   Alas 的心情控制以预防为主，不会等到出现红脸弹窗才去解决，这样可以保持心情值在 120 以上，贪到 20% 的经验。例如，当前心情值是 113，放置于后宅二楼（+50/h），未婚（+0/h），Alas 会等到 12 分钟之后，心情值回复到 120 以上再继续出击。而在这个等待的期间，Alas 也会穿插执行其他任务。
-
 - **正确地使用调度器**
 
   调度器的 **错误使用方法是只开一两个** 任务，手动管理任务或开关 Alas，调度器的 **正确使用方法是启用全部** 你觉得可能有用的任务，让调度器自动调度，把模拟器和 Alas 都最小化到托盘，忘记碧蓝航线这个游戏。
-
-
 
 ## 修改游戏设置
 
@@ -113,15 +101,16 @@ GUI development, thanks **[@18870](https://github.com/18870)** , say HURRAY.
 | 大型作战设置 - 安全海域默认开启自律 | 关   |
 | 剧情自动播放                        | 开启 |
 | 剧情自动播放速度调整                | 特快 |
-| 待机模式设置 - 启用待机模式         | 关    |
+| 待机模式设置 - 启用待机模式         | 关   |
 | 其他设置 - 重复角色获得提示         | 关   |
 | 其他设置 - 快速更换二次确认界面     | 关   |
 | 其他设置 - 展示结算角色             | 关   |
 
 大世界 => 右上角：雷达 => 指令模块(order)：潜艇支援：
-| 设置名称                                                 | 值               |
-| -------------------------------------------------------- | ---------------- |
-| X 消耗时潜艇出击  |取消勾选|
+
+| 设置名称         | 值       |
+| ---------------- | -------- |
+| X 消耗时潜艇出击 | 取消勾选 |
 
 主界面 => 右下角：建造 => 左侧边栏： 退役 => 左侧齿轮图标：一键退役设置：
 
@@ -143,8 +132,6 @@ GUI development, thanks **[@18870](https://github.com/18870)** , say HURRAY.
 - 检查 Alas 的更新和最近的 commit，确认使用的是最新版。
 - 上传出错 log，在 `log/error` 目录下，以毫秒时间戳为文件夹名，包含 log.txt 和最近的截图。若不是错误而是非预期的行为，提供在 `log` 目录下当天的 log和至少一张游戏截图。
 
-
-
 ## 已知问题 Known Issues
 
 - **无法处理网络波动**，重连弹窗，跳小黄鸡。
@@ -153,13 +140,9 @@ GUI development, thanks **[@18870](https://github.com/18870)** , say HURRAY.
 - **极少数情况下 ADB 和 uiautomator2 会抽风**，是模拟器的问题，重启模拟器即可。
 - **拖动操作在模拟器卡顿时，会被视为点击**
 
-
-
 ## Alas 社区准则 Alas Community Guidelines
 
 见 [#1416](https://github.com/LmeSzinc/AzurLaneAutoScript/issues/1416)。
-
-
 
 ## 文档 Documents
 
@@ -178,15 +161,11 @@ GUI development, thanks **[@18870](https://github.com/18870)** , say HURRAY.
 
 更多文档，请前往 [WIKI](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki)。
 
-
-
 ## 参与开发 Join Development
 
 Alas 仍在活跃开发中，我们会不定期发布未来的工作在 [Issues](https://github.com/LmeSzinc/AzurLaneAutoScript/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) 上并标记为 `help wanted`，欢迎向 Alas 提交 [Pull Requests](https://github.com/LmeSzinc/AzurLaneAutoScript/pulls)，我们会认真阅读你的每一行代码的。
 
 哦对，别忘了阅读 [开发文档](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/1.-Start)。
-
-
 
 ## 相关项目 Relative Repositories
 
@@ -198,8 +177,6 @@ Alas 仍在活跃开发中，我们会不定期发布未来的工作在 [Issues]
 - [MaaAssistantArknights](https://github.com/MaaAssistantArknights/MaaAssistantArknights)，明日方舟小助手，全日常一键长草，现已加入Alas豪华午餐 -> [MAA 插件使用教程](https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/submodule_maa_cn)
 - [FGO-py](https://github.com/hgjazhgj/FGO-py)，全自动免配置跨平台开箱即用的Fate/Grand Order助手.启动脚本,上床睡觉,养肝护发,满加成圣诞了解一下?
 - [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot)，星铁速溶茶，崩坏：星穹铁道脚本，基于下一代Alas框架。
-
-
 
 ## 联系我们 Contact Us
 
