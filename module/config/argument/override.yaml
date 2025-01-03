@@ -145,7 +145,7 @@ EventSp:
     FailureInterval: 30
     ServerUpdate: 00:00
   Campaign:
-    Name: sp
+    Name: dynamic
     Event:
       type: state
     Mode: normal
@@ -273,11 +273,11 @@ CoalitionSp:
 
 Commission:
   Scheduler:
-    Enable:
-      type: lock
-      value: true
-      option: [ true, ]
-      option_bold: [ true, ]
+    # Enable:
+    #   type: lock
+    #   value: true
+    #   option: [ true, ]
+    #   option_bold: [ true, ]
     SuccessInterval: 30-60
     FailureInterval: 30-60
     ServerUpdate: 00:00
@@ -288,11 +288,11 @@ Tactical:
     ServerUpdate: 00:00
 Research:
   Scheduler:
-    Enable:
-      type: lock
-      value: true
-      option: [ true, ]
-      option_bold: [ true, ]
+    # Enable:
+    #   type: lock
+    #   value: true
+    #   option: [ true, ]
+    #   option_bold: [ true, ]
     SuccessInterval: 30-60
     FailureInterval: 30-60
     ServerUpdate: 00:00
@@ -313,11 +313,11 @@ Guild:
     ServerUpdate: 00:00, 06:00, 12:00, 18:00, 21:00
 Reward:
   Scheduler:
-    Enable:
-      type: lock
-      value: true
-      option: [ true, ]
-      option_bold: [ true, ]
+    # Enable:
+    #   type: lock
+    #   value: true
+    #   option: [ true, ]
+    #   option_bold: [ true, ]
     SuccessInterval: 120-240
     FailureInterval: 120-240
     ServerUpdate: 00:00

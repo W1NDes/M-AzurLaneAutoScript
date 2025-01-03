@@ -25,6 +25,11 @@ EventD:
     StageFilter: |-
       D1 > D2 > D3
 
+EventSp:
+  EventDaily:
+    StageFilter: |-
+      SP
+
 # ==================== Reward ====================
 
 Commission:
