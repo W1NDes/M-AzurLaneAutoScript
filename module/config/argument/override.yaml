@@ -145,7 +145,7 @@ EventSp:
     FailureInterval: 30
     ServerUpdate: 00:00
   Campaign:
-    Name: sp
+    Name: dynamic
     Event:
       type: state
     Mode: normal
@@ -321,6 +321,11 @@ Reward:
     SuccessInterval: 120-240
     FailureInterval: 120-240
     ServerUpdate: 00:00
+Oilkeep:
+  Scheduler:
+    SuccessInterval: 30
+    FailureInterval: 30
+    ServerUpdate: 00:00, 06:00, 12:00, 18:00
 ShopFrequent:
   Scheduler:
     SuccessInterval: 30

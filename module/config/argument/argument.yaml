@@ -807,7 +807,7 @@ AutoRestart:
     value: True
   AttemptsToRestart:
     type: input
-    value: 5
+    value: 3
   NotifyWhenAutoRestart:
     type: checkbox
     value: false

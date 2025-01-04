@@ -150,6 +150,10 @@
       "name": "Reward",
       "help": ""
     },
+    "Oilkeep": {
+      "name": "Oil balance",
+      "help": ""
+    },
     "Daily": {
       "name": "Daily",
       "help": ""
@@ -2225,6 +2229,16 @@
       "help": ""
     }
   },
+  "Oilkeep": {
+    "_info": {
+    "name": "Oil Balance",
+    "help": "Pick up oil from the storage room 4 times a day to stabilize the amount of oil"
+  },
+  "OilkeepLevel": {
+    "name": "Oil Balance Value",
+    "help": "The default value is 8000, that is, when the amount of oil is less than 7900, you will receive oil to 7900"
+    }
+  },
   "Daily": {
     "_info": {
       "name": "Daily Settings",
@@ -2742,6 +2756,46 @@
     "AutoRestart": {
       "name": "Automatic Login",
       "help": "Log back into the game when the game has been ended."
+    }
+  },
+  "AutoRestart": {
+    "_info": {
+      "name": "AutoRestart._info.name",
+      "help": "AutoRestart._info.help"
+    },
+    "Enabled": {
+      "name": "AutoRestart.Enabled.name",
+      "help": "AutoRestart.Enabled.help"
+    },
+    "AttemptsToRestart": {
+      "name": "AutoRestart.AttemptsToRestart.name",
+      "help": "AutoRestart.AttemptsToRestart.help"
+    },
+    "NotifyWhenAutoRestart": {
+      "name": "AutoRestart.NotifyWhenAutoRestart.name",
+      "help": "AutoRestart.NotifyWhenAutoRestart.help"
+    }
+  },
+  "InstanceRestart": {
+    "_info": {
+      "name": "InstanceRestart._info.name",
+      "help": "InstanceRestart._info.help"
+    },
+    "Enabled": {
+      "name": "InstanceRestart.Enabled.name",
+      "help": "InstanceRestart.Enabled.help"
+    },
+    "AttemptsToRestart": {
+      "name": "InstanceRestart.AttemptsToRestart.name",
+      "help": "InstanceRestart.AttemptsToRestart.help"
+    },
+    "NotifyWhenAutoRestart": {
+      "name": "InstanceRestart.NotifyWhenAutoRestart.name",
+      "help": "InstanceRestart.NotifyWhenAutoRestart.help"
+    },
+    "HasRestarted": {
+      "name": "InstanceRestart.HasRestarted.name",
+      "help": "InstanceRestart.HasRestarted.help"
     }
   },
   "Storage": {

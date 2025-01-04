@@ -141,6 +141,11 @@
       "FailureInterval": 0,
       "ServerUpdate": "00:00"
     },
+    "AutoRestart": {
+      "Enabled": true,
+      "AttemptsToRestart": 3,
+      "NotifyWhenAutoRestart": false
+    },
     "Storage": {
       "Storage": {}
     }
@@ -1159,8 +1164,12 @@
       "FailureInterval": 30,
       "ServerUpdate": "00:00"
     },
+    "EventDaily": {
+      "StageFilter": "SP",
+      "LastStage": 0
+    },
     "Campaign": {
-      "Name": "sp",
+      "Name": "dynamic",
       "Event": "campaign_main",
       "Mode": "normal",
       "UseClearMode": true,
@@ -1480,6 +1489,22 @@
       "Storage": {}
     }
   },
+  "Oilkeep": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Oilkeep",
+      "SuccessInterval": 30,
+      "FailureInterval": 30,
+      "ServerUpdate": "00:00, 06:00, 12:00, 18:00"
+    },
+    "Oilkeep": {
+      "OilkeepLevel": 8000
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
   "Daily": {
     "Scheduler": {
       "Enable": false,
@@ -1682,22 +1707,6 @@
     "SupplyPack": {
       "Collect": true,
       "DayOfWeek": 0
-    },
-    "Storage": {
-      "Storage": {}
-    }
-  },
-  "Oilkeep": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Oilkeep",
-      "SuccessInterval": 30,
-      "FailureInterval": 30,
-      "ServerUpdate": "00:00, 6:00, 12:00, 18:00"
-    },
-    "Oilkeep": {
-      "OilkeepLevel": "8000"
     },
     "Storage": {
       "Storage": {}

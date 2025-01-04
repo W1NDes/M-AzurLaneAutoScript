@@ -150,6 +150,10 @@
       "name": "収穫",
       "help": ""
     },
+    "Oilkeep": {
+      "name": "オイルバランス",
+      "help": ""
+    },
     "Daily": {
       "name": "デイリー",
       "help": ""
@@ -2225,6 +2229,16 @@
       "help": "Minigame.Collect.help"
     }
   },
+  "Oilkeep": {
+    "_info": {
+      "name": "Oilkeep._info.name",
+      "help": "Oilkeep._info.help"
+    },
+    "OilkeepLevel": {
+      "name": "Oilkeep.OilkeepLevel.name",
+      "help": "Oilkeep.OilkeepLevel.help"
+    }
+  },
   "Daily": {
     "_info": {
       "name": "Daily._info.name",
@@ -2742,6 +2756,46 @@
     "AutoRestart": {
       "name": "GameManager.AutoRestart.name",
       "help": "GameManager.AutoRestart.help"
+    }
+  },
+  "AutoRestart": {
+    "_info": {
+      "name": "AutoRestart._info.name",
+      "help": "AutoRestart._info.help"
+    },
+    "Enabled": {
+      "name": "AutoRestart.Enabled.name",
+      "help": "AutoRestart.Enabled.help"
+    },
+    "AttemptsToRestart": {
+      "name": "AutoRestart.AttemptsToRestart.name",
+      "help": "AutoRestart.AttemptsToRestart.help"
+    },
+    "NotifyWhenAutoRestart": {
+      "name": "AutoRestart.NotifyWhenAutoRestart.name",
+      "help": "AutoRestart.NotifyWhenAutoRestart.help"
+    }
+  },
+  "InstanceRestart": {
+    "_info": {
+      "name": "InstanceRestart._info.name",
+      "help": "InstanceRestart._info.help"
+    },
+    "Enabled": {
+      "name": "InstanceRestart.Enabled.name",
+      "help": "InstanceRestart.Enabled.help"
+    },
+    "AttemptsToRestart": {
+      "name": "InstanceRestart.AttemptsToRestart.name",
+      "help": "InstanceRestart.AttemptsToRestart.help"
+    },
+    "NotifyWhenAutoRestart": {
+      "name": "InstanceRestart.NotifyWhenAutoRestart.name",
+      "help": "InstanceRestart.NotifyWhenAutoRestart.help"
+    },
+    "HasRestarted": {
+      "name": "InstanceRestart.HasRestarted.name",
+      "help": "InstanceRestart.HasRestarted.help"
     }
   },
   "Storage": {

@@ -74,6 +74,10 @@
       "name": "活動圖-2",
       "help": ""
     },
+    "Event3": {
+      "name": "活動圖-3",
+      "help": ""
+    },
     "Raid": {
       "name": "共鬥活動",
       "help": ""
@@ -145,6 +149,10 @@
     "Reward": {
       "name": "收穫",
       "help": ""
+    },
+    "Oilkeep": {
+      "name": "石油平衡",
+      "help": "Task.Oilkeep.help"
     },
     "Daily": {
       "name": "每日任務",
@@ -2221,6 +2229,16 @@
       "help": ""
     }
   },
+  "Oilkeep": {
+    "_info": {
+      "name": "Oilkeep._info.name",
+      "help": "Oilkeep._info.help"
+    },
+    "OilkeepLevel": {
+      "name": "Oilkeep.OilkeepLevel.name",
+      "help": "Oilkeep.OilkeepLevel.help"
+    }
+  },
   "Daily": {
     "_info": {
       "name": "每日任務",
@@ -2738,6 +2756,46 @@
     "AutoRestart": {
       "name": "自動登錄",
       "help": "遊戲被強制結束後自動登錄遊戲"
+    }
+  },
+  "AutoRestart": {
+    "_info": {
+      "name": "AutoRestart._info.name",
+      "help": "AutoRestart._info.help"
+    },
+    "Enabled": {
+      "name": "AutoRestart.Enabled.name",
+      "help": "AutoRestart.Enabled.help"
+    },
+    "AttemptsToRestart": {
+      "name": "AutoRestart.AttemptsToRestart.name",
+      "help": "AutoRestart.AttemptsToRestart.help"
+    },
+    "NotifyWhenAutoRestart": {
+      "name": "AutoRestart.NotifyWhenAutoRestart.name",
+      "help": "AutoRestart.NotifyWhenAutoRestart.help"
+    }
+  },
+  "InstanceRestart": {
+    "_info": {
+      "name": "InstanceRestart._info.name",
+      "help": "InstanceRestart._info.help"
+    },
+    "Enabled": {
+      "name": "InstanceRestart.Enabled.name",
+      "help": "InstanceRestart.Enabled.help"
+    },
+    "AttemptsToRestart": {
+      "name": "InstanceRestart.AttemptsToRestart.name",
+      "help": "InstanceRestart.AttemptsToRestart.help"
+    },
+    "NotifyWhenAutoRestart": {
+      "name": "InstanceRestart.NotifyWhenAutoRestart.name",
+      "help": "InstanceRestart.NotifyWhenAutoRestart.help"
+    },
+    "HasRestarted": {
+      "name": "InstanceRestart.HasRestarted.name",
+      "help": "InstanceRestart.HasRestarted.help"
     }
   },
   "Storage": {
