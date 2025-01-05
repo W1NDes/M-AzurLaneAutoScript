@@ -93,17 +93,41 @@ class AzurLaneAutoScript:
             logger.warning(e)
             self.config.task_call('Restart')
             return True
+        
         except (GameStuckError, GameTooManyClickError) as e:
             logger.error(e)
             self.save_error_log()
-            logger.warning(f'Game stuck, {self.device.package} will be restarted in 10 seconds')
-            logger.warning('If you are playing by hand, please stop Alas')
             from module.handler.info_handler import InfoHandler
             info_handler = InfoHandler(config=self.config,device=self.device)
-            info_handler.handle_urgent_commission()
-            self.config.task_call('Restart')
-            self.device.sleep(10)
-            return False
+            if info_handler.handle_urgent_commission():
+                logger.warning("======OtherLogin_Sleep Over,now restart======")
+                self.config.task_call('Restart')
+                self.device.sleep(10)
+                return False
+            logger.warning(f'Game stuck, {self.device.package} will be restarted in 10 seconds')
+            logger.warning('If you are playing by hand, please stop Alas')
+
+            if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes < self.AutoRestart_AttemptsToRestart:
+                if self.AutoRestart_NotifyWhenAutoRestart:
+                    handle_notify(
+                        self.config.Error_OnePushConfig,
+                        title=f"Alas <{self.config_name}> auto restarted",
+                        content=f"Command \"{command}\" failed because GameStuckError/GameTooManyClickError, but alas auto restarted",
+                    )
+                self.config.task_call('Restart')
+                self.GameRestartBecauseErrorTimes += 1
+                logger.critical(f'left Restart Time: {self.AutoRestart_AttemptsToRestart-self.GameRestartBecauseErrorTimes}')
+                self.device.sleep(10)
+                return False
+            else:
+                self.GameRestartBecauseErrorTimes = 0
+                handle_notify(
+                    self.config.Error_OnePushConfig,
+                    title=f"Alas <{self.config_name}> crashed",
+                    content=f"<{self.config_name}> GameStuckError/GameTooManyClickError",
+                )
+                exit(1)
+        
         except GameBugError as e:
             logger.warning(e)
             self.save_error_log()
@@ -112,11 +136,14 @@ class AzurLaneAutoScript:
             self.config.task_call('Restart')
             self.device.sleep(10)
             return False
+        
         except GamePageUnknownError:
             logger.info('Game server may be under maintenance or network may be broken, check server status now')
             self.checker.check_now()
             if self.checker.is_available():
-                if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes <= self.AutoRestart_AttemptsToRestart:
+                logger.critical('Game page unknown')
+                self.save_error_log()
+                if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes < self.AutoRestart_AttemptsToRestart:
                     if self.AutoRestart_NotifyWhenAutoRestart:
                         handle_notify(
                             self.config.Error_OnePushConfig,
@@ -131,21 +158,21 @@ class AzurLaneAutoScript:
                     return False
                 else:
                     self.GameRestartBecauseErrorTimes = 0
-                    logger.critical('Game page unknown')
-                    self.save_error_log()
                     handle_notify(
                         self.config.Error_OnePushConfig,
                         title=f"Alas <{self.config_name}> crashed",
                         content=f"<{self.config_name}> GamePageUnknownError",
                     )
-                    logger.info('Restart to reset Game page in 10 seconds')
-                    self.device.sleep(10)
-                    from module.handler.login import LoginHandler
-                    LoginHandler(self.config, self.device).app_restart()
-                    return False
+                    exit(1)
+                    # logger.info('Restart to reset Game page in 10 seconds')
+                    # self.device.sleep(10)
+                    # from module.handler.login import LoginHandler
+                    # LoginHandler(self.config, self.device).app_restart()
+
             else:
                 self.checker.wait_until_available()
                 return False
+            
         except ScriptError as e:
             logger.exception(e)
             logger.critical('This is likely to be a mistake of developers, but sometimes just random issues')
@@ -155,8 +182,10 @@ class AzurLaneAutoScript:
                 content=f"<{self.config_name}> ScriptError",
             )
             exit(1)
+
         except RequestHumanTakeover:
-            if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes <= self.AutoRestart_AttemptsToRestart:
+            logger.critical('Request human takeover')
+            if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes < self.AutoRestart_AttemptsToRestart:
                 if self.AutoRestart_NotifyWhenAutoRestart:
                     handle_notify(
                         self.config.Error_OnePushConfig,
@@ -170,7 +199,6 @@ class AzurLaneAutoScript:
                 return False
             else:
                 self.GameRestartBecauseErrorTimes = 0
-                logger.critical('Request human takeover')
                 handle_notify(
                     self.config.Error_OnePushConfig,
                     title=f"Alas <{self.config_name}> crashed",
@@ -179,7 +207,10 @@ class AzurLaneAutoScript:
                 exit(1)
 
         except MapWalkError as e:
-            if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes <= self.AutoRestart_AttemptsToRestart:
+            logger.critical('MapWalkError')
+            logger.exception(e)
+            self.save_error_log()
+            if self.AutoRestart_Enabled and self.GameRestartBecauseErrorTimes < self.AutoRestart_AttemptsToRestart:
                 if self.AutoRestart_NotifyWhenAutoRestart:
                     handle_notify(
                         self.config.Error_OnePushConfig,
@@ -193,9 +224,6 @@ class AzurLaneAutoScript:
                 return False
             else:
                 self.GameRestartBecauseErrorTimes = 0
-                logger.critical('MapWalkError')
-                logger.exception(e)
-                self.save_error_log()
                 handle_notify(
                     self.config.Error_OnePushConfig,
                     title=f"Alas <{self.config_name}> crashed",

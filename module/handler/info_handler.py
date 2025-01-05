@@ -178,6 +178,7 @@ class InfoHandler(ModuleBase):
                 release_resources()
                 self.device.release_during_wait()
                 self.device.sleep(60*40)
+                return True
 
         # Check game client existence after 3s to 6s
         # Hot fixes will kill AL if you clicked the confirm button
