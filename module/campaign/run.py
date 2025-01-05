@@ -342,31 +342,36 @@ class CampaignRun(CampaignEvent, ShopStatus):
         logger.info(result)
         if "低心情" in result or "降低好感" in result:
             logger.warning("舰队心情低")
-            fleets = {
-                "第一舰": "fleet_1",
-                "第二舰": "fleet_2"
-            }
-            for key, fleet in fleets.items():
-                if key in result:
-                    logger.warning(f"{name} recorded {fleet} is :{getattr(self.campaign.emotion, fleet).current}")
-                    if getattr(self.campaign.emotion, fleet).current > 75:    
-                        handle_notify(
-                            self.config.Error_OnePushConfig,
-                            title=f"Alas <{self.config.config_name}> {name} Emotion calculate error ",
-                            content=f"<{self.config.config_name}> {fleet} recorded is {getattr(self.campaign.emotion, fleet).current},Emotion calculate error"
-                        )
-                    setattr(getattr(self.campaign.emotion, fleet), 'current', 0)
-                    self.campaign.emotion.record()
-                    self.campaign.emotion.show()
-                    try:
-                        self.campaign.emotion.check_reduce(self.campaign._map_battle)
-                    except ScriptEnd as e:
-                        logger.hr('Script end')
-                        logger.info(str(e))
-                        if self.appear_then_click(LOW_EMOTION_LEFT, offset=(30, 30), interval=3):
-                            break
-                        else:
-                            raise GamePageUnknownError(f'LOW EMOTION TIP FOUND, BUT NO LEFT button')
+
+            method = self.config.Fleet_FleetOrder
+            if method == 'fleet1_mob_fleet2_boss':
+                fleet = 'fleet_1'
+            elif method == 'fleet1_boss_fleet2_mob':
+                fleet = 'fleet_2'
+            elif method == 'fleet1_all_fleet2_standby':
+                fleet = 'fleet_1'
+            elif method == 'fleet1_standby_fleet2_all':
+                fleet = 'fleet_2'
+            logger.info(f"now combat is {method}")    
+            logger.warning(f"{name} recorded {fleet} is :{getattr(self.campaign.emotion, fleet).current}")
+            if getattr(self.campaign.emotion, fleet).current > 75:    
+                handle_notify(
+                    self.config.Error_OnePushConfig,
+                    title=f"Alas <{self.config.config_name}> {name} Emotion calculate error ",
+                    content=f"<{self.config.config_name}> {fleet} recorded is {getattr(self.campaign.emotion, fleet).current},Emotion calculate error"
+                )
+            setattr(getattr(self.campaign.emotion, fleet), 'current', 0)
+            self.campaign.emotion.record()
+            self.campaign.emotion.show()
+            try:
+                self.campaign.emotion.check_reduce(self.campaign._map_battle)
+            except ScriptEnd as e:
+                logger.hr('Script end')
+                logger.info(str(e))
+                if self.appear_then_click(LOW_EMOTION_LEFT, offset=(30, 30), interval=3):
+                    return True
+                else:
+                    raise GamePageUnknownError(f'LOW EMOTION TIP FOUND, BUT NO LEFT button')
                             
         else:
             logger.warning("Game stuck, but not emotion error")
@@ -451,7 +456,8 @@ class CampaignRun(CampaignEvent, ShopStatus):
                 logger.info(str(e))
                 break
             except GameStuckError as e:
-               self.detect_low_emotion(name)
+               if self.detect_low_emotion(name):
+                   break
                    
             # Update config
             if len(self.campaign.config.modified):
