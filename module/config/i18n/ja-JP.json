@@ -150,13 +150,13 @@
       "name": "収穫",
       "help": ""
     },
-    "Awaken": {
-      "name": "Task.Awaken.name",
-      "help": "Task.Awaken.help"
-    },
     "Oilkeep": {
       "name": "オイルバランス",
       "help": ""
+    },
+    "Awaken": {
+      "name": "Task.Awaken.name",
+      "help": "Task.Awaken.help"
     },
     "Daily": {
       "name": "デイリー",
@@ -1643,6 +1643,10 @@
     "AllowDelay": {
       "name": "Research.AllowDelay.name",
       "help": "Research.AllowDelay.help"
+    },
+    "AllowNone": {
+      "name": "Research.AllowNone.name",
+      "help": "Research.AllowNone.help"
     },
     "PresetFilter": {
       "name": "Research.PresetFilter.name",

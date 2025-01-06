@@ -7559,6 +7559,10 @@
         "type": "checkbox",
         "value": true
       },
+      "AllowNone": {
+        "type": "checkbox",
+        "value": false
+      },
       "PresetFilter": {
         "type": "select",
         "value": "series_7_blueprint_la9",

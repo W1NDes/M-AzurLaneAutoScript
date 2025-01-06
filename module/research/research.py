@@ -88,7 +88,11 @@ class RewardResearch(ResearchSelector, ResearchQueue, StorageHandler):
         if not self.enforce:
             logger.info('Enforce choosing research project')
             self.enforce = True
-            return self.research_select(self.research_sort_filter(self.enforce),
+            if self.config.Research_AllowNone:
+                return self.research_select(self.research_sort_filter(enforce=False),
+                                        drop=drop, add_queue=add_queue)
+            else:
+                return self.research_select(self.research_sort_filter(self.enforce),
                                         drop=drop, add_queue=add_queue)
         return True
 

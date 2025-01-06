@@ -150,12 +150,12 @@
       "name": "Reward",
       "help": ""
     },
-    "Awaken": {
-      "name": "Awaken",
-      "help": ""
-    },
     "Oilkeep": {
       "name": "Oil balance",
+      "help": ""
+    },
+    "Awaken": {
+      "name": "Awaken",
       "help": ""
     },
     "Daily": {
@@ -1644,6 +1644,10 @@
       "name": "Delay research when resources are insufficient",
       "help": "When the resources are insufficient, Alas will delay research until the conditions are met or research queue is about to be emptied, which will not cause the research to stop\nIf the resources are insufficient for a long time or the time of running alas is not long enough, you can cancel this option to keep the research queue full"
     },
+    "AllowNone": {
+      "name": "Empty selection is allowed, that is, only eligible projects are selected for scientific research",
+      "help": "By default, Alas will force the selection when no conditions are met"
+    },
     "PresetFilter": {
       "name": "Preset Filter Select",
       "help": "See research drops rates and spawn rates in https://azur-stats.lyoko.io/. People without a basic knowledge of these are recommended to use pre-optimized presets instead of writing custom filters",
@@ -2247,12 +2251,12 @@
   },
   "Oilkeep": {
     "_info": {
-    "name": "Oil Balance",
-    "help": "Pick up oil from the storage room 4 times a day to stabilize the amount of oil"
-  },
-  "OilkeepLevel": {
-    "name": "Oil Balance Value",
-    "help": "The default value is 8000, that is, when the amount of oil is less than 7900, you will receive oil to 7900"
+      "name": "Oil Balance",
+      "help": "Pick up oil from the storage room 4 times a day to stabilize the amount of oil"
+    },
+    "OilkeepLevel": {
+      "name": "Oil Balance Value",
+      "help": "The default value is 8000, that is, when the amount of oil is less than 7900, you will receive oil to 7900"
     }
   },
   "Daily": {

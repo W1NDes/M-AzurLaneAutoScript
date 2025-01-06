@@ -150,13 +150,13 @@
       "name": "收穫",
       "help": ""
     },
-    "Awaken": {
-      "name": "認知覺醒",
-      "help": ""
-    },
     "Oilkeep": {
       "name": "石油平衡",
       "help": "Task.Oilkeep.help"
+    },
+    "Awaken": {
+      "name": "認知覺醒",
+      "help": ""
     },
     "Daily": {
       "name": "每日任務",
@@ -1643,6 +1643,10 @@
     "AllowDelay": {
       "name": "資源不足時延遲科研",
       "help": "資源不足時Alas會延遲科研直到滿足條件或科研隊列即將清空，不會導致科研停轉\n如果長期保持資源不足或運行Alas的時間不够長，可以取消本選項以保持科研隊列裝滿"
+    },
+    "AllowNone": {
+      "name": "Research.AllowNone.name",
+      "help": "Research.AllowNone.help"
     },
     "PresetFilter": {
       "name": "科研過濾器",
