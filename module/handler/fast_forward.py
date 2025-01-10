@@ -7,6 +7,7 @@ from module.handler.assets import *
 from module.handler.auto_search import AutoSearchHandler
 from module.logger import logger
 from module.ui.switch import Switch
+from module.notify import handle_notify
 
 FAST_FORWARD = Switch('Fast_Forward')
 FAST_FORWARD.add_state('on', check_button=FAST_FORWARD_ON)
@@ -394,6 +395,12 @@ class FastForwardHandler(AutoSearchHandler):
                 self.config.Campaign_Name = next_stage
             else:
                 logger.info(f'Stage {prev_stage} cannot increase, stop at current stage')
+                
+                handle_notify(
+                    self.config.Error_OnePushConfig,
+                    title=f"Alas <{self.config.config_name}> campaign over",
+                    content=f"<{self.config.config_name}> {prev_stage} reached end"
+                )
                 self.config.Scheduler_Enable = False
         else:
             self.config.Scheduler_Enable = False
