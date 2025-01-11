@@ -15,16 +15,17 @@ class ManualConfig:
     > Exercise
     > Dorm > Meowfficer > Guild > Gacha
     > Reward
-    > ShopFrequent > ShopOnce > Shipyard > Freebies > Oilkeep > Minigame
+    > ShopFrequent > ShopOnce > Shipyard > Freebies > Daily > Hard 
+    > Oilkeep > Event 
     > OpsiExplore
     > Minigame > Awaken
     > OpsiAshBeacon
     > OpsiDaily > OpsiShop > OpsiVoucher
     > OpsiAbyssal > OpsiStronghold > OpsiObscure > OpsiArchive
-    > Daily > Hard > OpsiAshBeacon > OpsiAshAssist > OpsiMonthBoss
+    > OpsiAshBeacon > OpsiAshAssist > OpsiMonthBoss
     > Sos > EventSp > EventA > EventB > EventC > EventD
     > RaidDaily > CoalitionSp > WarArchives > MaritimeEscort
-    > Event > Event2 > Event3 > Raid > Coalition > Main > Main2 > Main3
+    > Event2 > Event3 > Raid > Coalition > Main > Main2 > Main3
     > OpsiMeowfficerFarming
     > GemsFarming
     > OpsiHazard1Leveling
