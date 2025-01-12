@@ -368,10 +368,13 @@ class RewardCommission(UI, InfoHandler):
                 self.interval_reset(COMMISSION_ADVICE)
                 comm_timer.reset()
                 continue
-            if self.handle_popup_confirm('COMMISSION_START'):
-                self.interval_reset(COMMISSION_ADVICE)
-                comm_timer.reset()
-                continue
+            if self.appear(COMMISSION_UNFIT, offset=(5, 5), similarity=0.65):
+                logger.warning('UNFIT THE COMMISSION REQUEST')
+                return False 
+            elif self.handle_popup_confirm('COMMISSION_START'):
+                    self.interval_reset(COMMISSION_ADVICE)
+                    comm_timer.reset()
+                    continue
             # Accidentally entered dock
             if self.appear(DOCK_CHECK, offset=(20, 20), interval=3):
                 logger.info(f'equip_enter {DOCK_CHECK} -> {BACK_ARROW}')
