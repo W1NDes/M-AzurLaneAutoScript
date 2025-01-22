@@ -407,7 +407,6 @@ class CampaignRun(CampaignEvent, ShopStatus):
 
             # Log
             logger.hr(name, level=1)
-            self.campaign.handle_map_stop()
             if self.config.StopCondition_RunCount > 0:
                 logger.info(f'Count remain: {self.config.StopCondition_RunCount}')
             else:
