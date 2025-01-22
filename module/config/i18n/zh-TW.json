@@ -1079,6 +1079,10 @@
       "name": "獲得新船後停止",
       "help": ""
     },
+    "EventSwitch": {
+      "name": "StopCondition.EventSwitch.name",
+      "help": "StopCondition.EventSwitch.help"
+    },
     "ReachLevel": {
       "name": "艦船升至 X 級後停止",
       "help": "任意等級低於 X 的艦船升級至 X 級後停止\n0 表示不限制等級"
@@ -1469,6 +1473,10 @@
     "LastStage": {
       "name": "上一個完成的地圖",
       "help": "自動更新的數值，將跳過過濾器中已完成的地圖，過0點重置"
+    },
+    "SyncEmotion": {
+      "name": "EventDaily.SyncEmotion.name",
+      "help": "EventDaily.SyncEmotion.help"
     }
   },
   "Raid": {
@@ -2700,6 +2708,10 @@
     "TargetZone": {
       "name": "指定海域",
       "help": "僅出擊指定的海域，可以用來獲取大世界成就星星\n自動更新的數值，填0可重置進度，重置後自動跳過已開荒的海域\n支援海域ID、國服/國際服/日服/台服海域名稱，例如 \"51\", \"NA海域東南E\", \"NA Ocean SE Sector E\"\n填入默認值0，或者刪除數值即可取消指定"
+    },
+    "IgnoreStory": {
+      "name": "OpsiMeowfficerFarming.IgnoreStory.name",
+      "help": "OpsiMeowfficerFarming.IgnoreStory.help"
     }
   },
   "OpsiHazard1Leveling": {

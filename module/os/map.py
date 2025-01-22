@@ -491,7 +491,11 @@ class OSMap(OSFleet, Map, GlobeCamera, StrategicSearchHandler):
                 logger.critical('Unable to use auto search in current zone')
                 logger.critical('Please finish the story mode of OpSi to unlock auto search '
                                 'before using any OpSi functions')
-                raise RequestHumanTakeover
+                if self.config.OpsiMeowfficerFarming_IgnoreStory == True:
+                    logger.hr('ignore the story mode waring')
+                    break
+                else:
+                    raise RequestHumanTakeover
             if self.is_in_map():
                 self.device.stuck_record_clear()
                 if not success:

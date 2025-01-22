@@ -331,6 +331,14 @@ class CampaignRun(CampaignEvent, ShopStatus):
             self.config.task_call('Commission', force_call=True)
             self.config.task_stop('Commission notice found')
             
+    def sync_emotion(self):
+        KEYS = ['.Emotion.Fleet1Value','.Emotion.Fleet1Record','.Emotion.Fleet1Recover','.Emotion.Fleet2Value','.Emotion.Fleet2Record','.Emotion.Fleet2Recover']
+        DATA =[self.config.Emotion_Fleet1Value,self.config.Emotion_Fleet1Record,self.config.Emotion_Fleet1Recover,self.config.Emotion_Fleet2Value,self.config.Emotion_Fleet2Record,self.config.Emotion_Fleet2Recover]
+        for i, key in enumerate(KEYS):
+            data = DATA[i]
+            self.config.cross_set(keys=f'Event2{key}', value=f'{data}')
+        logger.hr('detect emotion delay,sync emotion to event2')    
+        
     def detect_low_emotion(self,name):
         EMOTION_TIP_L1=Button(area=(352, 311, 929, 348), color=(), button=(352, 311, 929, 348))
         EMOTION_TIP_L2=Button(area=(352, 350, 929, 387), color=(), button=(352, 350, 929, 387))
@@ -377,7 +385,7 @@ class CampaignRun(CampaignEvent, ShopStatus):
             logger.warning("Game stuck, but not emotion error")
             raise GameStuckError(f'Wait too long but not emotion error')   
         
-    def run(self, name, folder='campaign_main', mode='normal', total=0):
+    def run(self, name, folder='campaign_main', mode='normal', total=0,from_eventDaily=False):
         """
         Args:
             name (str): Name of .py file.
@@ -399,6 +407,7 @@ class CampaignRun(CampaignEvent, ShopStatus):
 
             # Log
             logger.hr(name, level=1)
+            self.campaign.handle_map_stop()
             if self.config.StopCondition_RunCount > 0:
                 logger.info(f'Count remain: {self.config.StopCondition_RunCount}')
             else:
@@ -454,6 +463,9 @@ class CampaignRun(CampaignEvent, ShopStatus):
             except ScriptEnd as e:
                 logger.hr('Script end')
                 logger.info(str(e))
+                if from_eventDaily == True:
+                    if str(e) == 'Emotion control':
+                        self.sync_emotion()
                 break
             except GameStuckError as e:
                if self.detect_low_emotion(name):

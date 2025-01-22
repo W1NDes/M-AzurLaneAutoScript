@@ -1079,6 +1079,10 @@
       "name": "StopCondition.GetNewShip.name",
       "help": "StopCondition.GetNewShip.help"
     },
+    "EventSwitch": {
+      "name": "StopCondition.EventSwitch.name",
+      "help": "StopCondition.EventSwitch.help"
+    },
     "ReachLevel": {
       "name": "StopCondition.ReachLevel.name",
       "help": "StopCondition.ReachLevel.help"
@@ -1469,6 +1473,10 @@
     "LastStage": {
       "name": "EventDaily.LastStage.name",
       "help": "EventDaily.LastStage.help"
+    },
+    "SyncEmotion": {
+      "name": "EventDaily.SyncEmotion.name",
+      "help": "EventDaily.SyncEmotion.help"
     }
   },
   "Raid": {
@@ -2700,6 +2708,10 @@
     "TargetZone": {
       "name": "OpsiMeowfficerFarming.TargetZone.name",
       "help": "OpsiMeowfficerFarming.TargetZone.help"
+    },
+    "IgnoreStory": {
+      "name": "OpsiMeowfficerFarming.IgnoreStory.name",
+      "help": "OpsiMeowfficerFarming.IgnoreStory.help"
     }
   },
   "OpsiHazard1Leveling": {

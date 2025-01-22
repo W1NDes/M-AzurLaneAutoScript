@@ -741,6 +741,10 @@
         "type": "checkbox",
         "value": false
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -1118,6 +1122,10 @@
         "type": "checkbox",
         "value": false
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -1492,6 +1500,10 @@
         "value": false
       },
       "GetNewShip": {
+        "type": "checkbox",
+        "value": false
+      },
+      "EventSwitch": {
         "type": "checkbox",
         "value": false
       },
@@ -2005,6 +2017,10 @@
         "value": false,
         "display": "hide"
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -2337,6 +2353,10 @@
         "value": false
       },
       "GetNewShip": {
+        "type": "checkbox",
+        "value": false
+      },
+      "EventSwitch": {
         "type": "checkbox",
         "value": false
       },
@@ -2797,6 +2817,10 @@
         "type": "checkbox",
         "value": false
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -3254,6 +3278,10 @@
         "type": "checkbox",
         "value": false
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -3673,6 +3701,10 @@
         "value": false,
         "display": "hide"
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -3911,6 +3943,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -4205,6 +4241,10 @@
         "value": false
       },
       "GetNewShip": {
+        "type": "checkbox",
+        "value": false
+      },
+      "EventSwitch": {
         "type": "checkbox",
         "value": false
       },
@@ -4523,6 +4563,10 @@
       "LastStage": {
         "type": "input",
         "value": 0
+      },
+      "SyncEmotion": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Campaign": {
@@ -4680,6 +4724,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -4997,6 +5045,10 @@
       "LastStage": {
         "type": "input",
         "value": 0
+      },
+      "SyncEmotion": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Campaign": {
@@ -5154,6 +5206,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -5471,6 +5527,10 @@
       "LastStage": {
         "type": "input",
         "value": 0
+      },
+      "SyncEmotion": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Campaign": {
@@ -5628,6 +5688,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -5945,6 +6009,10 @@
       "LastStage": {
         "type": "input",
         "value": 0
+      },
+      "SyncEmotion": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Campaign": {
@@ -6102,6 +6170,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -6419,6 +6491,10 @@
       "LastStage": {
         "type": "input",
         "value": 0
+      },
+      "SyncEmotion": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Campaign": {
@@ -6576,6 +6652,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -6989,6 +7069,10 @@
         "value": false,
         "display": "hide"
       },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -7228,6 +7312,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",
@@ -9829,6 +9917,10 @@
       "TargetZone": {
         "type": "input",
         "value": 0
+      },
+      "IgnoreStory": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "OpsiFleet": {

@@ -151,6 +151,7 @@ class GeneratedConfig:
     StopCondition_MapAchievement = 'non_stop'  # non_stop, 100_percent_clear, map_3_stars, threat_safe, threat_safe_without_3_stars
     StopCondition_StageIncrease = False
     StopCondition_GetNewShip = False
+    StopCondition_EventSwitch = False
     StopCondition_ReachLevel = 0
 
     # Group `Fleet`
@@ -229,6 +230,7 @@ class GeneratedConfig:
     # Group `EventDaily`
     EventDaily_StageFilter = 'A1 > A2 > A3'
     EventDaily_LastStage = 0
+    EventDaily_SyncEmotion = False
 
     # Group `Raid`
     Raid_Mode = 'hard'  # easy, normal, hard, ex
@@ -489,6 +491,7 @@ class GeneratedConfig:
     OpsiMeowfficerFarming_ActionPointPreserve = 1000
     OpsiMeowfficerFarming_HazardLevel = 5  # 3, 4, 5, 6, 10
     OpsiMeowfficerFarming_TargetZone = 0
+    OpsiMeowfficerFarming_IgnoreStory = False
 
     # Group `OpsiHazard1Leveling`
     OpsiHazard1Leveling_TargetZone = 0  # 0, 44, 22

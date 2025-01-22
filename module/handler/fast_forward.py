@@ -402,6 +402,35 @@ class FastForwardHandler(AutoSearchHandler):
                     content=f"<{self.config.config_name}> {prev_stage} reached end"
                 )
                 self.config.Scheduler_Enable = False
+                # logger.warning(f'{self.config.StopCondition_EventSwitch}')
+                if self.config.task.command == 'Event'and self.config.StopCondition_EventSwitch == True:      
+                    # logger.warning(f'{self.config.task.command}')
+                    KEYS = ['.Fleet.Fleet1','.Fleet.Fleet2','.Fleet.FleetOrder','.Emotion.Fleet1Record','.Emotion.Fleet1Recover','.Emotion.Fleet2Record','.Emotion.Fleet2Recover',]
+                    for key in KEYS:#只传舰队和心情恢复情况,不传心情值
+                        data = self.config.cross_get(keys=f'Event{key}')
+                        self.config.cross_set(keys=f'EventA{key}', value=f'{data}')
+                        # self.config.cross_set(keys=f'EventB{key}', value=f'{data}')
+                        self.config.cross_set(keys=f'EventC{key}', value=f'{data}')
+                        self.config.cross_set(keys=f'EventD{key}', value=f'{data}')
+                        self.config.cross_set(keys=f'Event2{key}', value=f'{data}')
+                        logger.hr(f"copy:{key},{data}")
+                    KEYS2 = ['.Emotion.Fleet1Value','.Emotion.Fleet2Value',]
+                    for key in KEYS2:#单独给每日D和活动图2传心情值(因为结尾关D3心情一致)
+                        data = self.config.cross_get(keys=f'Event{key}')
+                        self.config.cross_set(keys=f'EventD{key}', value=f'{data}')
+                        self.config.cross_set(keys=f'Event2{key}', value=f'{data}')
+                        logger.hr(f"copy:{key},{data}")
+                    eventDailyStageFilter_A = "A1>A2>A3 >B1>B2>B3" 
+                    self.config.cross_set(keys=f'EventA.EventDaily.StageFilter', value=f'{eventDailyStageFilter_A}')  #ab图一般用同一队,所以为了心情同步用同一队
+                    self.config.task_call('EventA')
+                    # self.config.task_call('EventB')
+                    self.config.task_call('EventC')
+                    self.config.task_call('EventD')
+                    self.config.task_call('EventSp')
+                    self.config.task_call('Event2')
+                
+                # logger.info(f"{self.config.Fleet_FleetOrder},{self.config.Emotion_Fleet1Value},{self.config.Emotion_Fleet1Recover}")
+
         else:
             self.config.Scheduler_Enable = False
 

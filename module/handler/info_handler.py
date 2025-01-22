@@ -169,6 +169,7 @@ class InfoHandler(ModuleBase):
                         drop.add(self.device.image)
                     self.device.click(GET_MISSION)
                     self._hot_fix_check_wait.reset()
+                    return False
             if appear2 or appear3:
                 from module.base.resource import release_resources
                 logger.warning('Other login in')
@@ -177,7 +178,7 @@ class InfoHandler(ModuleBase):
                 self.device.app_stop()
                 release_resources()
                 self.device.release_during_wait()
-                self.device.sleep(60*40)
+                self.device.sleep(60*15)
                 return True
 
         # Check game client existence after 3s to 6s

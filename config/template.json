@@ -175,6 +175,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -249,6 +250,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -323,6 +325,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -404,6 +407,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -460,6 +464,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -534,6 +539,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -608,6 +614,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -686,6 +693,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Emotion": {
@@ -734,6 +742,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Emotion": {
@@ -794,6 +803,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -854,7 +864,8 @@
     },
     "EventDaily": {
       "StageFilter": "A1 > A2 > A3",
-      "LastStage": 0
+      "LastStage": 0,
+      "SyncEmotion": false
     },
     "Campaign": {
       "Name": "dynamic",
@@ -872,6 +883,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -932,7 +944,8 @@
     },
     "EventDaily": {
       "StageFilter": "B1 > B2 > B3",
-      "LastStage": 0
+      "LastStage": 0,
+      "SyncEmotion": false
     },
     "Campaign": {
       "Name": "dynamic",
@@ -950,6 +963,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1010,7 +1024,8 @@
     },
     "EventDaily": {
       "StageFilter": "C1 > C2 > C3",
-      "LastStage": 0
+      "LastStage": 0,
+      "SyncEmotion": false
     },
     "Campaign": {
       "Name": "dynamic",
@@ -1028,6 +1043,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1088,7 +1104,8 @@
     },
     "EventDaily": {
       "StageFilter": "D1 > D2 > D3",
-      "LastStage": 0
+      "LastStage": 0,
+      "SyncEmotion": false
     },
     "Campaign": {
       "Name": "dynamic",
@@ -1106,6 +1123,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1166,7 +1184,8 @@
     },
     "EventDaily": {
       "StageFilter": "SP",
-      "LastStage": 0
+      "LastStage": 0,
+      "SyncEmotion": false
     },
     "Campaign": {
       "Name": "dynamic",
@@ -1184,6 +1203,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1261,6 +1281,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Emotion": {
@@ -1309,6 +1330,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Emotion": {
@@ -1975,7 +1997,8 @@
     "OpsiMeowfficerFarming": {
       "ActionPointPreserve": 1000,
       "HazardLevel": 5,
-      "TargetZone": 0
+      "TargetZone": 0,
+      "IgnoreStory": false
     },
     "OpsiFleet": {
       "Fleet": 1,

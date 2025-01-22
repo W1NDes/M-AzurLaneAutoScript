@@ -218,6 +218,7 @@ StopCondition:
     option: [ non_stop, 100_percent_clear, map_3_stars, threat_safe, threat_safe_without_3_stars ]
   StageIncrease: false
   GetNewShip: false
+  EventSwitch: false
   ReachLevel: 0
 Fleet:
   Fleet1:
@@ -347,6 +348,7 @@ EventDaily:
   StageFilter: |-
     A1 > A2 > A3
   LastStage: 0
+  SyncEmotion: False
 Raid:
   Mode:
     value: hard
@@ -773,6 +775,7 @@ OpsiMeowfficerFarming:
     option: [ 3, 4, 5, 6, 10 ]
   TargetZone:
     value: 0
+  IgnoreStory: false
 OpsiHazard1Leveling:
   TargetZone:
     value: 0

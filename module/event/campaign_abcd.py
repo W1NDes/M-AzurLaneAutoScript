@@ -42,7 +42,10 @@ class CampaignABCD(EventBase):
         for stage in stages:
             stage = str(stage)
             try:
-                super().run(name=stage, folder=self.config.Campaign_Event, total=1)
+                if self.config.EventDaily_SyncEmotion == True:
+                    super().run(name=stage, folder=self.config.Campaign_Event, total=1,from_eventDaily=True)
+                else:
+                    super().run(name=stage, folder=self.config.Campaign_Event, total=1)
             except TaskEnd:
                 # Catch task switch
                 pass
@@ -66,6 +69,8 @@ class CampaignABCD(EventBase):
                 self.config.task_stop()
             if self.config.task_switched():
                 self.config.task_stop()
-
+                
+        if self.config.EventDaily_SyncEmotion == True:        
+            super().sync_emotion()#任务完成时的心情传递
         # Scheduler
         self.config.task_delay(server_update=True)
