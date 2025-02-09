@@ -1,18 +1,15 @@
 
 from module.logger import logger
 from module.oilkeep.assets import *
-from module.ui.ui import UI
 from module.base.timer import Timer
 from module.combat.assets import GET_ITEMS_1, GET_ITEMS_2
 from module.freebies.assets import *
 from module.logger import logger
 from module.ui.page import GOTO_MAIN_WHITE, MAIN_GOTO_CAMPAIGN_WHITE, page_mail, page_main, page_main_white
-from module.ui.ui import UI
-from module.campaign.assets import OCR_OIL, OCR_OIL_LIMIT, OCR_OIL_CHECK
-from module.log_res.log_res import LogRes
-from module.base.utils import color_similar, get_color
-from module.ocr.ocr import Digit
-class Oilkeep(UI):
+from module.ui.page import page_supply_pack
+from module.campaign.campaign_status import CampaignStatus
+import time
+class Oilkeep(CampaignStatus):
     def _mail_enter_and_get_oil(self,oilLine,nowOil, skip_first_screenshot=True):
         """
         Returns:
@@ -108,63 +105,30 @@ class Oilkeep(UI):
             if self.appear_then_click(GOTO_MAIN_WHITE, offset=(30, 30), interval=3):
                 continue
             
-    def _get_num(self, _button, name):
-        # Update offset
-        _ = self.appear(OCR_OIL_CHECK)
-
-        color = get_color(self.device.image, OCR_OIL_CHECK.button)
-        if color_similar(color, OCR_OIL_CHECK.color):
-            # Original color
-            ocr = Digit(_button, name=name, letter=(247, 247, 247), threshold=128)
-        elif color_similar(color, (59, 59, 64)):
-            # With black overlay
-            ocr = Digit(_button, name=name, letter=(165, 165, 165), threshold=128)
-        else:
-            logger.warning(f'Unexpected OCR_OIL_CHECK color')
-            ocr = Digit(_button, name=name, letter=(247, 247, 247), threshold=128)
-
-        return ocr.ocr(self.device.image)      
-       
-    def get_oil(self, skip_first_screenshot=True, update=False):
-        """
-        Returns:
-            int: Oil amount
-        """
-        _oil = {}
-        timeout = Timer(1, count=2).start()
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-
-            if not self.appear(OCR_OIL_CHECK, offset=(10, 2)):
-                logger.info('No oil icon')
-                self.device.sleep(2)
-
-            if timeout.reached():
-                logger.warning('Get oil timeout')
-                break
-
-            _oil = {
-                'Value': self._get_num(OCR_OIL, 'OCR_OIL'),
-                'Limit': self._get_num(OCR_OIL_LIMIT, 'OCR_OIL_LIMIT')
-            }
-            if _oil['Value'] >= 100:
-                break
-        LogRes(self.config).Oil = _oil
-        if update:
-            self.config.update()
-
-        return _oil['Value']
     def update_oil(self):
+        self.ui_ensure(page_supply_pack)
+        oilOcr_values = []
+        for attempt in range(3):  # 尝试3次
+            oilOcr = self.get_oil()
+            logger.info(f'Attempt {attempt + 1} - Oil now: {oilOcr}')
+            
+            if oilOcr == 0:
+                logger.warning('Oil value is 0.')
+                return False
+            
+            oilOcr_values.append(oilOcr)
+            
+            # 检查是否所有获取的值都相同
+            if len(set(oilOcr_values)) != 1:
+                logger.warning('Inconsistent oil readings detected.')
+                return False
+            
+            if attempt < 2:  
+                time.sleep(1)  
+        
         self.ui_ensure(page_main)
-        if self.appear_then_click(MAIN_GOTO_CAMPAIGN_WHITE, offset=(30, 30), interval=3):
-            logger.info('MAIN_GOTO_CAMPAIGN_WHITE')
-        oilOcr = self.get_oil()
-        logger.info(f'Oil now: {oilOcr}')
-        self.ui_ensure(page_main)
-        return oilOcr
+        logger.info('Oil readings are consistent and non-zero.')
+        return oilOcr_values[0] 
     
     def pageCheck(self):
         self.ui_ensure(page_main)
@@ -181,7 +145,13 @@ class Oilkeep(UI):
     def run(self):
         logger.hr('Oil Keep', level=1)
         OilkeepLine = self.config.Oilkeep_OilkeepLevel
-        oilOcrNow = self.update_oil()
+        for attempt in range(3):  # 
+            oilOcrNow = self.update_oil()
+            if oilOcrNow is not False:
+                break  
+            elif attempt == 2:  
+                return False  
+            time.sleep(1) 
         if self.pageCheck() is True and oilOcrNow != 0 and oilOcrNow < OilkeepLine -100:
             self._mail_enter_and_get_oil(OilkeepLine, oilOcrNow)
             self._mail_quit()
