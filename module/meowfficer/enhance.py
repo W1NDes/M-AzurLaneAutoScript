@@ -156,7 +156,8 @@ class MeowfficerEnhance(MeowfficerBase):
         current = 0
         retry = Timer(1, count=2)
         skip_first_screenshot = True
-
+        last_button_names = None  # 上一次检测到的按钮特征
+        same_button_time = 0
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -172,6 +173,22 @@ class MeowfficerEnhance(MeowfficerBase):
             buttons = self.meow_feed_scan()
             if not len(buttons):
                 break
+
+            current_button_names = tuple(sorted(button.name for button in buttons))
+            # 如果特征与上一次一致，记录
+            if current_button_names == last_button_names:
+                same_button_time += 1
+            else:
+                # 特征不一致时重置记录
+                same_button_time = 0
+                last_button_names = current_button_names
+            if same_button_time >= 7:
+                logger.warning("指挥猫在大世界中!")
+                current = 0 #修改扫描数，不然还会"ENHANCE ONCE"
+                self.ui_click(MEOWFFICER_FEED_CONFIRM, check_button=MEOWFFICER_ENHANCE_CONFIRM,
+                             offset=(20, 20), skip_first_screenshot=True)
+                self.meow_enhance_confirm()
+                break #重复点击太多次猫说明这个猫在大世界
 
             # Else click each button to
             # apply green check mark
