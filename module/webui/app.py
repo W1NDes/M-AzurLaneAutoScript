@@ -152,12 +152,43 @@ class AlasGUI(Frame):
             buttons=[{"label": t("Gui.Aside.Home"), "value": "Home", "color": "aside"}],
             onclick=[self.ui_develop],
         )
-        for name in alas_instance():
+
+        # Sort alas instances
+        instances = list(alas_instance())
+        numeric_instances = []
+        regular_instances = []
+        import re
+        
+        for name in instances:
+            # Check if instance name ends with number
+            match = re.search(r'\d+$', name)
+            if match:
+                # Get the numeric value at the end
+                num_val = int(match.group())
+                numeric_instances.append((name, num_val))
+            else:
+                regular_instances.append(name)
+        
+        # Sort numeric instances by their number
+        numeric_instances.sort(key=lambda x: x[1])
+        # Sort regular instances alphabetically
+        regular_instances.sort()
+        
+        # Display instances in order
+        for name, _ in numeric_instances:
             put_icon_buttons(
                 Icon.RUN,
                 buttons=[{"label": name, "value": name, "color": "aside"}],
                 onclick=self.ui_alas,
             )
+        for name in regular_instances:
+            put_icon_buttons(
+                Icon.RUN,
+                buttons=[{"label": name, "value": name, "color": "aside"}],
+                onclick=self.ui_alas,
+            )
+            
+        # Manage button
         put_icon_buttons(
             Icon.SETTING,
             buttons=[
