@@ -245,7 +245,16 @@ def start_ocr_server_process(port=22268):
     global process
     if not alive():
         process = multiprocessing.Process(target=start_ocr_server, args=(port,))
+        
         process.start()
+        import psutil
+
+        process.join(timeout=0.1)
+        process_proc = psutil.Process(process.pid)
+        ocr_cpu_affinity_list = [0]
+        ocr_cpu_affinity_list = list(map(int,  State.deploy_config.OcrCpuAffinity.split(',')))
+        logger.info(f"Ocr server use core {ocr_cpu_affinity_list}")
+        process_proc.cpu_affinity(ocr_cpu_affinity_list)# 设置CPU亲和性
 
 
 def stop_ocr_server_process():

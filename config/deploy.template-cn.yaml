@@ -84,7 +84,10 @@ Deploy:
     # Address of ocr server for alas instance to connect
     # [Default] 127.0.0.1:22268
     OcrClientAddress: 127.0.0.1:22268
-
+    # set the ocr server use which cpu
+    # [Default] 0,1
+    OcrCpuAffinity: 0,1
+    
   Update:
     # Use auto update and builtin updater feature
     # This may cause problem https://github.com/LmeSzinc/AzurLaneAutoScript/issues/876
