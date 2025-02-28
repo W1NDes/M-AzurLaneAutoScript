@@ -439,6 +439,7 @@ class FastForwardHandler(AutoSearchHandler):
                     event2MapName = "D3"
                     self.config.cross_set(keys=f'EventA.EventDaily.StageFilter', value=f'{eventDailyStageFilter_A}')  #ab图一般用同一队,所以为了心情同步用同一队
                     self.config.cross_set(keys=f'Event2.Campaign.Name',value = f'{event2MapName}') 
+                    self.config.cross_set(keys=f'EventSp.Campaign.Name',value = f'SP') 
                     self.config.task_call('EventA')
                     # self.config.task_call('EventB')
                     # self.config.task_call('EventC')
