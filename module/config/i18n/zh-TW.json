@@ -198,6 +198,10 @@
       "name": "小遊戲",
       "help": "遊戲幣不會溢出時自動領取遊戲幣，有遊戲幣且獎勵沒滿時自動進行小遊戲"
     },
+    "Smallevent": {
+      "name": "Task.Smallevent.name",
+      "help": "Task.Smallevent.help"
+    },
     "OpsiGeneral": {
       "name": "通用設定",
       "help": ""
@@ -505,6 +509,24 @@
     "Record": {
       "name": "GuildCoin.Record.name",
       "help": "GuildCoin.Record.help"
+    }
+  },
+  "SevenDayStatus": {
+    "_info": {
+      "name": "SevenDayStatus._info.name",
+      "help": "SevenDayStatus._info.help"
+    },
+    "Value": {
+      "name": "SevenDayStatus.Value.name",
+      "help": "SevenDayStatus.Value.help"
+    },
+    "Color": {
+      "name": "SevenDayStatus.Color.name",
+      "help": "SevenDayStatus.Color.help"
+    },
+    "Record": {
+      "name": "SevenDayStatus.Record.name",
+      "help": "SevenDayStatus.Record.help"
     }
   },
   "Scheduler": {
@@ -2265,6 +2287,16 @@
       "help": ""
     }
   },
+  "Smallevent": {
+    "_info": {
+      "name": "Smallevent._info.name",
+      "help": "Smallevent._info.help"
+    },
+    "SevenDayTask": {
+      "name": "Smallevent.SevenDayTask.name",
+      "help": "Smallevent.SevenDayTask.help"
+    }
+  },
   "Oilkeep": {
     "_info": {
       "name": "Oilkeep._info.name",
@@ -2916,6 +2948,7 @@
       "Medal": "勳章",
       "Core": "覈心數據",
       "GuildCoin": "艦隊幣",
+      "SevenDayStatus": "Gui.Overview.SevenDayStatus",
       "Log": "日誌",
       "Running": "執行中",
       "Pending": "佇列中",

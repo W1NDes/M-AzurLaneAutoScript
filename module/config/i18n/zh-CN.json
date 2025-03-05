@@ -198,6 +198,10 @@
       "name": "小游戏",
       "help": "游戏币不会溢出时自动领取游戏币，有游戏币且奖励没满时自动进行小游戏"
     },
+    "Smallevent": {
+      "name": "活动总览小任务",
+      "help": ""
+    },
     "OpsiGeneral": {
       "name": "通用设置",
       "help": ""
@@ -505,6 +509,24 @@
     "Record": {
       "name": "GuildCoin.Record.name",
       "help": "GuildCoin.Record.help"
+    }
+  },
+  "SevenDayStatus": {
+    "_info": {
+      "name": "SevenDayStatus._info.name",
+      "help": "SevenDayStatus._info.help"
+    },
+    "Value": {
+      "name": "SevenDayStatus.Value.name",
+      "help": "SevenDayStatus.Value.help"
+    },
+    "Color": {
+      "name": "SevenDayStatus.Color.name",
+      "help": "SevenDayStatus.Color.help"
+    },
+    "Record": {
+      "name": "SevenDayStatus.Record.name",
+      "help": "SevenDayStatus.Record.help"
     }
   },
   "Scheduler": {
@@ -2265,6 +2287,16 @@
       "help": ""
     }
   },
+  "Smallevent": {
+    "_info": {
+      "name": "活动总览",
+      "help": "自动领取位于活动总览中的小任务奖励，防止卡时间"
+    },
+    "SevenDayTask": {
+      "name": "7日小任务",
+      "help": "本期为受选者之路-20250220"
+    }
+  },
   "Oilkeep": {
     "_info": {
       "name": "石油平衡",
@@ -2916,6 +2948,7 @@
       "Medal": "勋章",
       "Core": "核心数据",
       "GuildCoin": "舰队币",
+      "SevenDayStatus": "7日小任务",
       "Log": "日志",
       "Running": "运行中",
       "Pending": "队列中",

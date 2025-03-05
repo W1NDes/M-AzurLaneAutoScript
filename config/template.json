@@ -63,6 +63,11 @@
       "Color": "^AAAAAA",
       "Record": "2020-01-01 00:00:00"
     },
+    "SevenDayStatus": {
+      "Value": 0,
+      "Color": "^AFAAAA",
+      "Record": "2020-01-01 00:00:00"
+    },
     "Storage": {
       "Storage": {}
     }
@@ -1772,6 +1777,22 @@
       "SuccessInterval": 0,
       "FailureInterval": 120,
       "ServerUpdate": "00:00"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "Smallevent": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "Smallevent",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "Smallevent": {
+      "SevenDayTask": true
     },
     "Storage": {
       "Storage": {}

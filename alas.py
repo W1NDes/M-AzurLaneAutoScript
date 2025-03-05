@@ -358,6 +358,10 @@ class AzurLaneAutoScript:
     def minigame(self):
         from module.minigame.minigame import Minigame
         Minigame(config=self.config, device=self.device).run()
+        
+    def smallevent(self):
+        from module.smallevent.samllevent import SmallEvent
+        SmallEvent(config=self.config, device=self.device).run()
 
     def daily(self):
         from module.daily.daily import Daily

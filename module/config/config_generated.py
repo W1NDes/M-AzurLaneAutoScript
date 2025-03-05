@@ -72,6 +72,11 @@ class GeneratedConfig:
     GuildCoin_Color = '^AAAAAA'
     GuildCoin_Record = datetime.datetime(2020, 1, 1, 0, 0)
 
+    # Group `SevenDayStatus`
+    SevenDayStatus_Value = 0
+    SevenDayStatus_Color = '^AFAAAA'
+    SevenDayStatus_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `Scheduler`
     Scheduler_Enable = False  # True, False
     Scheduler_NextRun = datetime.datetime(2020, 1, 1, 0, 0)
@@ -396,6 +401,9 @@ class GeneratedConfig:
 
     # Group `Minigame`
     Minigame_Collect = False
+
+    # Group `Smallevent`
+    Smallevent_SevenDayTask = True
 
     # Group `Oilkeep`
     Oilkeep_OilkeepLevel = 8000

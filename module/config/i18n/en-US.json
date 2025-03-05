@@ -198,6 +198,10 @@
       "name": "Minigame",
       "help": "Receive credits and spend them"
     },
+    "Smallevent": {
+      "name": "Task.Smallevent.name",
+      "help": "Task.Smallevent.help"
+    },
     "OpsiGeneral": {
       "name": "OpSi General",
       "help": ""
@@ -505,6 +509,24 @@
     "Record": {
       "name": "GuildCoin.Record.name",
       "help": "GuildCoin.Record.help"
+    }
+  },
+  "SevenDayStatus": {
+    "_info": {
+      "name": "SevenDayStatus._info.name",
+      "help": "SevenDayStatus._info.help"
+    },
+    "Value": {
+      "name": "SevenDayStatus.Value.name",
+      "help": "SevenDayStatus.Value.help"
+    },
+    "Color": {
+      "name": "SevenDayStatus.Color.name",
+      "help": "SevenDayStatus.Color.help"
+    },
+    "Record": {
+      "name": "SevenDayStatus.Record.name",
+      "help": "SevenDayStatus.Record.help"
     }
   },
   "Scheduler": {
@@ -2265,6 +2287,16 @@
       "help": ""
     }
   },
+  "Smallevent": {
+    "_info": {
+      "name": "Smallevent._info.name",
+      "help": "Smallevent._info.help"
+    },
+    "SevenDayTask": {
+      "name": "Smallevent.SevenDayTask.name",
+      "help": "Smallevent.SevenDayTask.help"
+    }
+  },
   "Oilkeep": {
     "_info": {
       "name": "Oil Balance",
@@ -2916,6 +2948,7 @@
       "Medal": "Medal",
       "Core": "Core Data",
       "GuildCoin": "Guild Coin",
+      "SevenDayStatus": "Gui.Overview.SevenDayStatus",
       "Log": "Log",
       "Running": "Running",
       "Pending": "Pending",

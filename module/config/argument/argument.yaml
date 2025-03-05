@@ -54,7 +54,10 @@ GuildCoin:
   Value: 0
   Color: ^AAAAAA
   Record: 2020-01-01 00:00:00
-
+SevenDayStatus:
+  Value: 0
+  Color: ^AFAAAA
+  Record: 2020-01-01 00:00:00
 # ==================== Alas ====================
 
 Scheduler:
@@ -634,7 +637,8 @@ SupplyPack:
     option: [ 0, 1, 2, 3, 4, 5, 6 ]
 Minigame:
   Collect: false
-
+Smallevent:
+  SevenDayTask: true
 Oilkeep:
   OilkeepLevel: 8000
 # ==================== Daily ====================
