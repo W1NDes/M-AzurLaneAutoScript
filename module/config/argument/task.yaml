@@ -193,6 +193,8 @@ EventDaily:
       - Coalition
       - StopCondition
       - Emotion
+    EventStory:
+      - Scheduler
 
 # ==================== Reward ====================
 

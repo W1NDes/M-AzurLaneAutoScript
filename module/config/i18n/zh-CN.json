@@ -122,6 +122,10 @@
       "name": "童心学院每日SP",
       "help": ""
     },
+    "EventStory": {
+      "name": "活动剧情",
+      "help": "如果没有活动剧情，就不会运行，所以，勾上就行"
+    },
     "Commission": {
       "name": "委托",
       "help": ""

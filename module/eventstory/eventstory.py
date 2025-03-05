@@ -124,9 +124,11 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         return 'unknown'
 
     def run(self):
-        self.run_event_story()
+        if 1==1:
+            self.run_event_story()
 
         # Scheduler
+        self.config.task_delay(server_update=True)
         pass
 
 

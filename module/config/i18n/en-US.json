@@ -122,6 +122,10 @@
       "name": "Little Academy SP",
       "help": ""
     },
+    "EventStory": {
+      "name": "Task.EventStory.name",
+      "help": "Task.EventStory.help"
+    },
     "Commission": {
       "name": "Commission",
       "help": ""

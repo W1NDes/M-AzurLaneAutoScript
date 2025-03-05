@@ -18,7 +18,7 @@ class ManualConfig:
     > ShopFrequent > ShopOnce > Shipyard > Freebies > Daily > Hard 
     > Oilkeep > Event 
     > OpsiExplore
-    > Minigame > Awaken
+    > EventStory > Minigame > Awaken
     > OpsiAshBeacon
     > OpsiDaily > OpsiShop > OpsiVoucher
     > OpsiAbyssal > OpsiStronghold > OpsiObscure > OpsiArchive
