@@ -592,14 +592,18 @@ class RewardTacticalClass(Dock):
         selected_skill = self.find_not_full_level_skill()
 
         # If can't select a skill, think this ship no need study
-        if selected_skill is None:
+        if selected_skill is None and self.ifFavor is False:
             logger.info('No available skill to learn')
             return False
-
-        # If select a skill, think it not full level and should start or continue
-        # Here should check selected or not
-        self._tactical_skill_select(selected_skill)
-        self.device.click(SKILL_CONFIRM)
+        if selected_skill is None and self.ifFavor is True:
+            logger.info('Favorite ship No available skill to learn')
+            self.ifFavor = False
+            self.device.click(BACK_ARROW)
+        else:
+            # If select a skill, think it not full level and should start or continue
+            # Here should check selected or not
+            self._tactical_skill_select(selected_skill)
+            self.device.click(SKILL_CONFIRM)
 
         return True
 
@@ -607,14 +611,21 @@ class RewardTacticalClass(Dock):
         logger.hr(f'Select suitable ship')
 
         # Set if favorite from config
-        self.dock_favourite_set(enable=self.config.AddNewStudent_Favorite, wait_loading=False)
+        self.dock_favourite_set(enable=self.ifFavor, wait_loading=False)
 
         # reset filter
         self.dock_filter_set()
 
         # No ship in dock
-        if self.appear(DOCK_EMPTY, offset=(30, 30)):
-            logger.info('Dock is empty or favorite ships is empty')
+        if self.appear(DOCK_EMPTY, offset=(30, 30)) and self.config.AddNewStudent_Favorite == True:
+            logger.info('favorite ships is empty')
+            self.dock_favourite_set(enable=False, wait_loading=False)
+            self.dock_filter_set()
+            if self.appear(DOCK_EMPTY, offset=(30, 30)):
+                logger.info('favorite ships is empty and dock is empty')    
+                return False
+        if self.appear(DOCK_EMPTY, offset=(30, 30)) and self.config.AddNewStudent_Favorite == False:
+            logger.info('dock is empty')    
             return False
 
         # Ship cards may slow to show, like:
@@ -637,6 +648,9 @@ class RewardTacticalClass(Dock):
 
         should_select_button = None
         for button, level in list(zip(CARD_GRIDS.buttons, list_level))[self.dock_select_index:]:
+            if level == 1:#顺序扫到level=1的，说明后面高等级的已经都练完了
+                should_select_button = button
+                break
             # Select ship LV > 1 only
             if level > 1:
                 should_select_button = button
@@ -647,6 +661,7 @@ class RewardTacticalClass(Dock):
             return False
 
         # select a ship
+        
         self.dock_select_one(should_select_button, skip_first_screenshot=True)
         # Confirm selected ship
         # Clear interval if alas have just selected and exited from a meta skill
@@ -708,6 +723,7 @@ class RewardTacticalClass(Dock):
             in: Any
             out: page_tactical
         """
+        self.ifFavor = self.config.AddNewStudent_Favorite
         self.ui_ensure(page_reward)
 
         self.tactical_class_receive()
