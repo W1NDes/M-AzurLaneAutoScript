@@ -89,10 +89,16 @@ class SmallEvent(UI):
                 CLICK_COUNT += 1
                 continue    
             if self.appear_then_click(SEVEND_TASK_GET1, offset=(5, 5), interval=1):
+                if LogRes(self.config).SevenDayStatus >= 15:
+                    LogRes(self.config).SevenDayStatus = 0
+                LogRes(self.config).SevenDayStatus += 1
                 continue
             if self.appear_then_click(SEVEND_TASK_GET2, offset=(5, 5), interval=1):
+                if LogRes(self.config).SevenDayStatus >= 15:
+                    LogRes(self.config).SevenDayStatus = 0
+                LogRes(self.config).SevenDayStatus += 1
                 continue
-            # if self.appear(SEVEND_TASK_UNGET1, offset=(5, 5)) and self.appear(SEVEND_TASK_UNGET2, offset=(5, 5)):
+            # if self.appear(SEVEND_TASK_UNGET1 , offset=(5, 5)) and self.appear(SEVEND_TASK_UNGET2, offset=(5, 5)):
             #     break
             if self.story_skip():
                 continue   
@@ -107,15 +113,18 @@ class SmallEvent(UI):
                 NOCLICK_TIMER.reset()
                 if NOCLICK_COUNT >= 5:
                     logger.info("SEVEND_TASK No click TIMER REACHED")
-                    LogRes(self.config).SevenDayStatus = 0
+                    # LogRes(self.config).SevenDayStatus = 0
                     break
             if self.appear(SEVEND_TASK_FINISH, offset=(5, 5),similarity=0.95):
-                LogRes(self.config).SevenDayStatus = 7
+                LogRes(self.config).SevenDayStatus = 15
                 logger.info(f"SEVEND_TASK_{self.SEVEND_DATE} FINISH")
                 break
                 
             
     def run(self):
+        # LogRes(self.config).SevenDayStatus += 11
+        # logger.hr(LogRes(self.config).SevenDayStatus)
+        # logger.hr(self.config.cross_get('Dashboard.SevenDayStatus.Value'))
         if self.config.Smallevent_SevenDayTask == True:
             task_icon = f"SEVEND_TASK_{self.SEVEND_DATE}"
             task_get1 = f"SEVEND_TASK_GET1_{self.SEVEND_DATE}"
