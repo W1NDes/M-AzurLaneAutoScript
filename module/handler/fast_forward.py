@@ -442,8 +442,8 @@ class FastForwardHandler(AutoSearchHandler):
                     self.config.cross_set(keys=f'EventSp.EventDaily.StageFilter',value = f'SP') 
                     self.config.task_call('EventA')
                     # self.config.task_call('EventB')
-                    # self.config.task_call('EventC')
-                    # self.config.task_call('EventD')
+                    self.config.task_call('EventC') #######复刻活动开/新活动关
+                    self.config.task_call('EventD') #######复刻活动开/新活动关
                     self.config.task_call('EventSp')
                     self.config.task_call('Event2')
                 
