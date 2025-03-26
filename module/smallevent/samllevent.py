@@ -8,7 +8,7 @@ from module.base.timer import Timer
 from module.log_res.log_res import LogRes
 
 class SmallEvent(UI):
-    SEVEND_DATE = "20250220"  # 集中管理活动日期
+    SEVEND_DATE = "20250320"  # 集中管理活动日期
     
     def GirlShow(self):
         SMALL_EVENT_20250227_ENTRY =Button(area=(20, 280, 200, 330), color=(), button=(20, 280, 200, 330))
