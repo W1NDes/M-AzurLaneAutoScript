@@ -229,7 +229,6 @@ class Hospital(HospitalClue, HospitalCombat):
         secret_collect_button_9 = Button(area=(970, 480, 980, 490), color=(), button=(970, 480, 980, 490),name='SECRET_COLLECT_BUTTON_9')
         secret_collect_button_list = [secret_collect_button_1, secret_collect_button_2, secret_collect_button_3, secret_collect_button_4, secret_collect_button_5, next_secret_page_button,secret_collect_button_6, secret_collect_button_7, secret_collect_button_8, secret_collect_button_9]   
         for button in secret_collect_button_list:
-            logger.info(f'{button.name}')
             while 1:
                 self.device.screenshot()
                 if self.handle_story_skip():
@@ -241,6 +240,11 @@ class Hospital(HospitalClue, HospitalCombat):
                 if button.name  == 'NEXT_SECRET_PAGE_BUTTON' and self.is_in_daily_reward() and self.appear(NEXT_SECRET_PAGE_BUTTON):
                     self.device.click(NEXT_SECRET_PAGE_BUTTON)
                     break
+        while 1:  # Handle the last story
+            self.device.screenshot()        
+            if self.handle_story_skip():
+                self.device.sleep(2)
+                break
         return True
 
     def loop_aside(self):
@@ -287,6 +291,7 @@ class Hospital(HospitalClue, HospitalCombat):
             # if not selected:
             #     break
             if self.secret_collect():
+                self.device.screenshot()
                 self.loop_invest()
                 break
 
