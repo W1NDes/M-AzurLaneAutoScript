@@ -43,7 +43,8 @@ class HospitalSwitch(Switch):
 HOSPITAL_TAB = HospitalSwitch('HOSPITAL_ASIDE', is_selector=True)
 HOSPITAL_TAB.add_state('LOCATION', check_button=TAB_LOCATION)
 HOSPITAL_TAB.add_state('CHARACTER', check_button=TAB_CHARACTER)
-
+HOSPITAL_TAB.add_state('RECORD', check_button=TAB_RECORD)
+HOSPITAL_TAB.add_state('SECRET', check_button=TAB_SECRET)
 
 class Hospital(HospitalClue, HospitalCombat):
     def daily_red_dot_appear(self):
@@ -165,8 +166,24 @@ class Hospital(HospitalClue, HospitalCombat):
         if self.invest_reward_appear():
             logger.info('Invest reward appear')
         else:
-            logger.info('No invest reward')
-            return False
+            if HOSPITAL_TAB.get(main=self) == 'RECORD':
+                while 1:
+                    self.device.screenshot()
+                    if self.appear_then_click(RECORD_COLLECT,interval=1,similarity=0.95):
+                        continue
+                    if self.appear_then_click(RECORD_END,interval=1,similarity=0.9):
+                        continue
+                    # if reocrd is not None and self.is_record_selected(reocrd):
+                    #     return True
+                    reocrd = next(self.iter_record(), None)
+                    if reocrd is None:
+                        logger.info('No more reocrd')
+                        return False
+                    logger.info(f'is_in_record -> {reocrd}')
+                    self.device.click(reocrd)
+            else:
+                logger.info('No invest reward')
+                return False
         # Get reward
         skip_first_screenshot = True
         clicked = True
@@ -187,6 +204,15 @@ class Hospital(HospitalClue, HospitalCombat):
                 if self.invest_reward_appear():
                     self.device.click(INVEST_REWARD_RECEIVE)
                     continue
+
+    def secret_reward_collect(self):
+        """
+        Collect secret reward
+        """
+        if not self.invest_reward_appear():
+            return True 
+        self.device.click(INVEST_REWARD_RECEIVE)
+
 
     def loop_aside(self):
         """
@@ -212,6 +238,22 @@ class Hospital(HospitalClue, HospitalCombat):
             logger.hr('Loop hospital aside', level=1)
             HOSPITAL_TAB.set('CHARACTER', main=self)
             self.aside_swipe_down()
+            selected = self.select_aside()
+            if not selected:
+                break
+            self.loop_invest()
+
+        while 1:
+            logger.hr('Loop hospital aside', level=1)
+            HOSPITAL_TAB.set('RECORD', main=self)
+            selected = self.select_aside()
+            if not selected:
+                break
+            self.loop_invest()
+            
+        while 1:
+            logger.hr('Loop hospital aside', level=1)
+            HOSPITAL_TAB.set('SECRET', main=self)
             selected = self.select_aside()
             if not selected:
                 break

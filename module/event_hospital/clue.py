@@ -51,6 +51,57 @@ def merge_rows(list_word, merge):
 
 
 class HospitalClue(HospitalUI):
+
+    def get_record_list(self) -> List[Button]:
+        """
+        Get list of aside buttons
+        """
+        area = RECORD_LIST.area
+        image = self.image_crop(area, copy=False)
+
+        # Mask for gray letters
+        gray = color_similarity_2d(image, color=(90, 93, 99))
+        cv2.inRange(gray, 215, 255, dst=gray)
+        # Mask for selected aside (white letters)
+        white = color_similarity_2d(image, color=(255, 255, 255))
+        cv2.inRange(white, 215, 255, dst=white)
+        # Clear gray mask around white pixels
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (200, 20))
+        white_expanded = cv2.dilate(white, kernel)
+        cv2.subtract(gray, white_expanded, dst=gray)
+        # Mix
+        cv2.bitwise_or(gray, white, dst=gray)
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+        cv2.dilate(gray, kernel, dst=gray)
+
+        # import matplotlib.pyplot as plt
+        # plt.imshow(gray)
+        # plt.show()
+        # from PIL import Image
+        # Image.fromarray(gray, mode='L').show()
+
+        # Find rectangles
+        list_word = []
+        contours, _ = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        for cont in contours:
+            rect = cv2.boundingRect(cv2.convexHull(cont).astype(np.float32))
+            # Filter with rectangle height, usually to be 16
+            rect = xywh2xyxy(rect)
+            # Check max_height
+            if rect[3] - rect[1] < 12:
+                # logger.warning(f'Text row too high: {rect}')
+                continue
+            center_y = (rect[1] + rect[3]) // 2
+            list_word.append((rect, center_y))
+
+        list_row = merge_rows(list_word, merge=5)
+        list_row = [area_offset(r, offset=area[:2]) for r in list_row]
+        list_button = [
+            Button(area=rect, color=(), button=rect, name=f'RECORD_LIST_{i}')
+            for i, rect in enumerate(list_row)
+        ]
+        return list_button
+    
     def get_clue_list(self) -> List[Button]:
         """
         Get list of aside buttons
@@ -276,6 +327,34 @@ class HospitalClue(HospitalUI):
         list_button = self.get_clue_list()
         for button in list_button:
             if self.is_aside_checked(button):
+                continue
+            yield button
+
+    def is_record_selected(self, button: Button) -> bool:
+        area = button.area
+        search = CLUE_LIST.area
+        # Search around if having dark background
+        area = (search[0], area[1], search[2], area[3])
+        return self.image_color_count(area, color=(33, 77, 189), threshold=221, count=500)
+    
+    def is_record_checked(self, button: Button) -> bool:
+        area = button.area
+        search = RECORD_LIST.area
+        # Search if there's any cyan
+        area = (search[0], area[1], search[2], area[3])
+        result = not self.image_color_count(area, color=(206, 77, 82), threshold=200, count=15)
+        logger.info(f'is_record_checked: {result}')
+        return result
+
+    def iter_record(self):
+        """
+        Yields:
+            Button:
+        """
+        list_button = self.get_record_list()
+        for button in list_button:
+            logger.info(f'iter_record: {button.name}')
+            if self.is_record_checked(button):
                 continue
             yield button
 

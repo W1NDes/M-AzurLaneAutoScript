@@ -233,8 +233,13 @@ class UI(InfoHandler):
         self.interval_clear(list(Page.iter_check_buttons()))
 
         logger.hr(f"UI goto {destination}")
+        loop_count = 0
         while 1:
             GOTO_MAIN.clear_offset()
+            loop_count += 1
+            if loop_count > 100 and destination == page_event:
+                logger.warning(f'Loop count in ui_goto: {destination} too many times, break!')
+                raise RequestHumanTakeover
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
