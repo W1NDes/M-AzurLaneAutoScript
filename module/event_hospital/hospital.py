@@ -360,11 +360,9 @@ class Hospital(HospitalClue, HospitalCombat):
                 continue
             if self.ui_ensure(page_hospital):
                 continue
-            logger.warning("++++++++++++++++++++++++")
             if self.event_pt_limit_triggered():
                 logger.hr('Triggered stop condition: Event PT limit')
                 break
-            logger.warning("++++++++++++++++++++++++")
             HOSPITAL_SIDEBAR.set(time_map.get(time_period), main=self)
             self.device.click(button_map.get(map_name))
 
