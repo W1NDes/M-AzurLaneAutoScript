@@ -118,7 +118,16 @@ class HospitalCombat(Combat, HospitalUI, CampaignEvent):
         else:
             self.in_clue_confirm.reset()
         return False
-
+    
+    def hospital_expected_end_combat(self):
+        """
+        Returns:
+            bool: If combat ended
+        """
+        if self.handle_combat_exit():
+            return False
+        return False
+        
     def hospital_combat(self):
         """
         Pages:

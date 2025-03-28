@@ -728,7 +728,8 @@
       "ServerUpdate": "00:00"
     },
     "Hospital": {
-      "UseRecommendFleet": true
+      "UseRecommendFleet": true,
+      "mapName": "0-T1"
     },
     "StopCondition": {
       "OilLimit": 1000,
@@ -736,6 +737,7 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
+      "EventSwitch": false,
       "ReachLevel": 0
     },
     "Emotion": {

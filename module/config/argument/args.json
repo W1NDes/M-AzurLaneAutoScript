@@ -3230,13 +3230,13 @@
           "event_20250227_cn"
         ],
         "option_bold": [
-          "event_20240725_cn",
-          "event_20230223_cn"
+          "event_20230223_cn",
+          "event_20240521_cn"
         ],
         "cn": "event_20230223_cn",
         "en": "event_20230223_cn",
         "jp": "event_20230223_cn",
-        "tw": "event_20240725_cn"
+        "tw": "event_20240521_cn"
       },
       "Mode": {
         "type": "select",
@@ -3859,6 +3859,10 @@
       "UseRecommendFleet": {
         "type": "checkbox",
         "value": true
+      },
+      "mapName": {
+        "type": "input",
+        "value": "0-T1"
       }
     },
     "StopCondition": {
@@ -3892,6 +3896,10 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
+      },
+      "EventSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "ReachLevel": {
         "type": "input",

@@ -42,3 +42,22 @@ class HospitalUI(UI):
         if self.handle_get_clue():
             return True
         return False
+    
+    def handle_combat_exit(self):
+        """
+        Returns:
+            bool: If clicked
+        """
+        if self.appear_then_click(HOSPITAL_BATTLE_EXIT, offset=(20, 20), interval=2):
+            return True
+        if self.appear(BATTLE_PREPARATION, offset=(30, 20), interval=2):
+            logger.info(f'{BATTLE_PREPARATION} -> {BACK}')
+            self.device.click(BACK)
+            return True
+        if self.appear(RAID_FLEET_PREPARATION, offset=(30, 30), interval=2):
+            logger.info(f'{RAID_FLEET_PREPARATION} -> {BACK}')
+            self.device.click(BACK)
+            return True
+        if self.handle_get_clue():
+            return True
+        return False

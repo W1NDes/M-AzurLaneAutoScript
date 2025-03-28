@@ -46,6 +46,16 @@ HOSPITAL_TAB.add_state('CHARACTER', check_button=TAB_CHARACTER)
 HOSPITAL_TAB.add_state('RECORD', check_button=TAB_RECORD)
 HOSPITAL_TAB.add_state('SECRET', check_button=TAB_SECRET)
 
+HOSPITAL_SIDEBAR = HospitalSwitch('HOSPITAL_SIDEBAR', is_selector=True)
+HOSPITAL_SIDEBAR.add_state('MORNING', check_button=SIDEBAR_MORNING)
+HOSPITAL_SIDEBAR.add_state('NOON', check_button=SIDEBAR_NOON)
+HOSPITAL_SIDEBAR.add_state('NIGHT', check_button=SIDEBAR_NIGHT)
+T1 = Button(area=(370, 268, 390, 290), color=(), button=(370, 268, 390, 290),name='T1')
+T2 = Button(area=(250, 400, 270, 420), color=(), button=(250, 400, 270, 420),name='T2')
+T3 = Button(area=(640, 530, 660, 550), color=(), button=(640, 530, 660, 550),name='T3')
+T4 = Button(area=(990, 400, 1010, 420), color=(), button=(990, 400, 1010, 420),name='T4')
+
+
 class Hospital(HospitalClue, HospitalCombat):
     def daily_red_dot_appear(self):
         return self.image_color_count(DAILY_RED_DOT, color=(189, 69, 66), threshold=221, count=35)
@@ -321,6 +331,56 @@ class Hospital(HospitalClue, HospitalCombat):
                 swiped = True
                 continue
 
+    def hospital_expected_end_combat(self):
+        """
+        Returns:
+            bool: If combat ended
+        """
+        if self.handle_combat_exit():
+            return True
+        return False
+
+    def ptRun(self):
+        time_map = {'1': 'MORNING', '2': 'NOON', '3': 'NIGHT'}
+        button_map = {'T1': T1, 'T2': T2, 'T3': T3, 'T4': T4}
+        time_period = self.config.Hospital_mapName.split('-')[0]
+        map_name = self.config.Hospital_mapName.split('-')[1].strip()
+
+
+        while 1:
+            self.device.screenshot()
+
+            if self.event_time_limit_triggered():
+                self.config.task_stop()
+
+            # Log
+            logger.hr(f'{time_map.get(time_period)}_{map_name}', level=2)
+            # UI switches
+            if self.handle_combat_exit():
+                continue
+            if self.ui_ensure(page_hospital):
+                continue
+            logger.warning("++++++++++++++++++++++++")
+            if self.event_pt_limit_triggered():
+                logger.hr('Triggered stop condition: Event PT limit')
+                break
+            logger.warning("++++++++++++++++++++++++")
+            HOSPITAL_SIDEBAR.set(time_map.get(time_period), main=self)
+            self.device.click(button_map.get(map_name))
+
+            self.device.stuck_record_clear()
+            self.device.click_record_clear()
+            try:
+                self.combat(balance_hp=False, expected_end=self.hospital_expected_end_combat)
+                self.handle_combat_exit()
+            except ScriptEnd as e:
+                logger.hr('Script end')
+                logger.info(str(e))
+                break
+            # Scheduler
+            if self.config.task_switched():
+                self.config.task_stop()
+
     def run(self):
         self.ui_ensure(page_hospital)
         self.daily_reward_receive()
@@ -328,6 +388,9 @@ class Hospital(HospitalClue, HospitalCombat):
         self.clue_enter()
         try:
             self.loop_aside()
+            if not self.config.Hospital_mapName.startswith("0"):
+                self.clue_exit()
+                self.ptRun()
             # Scheduler
             self.config.task_delay(server_update=True)
         except OilExhausted:
