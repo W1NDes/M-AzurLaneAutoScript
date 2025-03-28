@@ -385,7 +385,8 @@ class Hospital(HospitalClue, HospitalCombat):
 
         self.clue_enter()
         try:
-            self.loop_aside()
+            if not self.config.Hospital_mapName.endswith("Q"):
+                self.loop_aside()
             if not self.config.Hospital_mapName.startswith("0"):
                 self.clue_exit()
                 self.ptRun()
