@@ -238,10 +238,17 @@ class HospitalClue(HospitalUI):
             if button:
                 yield button
         # Iter page
+        loop_count = 0
         while 1:
+            loop_count += 1
+            if loop_count > 100:
+                logger.warning(f'Nan Scroll too many times, break!')
+                return
+                
             if scroll.at_bottom(main=self):
                 logger.info(f'{scroll.name} reached end')
                 return
+                
             scroll.next_page(main=self, page=0.5)
             button = self.get_invest_button()
             if button:
