@@ -204,15 +204,44 @@ class Hospital(HospitalClue, HospitalCombat):
                 if self.invest_reward_appear():
                     self.device.click(INVEST_REWARD_RECEIVE)
                     continue
+            if self.handle_story_skip():
+                continue
 
-    def secret_reward_collect(self):
+    def secret_collect(self):
         """
         Collect secret reward
         """
-        if not self.invest_reward_appear():
-            return True 
-        self.device.click(INVEST_REWARD_RECEIVE)
-
+        if self.invest_reward_appear():
+            return True
+        if self.match_template_color(INVEST_REWARD_RECEIVE,similarity=0.95,threshold=221):
+            pass
+        else:
+            return True
+        secret_collect_button_1 = Button(area=(280, 300, 290, 320), color=(), button=(280, 300, 290, 320),name='SECRET_COLLECT_BUTTON_1')
+        secret_collect_button_2 = Button(area=(623, 248, 640, 260), color=(), button=(623, 248, 640, 260),name='SECRET_COLLECT_BUTTON_2')
+        secret_collect_button_3 = Button(area=(980, 300, 990, 320), color=(), button=(980, 300, 990, 320),name='SECRET_COLLECT_BUTTON_3')
+        secret_collect_button_4 = Button(area=(440, 510, 450, 520), color=(), button=(440, 510, 450, 520),name='SECRET_COLLECT_BUTTON_4')
+        secret_collect_button_5 = Button(area=(800, 500, 810, 510), color=(), button=(800, 500, 810, 510),name='SECRET_COLLECT_BUTTON_5')
+        next_secret_page_button = Button(area=(1180, 350, 1215, 400), color=(), button=(1180, 350, 1215, 400),name='NEXT_SECRET_PAGE_BUTTON')
+        secret_collect_button_6 = Button(area=(343, 295, 350, 300), color=(), button=(343, 295, 350, 300),name='SECRET_COLLECT_BUTTON_6')  
+        secret_collect_button_7 = Button(area=(790, 266, 800, 270), color=(), button=(790, 266, 800, 270),name='SECRET_COLLECT_BUTTON_7')
+        secret_collect_button_8 = Button(area=(542, 523, 550, 530), color=(), button=(542, 523, 550, 530),name='SECRET_COLLECT_BUTTON_8')
+        secret_collect_button_9 = Button(area=(970, 480, 980, 490), color=(), button=(970, 480, 980, 490),name='SECRET_COLLECT_BUTTON_9')
+        secret_collect_button_list = [secret_collect_button_1, secret_collect_button_2, secret_collect_button_3, secret_collect_button_4, secret_collect_button_5, next_secret_page_button,secret_collect_button_6, secret_collect_button_7, secret_collect_button_8, secret_collect_button_9]   
+        for button in secret_collect_button_list:
+            logger.info(f'{button.name}')
+            while 1:
+                self.device.screenshot()
+                if self.handle_story_skip():
+                    continue
+                if self.is_in_daily_reward(interval=1) and button.name != 'NEXT_SECRET_PAGE_BUTTON':
+                    self.device.click(button)
+                    self.device.sleep(2)
+                    break
+                if button.name  == 'NEXT_SECRET_PAGE_BUTTON' and self.is_in_daily_reward() and self.appear(NEXT_SECRET_PAGE_BUTTON):
+                    self.device.click(NEXT_SECRET_PAGE_BUTTON)
+                    break
+        return True
 
     def loop_aside(self):
         """
@@ -254,10 +283,12 @@ class Hospital(HospitalClue, HospitalCombat):
         while 1:
             logger.hr('Loop hospital aside', level=1)
             HOSPITAL_TAB.set('SECRET', main=self)
-            selected = self.select_aside()
-            if not selected:
+            # selected = self.select_aside()
+            # if not selected:
+            #     break
+            if self.secret_collect():
+                self.loop_invest()
                 break
-            self.loop_invest()
 
         logger.info('Loop hospital aside end')
 
