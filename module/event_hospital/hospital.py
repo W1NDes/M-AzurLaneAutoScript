@@ -369,12 +369,16 @@ class Hospital(HospitalClue, HospitalCombat):
             self.device.stuck_record_clear()
             self.device.click_record_clear()
             try:
+                from module.exception import GameStuckError
                 self.combat(balance_hp=False, expected_end=self.hospital_expected_end_combat)
                 self.handle_combat_exit()
             except ScriptEnd as e:
                 logger.hr('Script end')
                 logger.info(str(e))
                 break
+            except GameStuckError as e:
+               if self.detect_low_emotion():
+                   return False
             # Scheduler
             if self.config.task_switched():
                 self.config.task_stop()
@@ -384,14 +388,18 @@ class Hospital(HospitalClue, HospitalCombat):
         self.daily_reward_receive()
 
         self.clue_enter()
+        delay = True
         try:
             if not self.config.Hospital_mapName.endswith("Q"):
                 self.loop_aside()
             if not self.config.Hospital_mapName.startswith("0"):
                 self.clue_exit()
-                self.ptRun()
+                if not self.ptRun():
+                    delay = False
+
             # Scheduler
-            self.config.task_delay(server_update=True)
+            if delay:
+                self.config.task_delay(server_update=True)
         except OilExhausted:
             self.clue_exit()
             logger.hr('Triggered stop condition: Oil limit')
