@@ -822,6 +822,12 @@
       "do_not": "無操作",
       "save": "保存"
     },
+    "NewShipRecord": {
+      "name": "DropRecord.NewShipRecord.name",
+      "help": "DropRecord.NewShipRecord.help",
+      "do_not": "do_not",
+      "save": "save"
+    },
     "OpsiRecord": {
       "name": "大世界掉落截圖",
       "help": "",

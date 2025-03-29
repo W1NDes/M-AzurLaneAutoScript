@@ -5,7 +5,7 @@ from module.gacha.assets import *
 from module.gacha.ui import GachaUI
 from module.handler.assets import POPUP_CONFIRM, STORY_SKIP
 from module.logger import logger
-from module.ocr.ocr import Digit
+from module.ocr.ocr import Digit, Ocr
 from module.retire.retirement import Retirement
 from module.shop.shop_general import GeneralShop
 from module.log_res.log_res import LogRes
@@ -233,8 +233,12 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
                 confirm_timer.reset()
                 continue
 
-            if self.appear(GET_SHIP, interval=1):
-                self.device.click(STORY_SKIP)  # Fast forward for multiple orders
+            # if self.appear(GET_SHIP, interval=1):
+            #     self.device.click(STORY_SKIP)  # Fast forward for multiple orders
+            #     confirm_timer.reset()
+            #     continue
+            if self.handle_get_ship():
+                # self.device.click(STORY_SKIP)
                 confirm_timer.reset()
                 continue
 
@@ -351,3 +355,55 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
         """
         self.gacha_run()
         self.config.task_delay(server_update=True)
+
+    def handle_get_ship(self, drop=None, skip_first_screenshot=True):
+        """
+        Args:
+            drop (DropImage):
+        Returns:
+            bool:
+        """
+        if not self.appear(GET_SHIP, interval=5):
+            return False
+
+        if 'save' in self.config.DropRecord_NewShipRecord:
+            confirm_timer = Timer(3)
+        else:
+            confirm_timer = Timer(1)
+        confirm_timer.start()
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            # End
+            if confirm_timer.reached():
+                break
+            from module.combat.assets import NEW_SHIP
+            if self.appear(NEW_SHIP):
+                logger.info('Get a new SHIP')
+                # Use OCR to recognize ship name
+                ship_name_area = (360, 548, 550, 580)  # Ship name area
+                ship_name_ocr = Ocr(ship_name_area, lang="cnocr")
+                ship_name = ship_name_ocr.ocr(self.device.image)
+                logger.info(f'New ship name: {ship_name}')
+                
+
+                from datetime import datetime
+                current_date = datetime.now()
+                date_prefix = f"{current_date.month}_{current_date.day}_"
+                ship_name_with_date = date_prefix + ship_name
+                
+                if drop:
+                    drop.handle_add(self)
+                with self.stat.new(
+                    genre=self.config.config_name,
+                    method=self.config.DropRecord_NewShipRecord,
+                    info=ship_name_with_date
+                ) as drop2:
+                    drop2.handle_add(self, before=1.0)
+                self.config.GET_SHIP_TRIGGERED = True
+                break
+        self.device.click(GET_SHIP)
+        return True
