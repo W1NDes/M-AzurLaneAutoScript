@@ -142,7 +142,7 @@ class AlasGUI(Frame):
         self.alas_config = AzurLaneConfig("template")
         self.initial()
         # rendered state cache
-        self.rendered_cache = []
+        self.rendered_cache = {}
         self.inst_cache = []
         self.load_home = False
         self.af_flag = False
@@ -168,7 +168,7 @@ class AlasGUI(Frame):
             if match:
                 # Get the numeric value at the end
                 num_val = int(match.group())
-                numeric_instances.append((name, num_val))
+                numeric_instances.append((num_val, name))
             else:
                 regular_instances.append(name)
         
@@ -178,12 +178,11 @@ class AlasGUI(Frame):
         regular_instances.sort()
         
         # Display instances in order
-        for name, _ in numeric_instances:
-            put_icon_buttons(
-                Icon.RUN,
-                buttons=[{"label": name, "value": name, "color": "aside"}],
-                onclick=self.ui_alas,
-            )
+        put_scope("aside_instance",[
+            put_scope(f"alas-instance-{name}",[])
+                for _, name in numeric_instances
+        ])
+
         for name in regular_instances:
             put_icon_buttons(
                 Icon.RUN,
@@ -191,11 +190,7 @@ class AlasGUI(Frame):
                 onclick=self.ui_alas,
             )
             
-        # Manage button
-        put_scope("aside_instance",[
-            put_scope(f"alas-instance-{i}",[])
-            for i, _ in enumerate(alas_instance())
-        ])
+
         self.set_aside_status()
         put_icon_buttons(
             Icon.SETTING,
@@ -217,14 +212,15 @@ class AlasGUI(Frame):
     def set_aside_status(self) -> None:
         flag = True       
         def update(name, seq):
-            with use_scope(f"alas-instance-{seq}", clear=True):
+            with use_scope(f"alas-instance-{name}", clear=True):
                 icon_html = Icon.RUN
                 rendered_state = ProcessManager.get_manager(inst).state
+                if rendered_state == 4: rendered_state = 2
                 if rendered_state == 1 and self.af_flag:
                     icon_html = icon_html[:31] + ' anim-rotate' + icon_html[31:]
                 put_icon_buttons(
                     icon_html,
-                    buttons=[{"label": name, "value": name, "color": "aside"}],
+                    buttons=[{"label": name, "value": name, "color": f"aside-{rendered_state}"}],
                     onclick=self.ui_alas,
                 )
             return rendered_state
@@ -233,19 +229,24 @@ class AlasGUI(Frame):
             # Reload when add/delete new instance | first start app.py | go to HomePage (HomePage load call force reload)
             flag = False
             self.inst_cache.clear()
-            self.inst_cache = alas_instance()
+            for name in alas_instance():
+                match = re.search(r'\d+$', name)
+                if match:
+                    num_val = int(match.group())
+                    self.inst_cache.append((num_val, name))
+            self.inst_cache.sort(key=lambda x: x[1])
         if flag:
-            for index, inst in enumerate(self.inst_cache):
+            for index, inst in self.inst_cache:
                 # Check for state change
                 state = ProcessManager.get_manager(inst).state
-                if state != self.rendered_cache[index]:
-                    self.rendered_cache[index] = update(inst, index)
+                if state != self.rendered_cache[inst]:
+                    self.rendered_cache[inst] = update(inst, index)
                     flag = False
         else:
             self.rendered_cache.clear()
             clear("aside_instance")
-            for index, inst in enumerate(self.inst_cache):
-                self.rendered_cache.append(update(inst, index))
+            for index, inst in self.inst_cache:
+                self.rendered_cache[inst] = update(inst, index)
             self.load_home = False
         if not flag:
             # Redraw lost focus, now focus on aside button

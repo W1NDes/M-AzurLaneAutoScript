@@ -60,6 +60,43 @@ footer {
     transition: border .1s ease-in-out, padding .1s ease-in-out
 }
 
+.btn-aside-3 {
+    width: 4rem;
+    font-weight: 400;
+    font-size: .8rem;
+    background-color: transparent;
+    padding: 32px 0 0 7px;
+    border-radius: 0;
+    border: 0 solid;
+    transition: border .1s ease-in-out, padding .1s ease-in-out;
+    border-color: #dd5c25;
+    color: #dd5c25;
+}
+
+.btn-aside-2 {
+    width: 4rem;
+    font-weight: 400;
+    font-size: .8rem;
+    background-color: transparent;
+    padding: 32px 0 0 7px;
+    border-radius: 0;
+    border: 0 solid;
+    transition: border .1s ease-in-out, padding .1s ease-in-out
+}
+
+.btn-aside-1 {
+    width: 4rem;
+    font-weight: 400;
+    font-size: .8rem;
+    background-color: transparent;
+    padding: 32px 0 0 7px;
+    border-radius: 0;
+    border: 0 solid;
+    transition: border .1s ease-in-out, padding .1s ease-in-out;
+    border-color: #4c975c;
+    color: #4c975c;
+}
+
 .btn-aside:hover,
 .btn-aside-active {
     border-left: 4px solid;

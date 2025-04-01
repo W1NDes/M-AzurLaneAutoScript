@@ -106,6 +106,9 @@ class Frame(Base):
         run_js(
             f"""
             $("button.btn-{position}").removeClass("btn-{position}-active");
+            $("button.btn-{position}-1").removeClass("btn-{position}-active");
+            $("button.btn-{position}-2").removeClass("btn-{position}-active");
+            $("button.btn-{position}-3").removeClass("btn-{position}-active");
             $("div[style*='--{position}-{value}--']>button").addClass("btn-{position}-active");
         """
         )
