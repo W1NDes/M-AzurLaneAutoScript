@@ -173,7 +173,7 @@ class AlasGUI(Frame):
                 regular_instances.append(name)
         
         # Sort numeric instances by their number
-        numeric_instances.sort(key=lambda x: x[1])
+        numeric_instances.sort(key=lambda x: x[0])
         # Sort regular instances alphabetically
         regular_instances.sort()
         
@@ -234,7 +234,7 @@ class AlasGUI(Frame):
                 if match:
                     num_val = int(match.group())
                     self.inst_cache.append((num_val, name))
-            self.inst_cache.sort(key=lambda x: x[1])
+            self.inst_cache.sort(key=lambda x: x[0])
         if flag:
             for index, inst in self.inst_cache:
                 # Check for state change
