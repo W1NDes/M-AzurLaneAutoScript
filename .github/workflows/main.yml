@@ -10,6 +10,7 @@ jobs:
       - uses: tgymnich/fork-sync@v1.8
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
+          auto_approve: true
           owner: LmeSzinc
           repo: AzurLaneAutoScript
           base: master
