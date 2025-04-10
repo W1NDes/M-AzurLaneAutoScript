@@ -1,5 +1,5 @@
 version: "1"
 rules:
   - base: master
-    upstream: LmeSzinc:master # change `wei` to the owner of upstream repo
+    upstream: LmeSzinc:AzurLaneAutoScript # change `wei` to the owner of upstream repo
     mergeMethod: hardreset
