@@ -24,7 +24,7 @@
 11.检测到低心情后修正心情值并停止（误差过大会告警）
 
 12.WalkStepError多次尝试
-
+ 
 # 文档
 
 **| [English](README_en.md) | 简体中文 | [日本語](README_jp.md) |**
