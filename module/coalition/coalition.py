@@ -104,10 +104,9 @@ class Coalition(CoalitionCombat, CampaignEvent):
                 Coalition_Fleet='multi',
             )
         self.emotion.check_reduce(battle=self.coalition_get_battles(event, stage))
-
-        self.enter_map(event=event, stage=stage, mode=fleet)
         if self.triggered_stop_condition(oil_check=True):
             raise ScriptEnd
+        self.enter_map(event=event, stage=stage, mode=fleet)
         self.coalition_combat()
 
     @staticmethod
@@ -117,15 +116,19 @@ class Coalition(CoalitionCombat, CampaignEvent):
             stage = stage.replace('-', '')
 
         return event, stage
-
-    def run(self, event='', mode='', fleet='', total=0):
+    
+    def get_run_info(self, event, mode, fleet):
         event = event if event else self.config.Campaign_Event
         mode = mode if mode else self.config.Coalition_Mode
         fleet = fleet if fleet else self.config.Coalition_Fleet
         if not event or not mode or not fleet:
             raise ScriptError(f'Coalition arguments unfilled. name={event}, mode={mode}, fleet={fleet}')
-
         event, mode = self.handle_stage_name(event, mode)
+        return event, mode, fleet
+    
+    def run(self, event='', mode='', fleet='', total=0):
+        event, mode, fleet = self.get_run_info(event, mode, fleet)
+
         self.run_count = 0
         self.run_limit = self.config.StopCondition_RunCount
         while 1:
@@ -167,6 +170,20 @@ class Coalition(CoalitionCombat, CampaignEvent):
             if self.config.StopCondition_RunCount:
                 self.config.StopCondition_RunCount -= 1
             # End
+        
+
+            if self.config.StopCondition_StageIncrease:
+                prev_stage = self.config.Coalition_Mode
+                next_stage = self.coalition_name_increase(prev_stage)
+                if next_stage != prev_stage:
+                    logger.info(f'Stage {prev_stage} increases to {next_stage}')
+                    self.config.Coalition_Mode = next_stage
+                    event, mode, fleet = self.get_run_info(event, self.config.Coalition_Mode, fleet)
+                    continue
+                elif self.config.StopCondition_EventSwitch:
+                    if not self.config.is_task_enabled('CoalitionSp'):
+                        self.config.task_call('CoalitionSp')
+                    continue
             if self.triggered_stop_condition(pt_check=True):
                 break
             # Scheduler

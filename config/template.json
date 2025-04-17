@@ -778,6 +778,7 @@
       "AmbushEvade": true
     },
     "Coalition": {
+      "UseRecommendFleet": true,
       "Mode": "tc1",
       "Fleet": "single"
     },
@@ -1366,6 +1367,7 @@
       "AmbushEvade": true
     },
     "Coalition": {
+      "UseRecommendFleet": true,
       "Mode": "sp",
       "Fleet": "single"
     },

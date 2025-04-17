@@ -1574,6 +1574,10 @@
       "name": "活動設定",
       "help": "出擊前必須在遊戲內手動配隊"
     },
+    "UseRecommendFleet": {
+      "name": "Coalition.UseRecommendFleet.name",
+      "help": "Coalition.UseRecommendFleet.help"
+    },
     "Mode": {
       "name": "難度",
       "help": "SP圖需要使用活動每日SP運行",

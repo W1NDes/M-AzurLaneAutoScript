@@ -1574,6 +1574,10 @@
       "name": "Event Settings",
       "help": "Fleets must be prepared manually in game before running"
     },
+    "UseRecommendFleet": {
+      "name": "Coalition.UseRecommendFleet.name",
+      "help": "Coalition.UseRecommendFleet.help"
+    },
     "Mode": {
       "name": "Mode",
       "help": "SP needs to use event daily SP to run",

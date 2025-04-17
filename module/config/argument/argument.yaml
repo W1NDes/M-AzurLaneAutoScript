@@ -369,6 +369,7 @@ Hospital:
 MaritimeEscort:
   Enable: true
 Coalition:
+  UseRecommendFleet: true
   Mode:
     value: tc1
     option: [ tc1, tc2, tc3, sp, ex ]

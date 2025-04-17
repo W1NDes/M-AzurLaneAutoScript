@@ -1574,6 +1574,10 @@
       "name": "Coalition._info.name",
       "help": "Coalition._info.help"
     },
+    "UseRecommendFleet": {
+      "name": "Coalition.UseRecommendFleet.name",
+      "help": "Coalition.UseRecommendFleet.help"
+    },
     "Mode": {
       "name": "Coalition.Mode.name",
       "help": "Coalition.Mode.help",

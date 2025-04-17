@@ -18,7 +18,7 @@ class CoalitionCombat(CoalitionUI, CampaignBase):
         """
         logger.info('Coalition combat re-enter')
         status_clicked = False
-        click_timer = Timer(0.3)
+        click_timer = Timer(2)
         click_last = Timer(2)
         while 1:
             if skip_first_screenshot:
