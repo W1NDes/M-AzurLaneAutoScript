@@ -766,7 +766,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -1147,7 +1148,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -1528,7 +1530,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -2043,7 +2046,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -2845,7 +2849,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -3239,12 +3244,12 @@
         ],
         "option_bold": [
           "event_20230223_cn",
-          "event_20240521_cn"
+          "event_20241024_cn"
         ],
         "cn": "event_20230223_cn",
         "en": "event_20230223_cn",
         "jp": "event_20230223_cn",
-        "tw": "event_20240521_cn"
+        "tw": "event_20241024_cn"
       },
       "Mode": {
         "type": "select",
@@ -3307,7 +3312,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -3729,7 +3735,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -3907,7 +3914,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -4144,8 +4152,7 @@
       },
       "StageIncrease": {
         "type": "checkbox",
-        "value": false,
-        "display": "hide"
+        "value": false
       },
       "GetNewShip": {
         "type": "checkbox",
@@ -4455,7 +4462,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -4937,7 +4945,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -5420,7 +5429,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -5903,7 +5913,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -6386,7 +6397,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -6869,7 +6881,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -7284,7 +7297,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -7530,7 +7544,8 @@
       },
       "EventSwitch": {
         "type": "checkbox",
-        "value": false
+        "value": false,
+        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",

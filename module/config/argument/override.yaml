@@ -20,12 +20,18 @@ Restart:
 Main:
   Campaign:
     Event: campaign_main
+  StopCondition:
+    EventSwitch: false
 Main2:
   Campaign:
     Event: campaign_main
+  StopCondition:
+    EventSwitch: false
 Main3:
   Campaign:
     Event: campaign_main
+  StopCondition:
+    EventSwitch: false
 GemsFarming:
   Campaign:
     Event:
@@ -41,6 +47,7 @@ GemsFarming:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
   Fleet:
     FleetOrder:
       display: display
@@ -61,12 +68,16 @@ Event2:
     Event:
       type: state
     AmbushEvade: true
+  StopCondition:
+    EventSwitch: false
 Event3:
   Campaign:
     Mode: normal
     Event:
       type: state
     AmbushEvade: true
+  StopCondition:
+    EventSwitch: false
 EventA:
   Scheduler:
     SuccessInterval: 30
@@ -85,6 +96,7 @@ EventA:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
 EventB:
   Scheduler:
     SuccessInterval: 30
@@ -103,6 +115,7 @@ EventB:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
 EventC:
   Scheduler:
     SuccessInterval: 30
@@ -121,6 +134,7 @@ EventC:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
 EventD:
   Scheduler:
     SuccessInterval: 30
@@ -139,6 +153,7 @@ EventD:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
 EventSp:
   Scheduler:
     SuccessInterval: 30
@@ -157,6 +172,7 @@ EventSp:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
   Submarine:
     AutoSearchMode: sub_standby
 Raid:
@@ -175,6 +191,7 @@ Raid:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
@@ -188,6 +205,7 @@ Hospital:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
   Emotion:
     Fleet1Control: prevent_yellow_face
     Fleet1Recover: not_in_dormitory
@@ -218,6 +236,7 @@ RaidDaily:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
@@ -249,7 +268,6 @@ Coalition:
       option: [ tc1, tc2, tc3, ex ]
   StopCondition:
     MapAchievement: non_stop
-    StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
   Emotion:
@@ -281,6 +299,7 @@ CoalitionSp:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
+    EventSwitch: false
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
@@ -396,6 +415,8 @@ WarArchives:
   Campaign:
     Mode: normal
     AmbushEvade: true
+  StopCondition:
+    EventSwitch: false
 
 # ==================== Opsi ====================
 
