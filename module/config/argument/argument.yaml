@@ -169,6 +169,17 @@ DropRecord:
   NewShipRecord:
     value: do_not
     option: [ do_not, save ]
+  NewShipOcrMethod:
+    value: LOCAL
+    option: [ LOCAL, API_BASIC, API_ACCURATE ]
+  BaiduAPIKey:
+    type: textarea
+    mode: yaml
+    value: 'null'
+  BaiduAPISecret:
+    type: textarea
+    mode: yaml
+    value: 'null'
   OpsiRecord:
     value: do_not
     option: [ do_not, save, upload, save_and_upload ]

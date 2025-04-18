@@ -119,6 +119,9 @@ class GeneratedConfig:
     DropRecord_CommissionRecord = 'do_not'  # do_not, save, upload, save_and_upload
     DropRecord_CombatRecord = 'do_not'  # do_not, save
     DropRecord_NewShipRecord = 'do_not'  # do_not, save
+    DropRecord_NewShipOcrMethod = 'LOCAL'  # LOCAL, API_BASIC, API_ACCURATE
+    DropRecord_BaiduAPIKey = 'null'
+    DropRecord_BaiduAPISecret = 'null'
     DropRecord_OpsiRecord = 'do_not'  # do_not, save, upload, save_and_upload
     DropRecord_MeowfficerBuy = 'do_not'  # do_not, save
     DropRecord_MeowfficerTalent = 'do_not'  # do_not, save, upload, save_and_upload

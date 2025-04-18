@@ -828,6 +828,21 @@
       "do_not": "无操作",
       "save": "保存"
     },
+    "NewShipOcrMethod": {
+      "name": "新船只掉落截图 OCR 方法",
+      "help": "仅在 \"新船只掉落截图\" 设置为 \"保存\" 时生效，如果选择 \"API\"，请先在 \"百度OCR的API_Key\" 和 \"百度OCR的API_Secret\" 中填写百度 OCR API Key 和 Secret;详见\"https://ai.baidu.com/ai-doc/REFERENCE/Lkru0zoz4\"",
+      "LOCAL": "本地识别",
+      "API_BASIC": "基础API",
+      "API_ACCURATE": "精准API"
+    },
+    "BaiduAPIKey": {
+      "name": "百度OCR的API_Key",
+      "help": ""
+    },
+    "BaiduAPISecret": {
+      "name": "百度OCR的API_Secret",
+      "help": ""
+    },
     "OpsiRecord": {
       "name": "大世界掉落截图",
       "help": "",

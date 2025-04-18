@@ -828,6 +828,21 @@
       "do_not": "do_not",
       "save": "save"
     },
+    "NewShipOcrMethod": {
+      "name": "DropRecord.NewShipOcrMethod.name",
+      "help": "DropRecord.NewShipOcrMethod.help",
+      "LOCAL": "LOCAL",
+      "API_BASIC": "API_BASIC",
+      "API_ACCURATE": "API_ACCURATE"
+    },
+    "BaiduAPIKey": {
+      "name": "DropRecord.BaiduAPIKey.name",
+      "help": "DropRecord.BaiduAPIKey.help"
+    },
+    "BaiduAPISecret": {
+      "name": "DropRecord.BaiduAPISecret.name",
+      "help": "DropRecord.BaiduAPISecret.help"
+    },
     "OpsiRecord": {
       "name": "大世界掉落截圖",
       "help": "",

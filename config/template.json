@@ -107,6 +107,9 @@
       "CommissionRecord": "do_not",
       "CombatRecord": "do_not",
       "NewShipRecord": "do_not",
+      "NewShipOcrMethod": "LOCAL",
+      "BaiduAPIKey": "null",
+      "BaiduAPISecret": "null",
       "OpsiRecord": "do_not",
       "MeowfficerBuy": "do_not",
       "MeowfficerTalent": "do_not"

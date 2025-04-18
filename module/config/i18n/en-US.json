@@ -828,6 +828,21 @@
       "do_not": "do_not",
       "save": "save"
     },
+    "NewShipOcrMethod": {
+      "name": "New Ship OCR Method",
+      "help": "",
+      "LOCAL": "Local",
+      "API_BASIC": "Basic API",
+      "API_ACCURATE": "Accurate API"
+    },
+    "BaiduAPIKey": {
+      "name": "Baidu OCR API Key",
+      "help": ""
+    },
+    "BaiduAPISecret": {
+      "name": "Baidu OCR API Secret",
+      "help": ""
+    },
     "OpsiRecord": {
       "name": "OpSi Record",
       "help": "",

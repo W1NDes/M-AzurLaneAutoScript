@@ -484,6 +484,25 @@
           "save"
         ]
       },
+      "NewShipOcrMethod": {
+        "type": "select",
+        "value": "LOCAL",
+        "option": [
+          "LOCAL",
+          "API_BASIC",
+          "API_ACCURATE"
+        ]
+      },
+      "BaiduAPIKey": {
+        "type": "textarea",
+        "value": "null",
+        "mode": "yaml"
+      },
+      "BaiduAPISecret": {
+        "type": "textarea",
+        "value": "null",
+        "mode": "yaml"
+      },
       "OpsiRecord": {
         "type": "select",
         "value": "do_not",
