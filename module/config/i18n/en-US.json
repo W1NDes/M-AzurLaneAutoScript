@@ -2383,6 +2383,10 @@
     "OilkeepLevel": {
       "name": "Oil Balance Value",
       "help": "The default value is 8000, that is, when the amount of oil is less than 7900, you will receive oil to 7900"
+    },
+    "OilMaxGet": {
+      "name": "Oilkeep.OilMaxGet.name",
+      "help": "Oilkeep.OilMaxGet.help"
     }
   },
   "Daily": {

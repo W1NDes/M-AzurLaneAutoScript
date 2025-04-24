@@ -2383,6 +2383,10 @@
     "OilkeepLevel": {
       "name": "Oilkeep.OilkeepLevel.name",
       "help": "Oilkeep.OilkeepLevel.help"
+    },
+    "OilMaxGet": {
+      "name": "Oilkeep.OilMaxGet.name",
+      "help": "Oilkeep.OilMaxGet.help"
     }
   },
   "Daily": {

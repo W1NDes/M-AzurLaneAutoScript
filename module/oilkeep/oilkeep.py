@@ -10,7 +10,7 @@ from module.ui.page import page_supply_pack
 from module.campaign.campaign_status import CampaignStatus
 import time
 class Oilkeep(CampaignStatus):
-    def _mail_enter_and_get_oil(self,oilLine,nowOil, skip_first_screenshot=True):
+    def _mail_enter_and_get_oil(self,oilLine,nowOil, OilMaxGet, skip_first_screenshot=True):
         """
         Returns:
             int: If having mails
@@ -28,7 +28,10 @@ class Oilkeep(CampaignStatus):
         mail_oil_add_count = 0
         oil_add_need = 0
         if nowOil < oilLine:
-            oil_add_need = (oilLine - nowOil) // 100
+            if (oilLine - nowOil) > OilMaxGet:
+                oil_add_need = OilMaxGet // 100
+            else:
+                oil_add_need = (oilLine - nowOil) // 100
             logger.info(f'Need oil add count: {oil_add_need} ')
         while 1:
             if skip_first_screenshot:
@@ -109,7 +112,7 @@ class Oilkeep(CampaignStatus):
         self.ui_ensure(page_supply_pack)
         oilOcr_values = []
         for attempt in range(3):  # 尝试3次
-            oilOcr = self.get_oil()
+            oilOcr = self.get_oil(skip_first_screenshot=False)
             logger.info(f'Attempt {attempt + 1} - Oil now: {oilOcr}')
             
             if oilOcr == 0:
@@ -136,8 +139,8 @@ class Oilkeep(CampaignStatus):
             logger.info('pageCheck: At page_main_white')
             return True
         elif self.appear(page_main.check_button, offset=(5, 5)):
-            logger.warning('At page_main, cannot enter mail page from old UI')
-            return False
+            logger.info('At page_main')
+            pass
         else:
             logger.warning('Unknown page_main, cannot enter mail page')
             return False
@@ -145,6 +148,7 @@ class Oilkeep(CampaignStatus):
     def run(self):
         logger.hr('Oil Keep', level=1)
         OilkeepLine = self.config.Oilkeep_OilkeepLevel
+        OilMaxGet = self.config.Oilkeep_OilMaxGet
         for attempt in range(3):  # 
             oilOcrNow = self.update_oil()
             if oilOcrNow is not False:
@@ -153,7 +157,7 @@ class Oilkeep(CampaignStatus):
                 return False  
             time.sleep(1) 
         if self.pageCheck() is True and oilOcrNow != 0 and oilOcrNow < OilkeepLine -100:
-            self._mail_enter_and_get_oil(OilkeepLine, oilOcrNow)
+            self._mail_enter_and_get_oil(OilkeepLine, oilOcrNow, OilMaxGet)
             self._mail_quit()
             self.update_oil()
         self.config.task_delay(server_update=True)

@@ -1585,7 +1585,8 @@
       "ServerUpdate": "00:00, 06:00, 12:00, 18:00"
     },
     "Oilkeep": {
-      "OilkeepLevel": 8000
+      "OilkeepLevel": 8000,
+      "OilMaxGet": 3000
     },
     "Storage": {
       "Storage": {}

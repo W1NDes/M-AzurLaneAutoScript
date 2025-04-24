@@ -679,6 +679,7 @@ Smallevent:
   SevenDayTask: true
 Oilkeep:
   OilkeepLevel: 8000
+  OilMaxGet: 3000
 # ==================== Daily ====================
 
 Daily:
