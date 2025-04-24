@@ -235,18 +235,24 @@ StopCondition:
     option: [ non_stop, 100_percent_clear, map_3_stars, threat_safe, threat_safe_without_3_stars ]
   StageIncrease: false
   GetNewShip: false
-  EventSwitch:
-    value: none
-    option: [ none, event2, event2_and_daily, event2_and_daily_fork]
+  ReachLevel: 0
+EventPt:
+  EventPtSwitch: false
   Event2MapName:
     value: D3
     type: textarea
-  EventAMapName:
+  EventDailyAMapName:
     value: |-
       A1>A2>A3
       B1>B2>B3
     type: textarea
-  ReachLevel: 0
+  EventDailySpMapName:
+    value: SP
+    type: textarea 
+  EventDailyCD: 
+    value: false
+    type: textarea 
+
 Fleet:
   Fleet1:
     value: 1

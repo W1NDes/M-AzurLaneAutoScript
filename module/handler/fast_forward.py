@@ -417,11 +417,11 @@ class FastForwardHandler(AutoSearchHandler):
                     content=f"<{self.config.config_name}> {prev_stage} reached end"
                 )
                 self.config.Scheduler_Enable = False
-                # logger.warning(f'{self.config.StopCondition_EventSwitch}')
-                if self.config.task.command == 'Event'and self.config.StopCondition_EventSwitch != 'none':      
+                if self.config.task.command == 'Event'and self.config.EventPt_EventPtSwitch == True:      
                     # logger.warning(f'{self.config.task.command}')
+                    #心情值和设置处理
                     KEYS = ['.Fleet.Fleet1','.Fleet.Fleet2','.Fleet.FleetOrder','.Emotion.Fleet1Record','.Emotion.Fleet1Recover','.Emotion.Fleet2Record','.Emotion.Fleet2Recover',]
-                    for key in KEYS:#只传舰队和心情恢复情况,不传心情值
+                    for key in KEYS:#只传舰队和心情恢复设置,不传心情值
                         data = self.config.cross_get(keys=f'Event{key}')
                         self.config.cross_set(keys=f'EventA{key}', value=f'{data}')
                         # self.config.cross_set(keys=f'EventB{key}', value=f'{data}')
@@ -435,23 +435,20 @@ class FastForwardHandler(AutoSearchHandler):
                         self.config.cross_set(keys=f'EventD{key}', value=f'{data}')
                         self.config.cross_set(keys=f'Event2{key}', value=f'{data}')
                         logger.hr(f"copy:{key},{data}")
-                    eventDailyStageFilter_A = self.config.StopCondition_EventAMapName
-                    event2MapName = self.config.StopCondition_Event2MapName
-                    self.config.cross_set(keys=f'EventA.EventDaily.StageFilter', value=f'{eventDailyStageFilter_A}')  #ab图一般用同一队,所以为了心情同步用同一队
-                    self.config.cross_set(keys=f'Event2.Campaign.Name',value = f'{event2MapName}') 
-                    self.config.cross_set(keys=f'EventSp.EventDaily.StageFilter',value = f'SP') 
-                    if self.config.StopCondition_EventSwitch == 'event2':
-                        self.config.task_call('Event2')
-                    elif self.config.StopCondition_EventSwitch == 'event2_and_daily':
-                        self.config.task_call('Event2')
+
+
+                    ##TASK_CALL##
+                    self.config.cross_set(keys=f'Event2.Campaign.Name',value = f'{self.config.EventPt_Event2MapName}')
+                    self.config.task_call('Event2')
+                    if self.config.EventPt_EventDailyAMapName != False:
+                        self.config.cross_set(keys=f'EventA.EventDaily.StageFilter', value=f'{self.config.EventPt_EventDailyAMapName}')  #ab图一般用同一队,所以为了心情同步用同一队
                         self.config.task_call('EventA')
+                    if self.config.EventPt_EventDailySpMapName != False:
+                        self.config.cross_set(keys=f'EventSp.EventDaily.StageFilter',value = f'{self.config.EventPt_EventDailySpMapName}') 
                         self.config.task_call('EventSp')
-                    elif self.config.StopCondition_EventSwitch == 'event2_and_daily_fork':
-                        self.config.task_call('Event2')
-                        self.config.task_call('EventA')
+                    if self.config.EventPt_EventDailyCD != False:
                         self.config.task_call('EventC')
                         self.config.task_call('EventD')
-                        self.config.task_call('EventSp')
                     
                 
                 # logger.info(f"{self.config.Fleet_FleetOrder},{self.config.Emotion_Fleet1Value},{self.config.Emotion_Fleet1Recover}")

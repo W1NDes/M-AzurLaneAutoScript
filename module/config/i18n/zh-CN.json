@@ -1134,25 +1134,35 @@
       "name": "获得新船后停止",
       "help": ""
     },
-    "EventSwitch": {
-      "name": "刷活动PT",
-      "help": "开荒完毕后开启活动图每日和活动图2刷pt",
-      "none": "否",
-      "event2": "活动图2",
-      "event2_and_daily": "活动图2和活动每日",
-      "event2_and_daily_fork": "活动图2和活动每日(复刻)"
-    },
-    "Event2MapName": {
-      "name": "刷pt关卡名称",
-      "help": ""
-    },
-    "EventAMapName": {
-      "name": "每日活动图关卡顺序",
-      "help": ""
-    },
     "ReachLevel": {
       "name": "舰船升至 X 级后停止",
       "help": "任意等级低于 X 的舰船升级至 X 级后停止\n0 表示不限制等级"
+    }
+  },
+  "EventPt": {
+    "_info": {
+      "name": "活动捞PT设置",
+      "help": "在活动图-1开荒完毕后, 有关刷PT的设置"
+    },
+    "EventPtSwitch": {
+      "name": "刷PT开关",
+      "help": "开启后会启动活动图-2和以下每日活动设置"
+    },
+    "Event2MapName": {
+      "name": "活动图2名称",
+      "help": "活动图2任务会重复刷这一关卡获取pt"
+    },
+    "EventDailyAMapName": {
+      "name": "每日活动图A图关卡顺序",
+      "help": "每日活动A图会按顺序出击这些关卡刷取3/5倍pt,如果为false则不开启"
+    },
+    "EventDailySpMapName": {
+      "name": "每日活动图SP图关卡",
+      "help": "每日活动SP图的关卡名称,如果为false则不开启"
+    },
+    "EventDailyCD": {
+      "name": "是否开启每日活动CD",
+      "help": "复刻活动会开启每日活动CD刷取3倍pt,如果为false则不开启"
     }
   },
   "Fleet": {

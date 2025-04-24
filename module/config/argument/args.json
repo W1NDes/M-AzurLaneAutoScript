@@ -783,27 +783,6 @@
         "type": "checkbox",
         "value": false
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -1181,27 +1160,6 @@
         "type": "checkbox",
         "value": false
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -1578,27 +1536,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -2112,27 +2049,6 @@
         "value": false,
         "display": "hide"
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -2470,29 +2386,35 @@
         "type": "checkbox",
         "value": false
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ]
+      "ReachLevel": {
+        "type": "input",
+        "value": 0
+      }
+    },
+    "EventPt": {
+      "EventPtSwitch": {
+        "type": "checkbox",
+        "value": false
       },
       "Event2MapName": {
         "type": "state",
         "value": "ht3",
         "display": "display"
       },
-      "EventAMapName": {
+      "EventDailyAMapName": {
         "type": "state",
-        "value": null,
+        "value": false,
         "display": "display"
       },
-      "ReachLevel": {
-        "type": "input",
-        "value": 0
+      "EventDailySpMapName": {
+        "type": "state",
+        "value": "sp",
+        "display": "display"
+      },
+      "EventDailyCD": {
+        "type": "state",
+        "value": false,
+        "display": "display"
       }
     },
     "Fleet": {
@@ -2948,27 +2870,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -3429,27 +3330,6 @@
         "type": "checkbox",
         "value": false
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0
@@ -3868,27 +3748,6 @@
         "value": false,
         "display": "hide"
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -4061,27 +3920,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false,
-        "display": "hide"
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -4329,24 +4167,6 @@
         "type": "checkbox",
         "value": false,
         "display": "hide"
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ]
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1>A2>A3\nB1>B2>B3"
       },
       "ReachLevel": {
         "type": "input",
@@ -4645,27 +4465,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
       },
       "ReachLevel": {
         "type": "input",
@@ -5144,27 +4943,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false,
-        "display": "hide"
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -5647,27 +5425,6 @@
         "value": false,
         "display": "hide"
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -6146,27 +5903,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false,
-        "display": "hide"
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -6649,27 +6385,6 @@
         "value": false,
         "display": "hide"
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -7150,27 +6865,6 @@
         "value": false,
         "display": "hide"
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -7582,27 +7276,6 @@
         "value": false,
         "display": "hide"
       },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
-        "display": "hide"
-      },
       "ReachLevel": {
         "type": "input",
         "value": 0,
@@ -7847,27 +7520,6 @@
       "GetNewShip": {
         "type": "checkbox",
         "value": false,
-        "display": "hide"
-      },
-      "EventSwitch": {
-        "type": "select",
-        "value": "none",
-        "option": [
-          "none",
-          "event2",
-          "event2_and_daily",
-          "event2_and_daily_fork"
-        ],
-        "display": "hide"
-      },
-      "Event2MapName": {
-        "type": "textarea",
-        "value": "D3",
-        "display": "hide"
-      },
-      "EventAMapName": {
-        "type": "textarea",
-        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {

@@ -1134,25 +1134,35 @@
       "name": "StopCondition.GetNewShip.name",
       "help": "StopCondition.GetNewShip.help"
     },
-    "EventSwitch": {
-      "name": "StopCondition.EventSwitch.name",
-      "help": "StopCondition.EventSwitch.help",
-      "none": "none",
-      "event2": "event2",
-      "event2_and_daily": "event2_and_daily",
-      "event2_and_daily_fork": "event2_and_daily_fork"
-    },
-    "Event2MapName": {
-      "name": "StopCondition.Event2MapName.name",
-      "help": "StopCondition.Event2MapName.help"
-    },
-    "EventAMapName": {
-      "name": "StopCondition.EventAMapName.name",
-      "help": "StopCondition.EventAMapName.help"
-    },
     "ReachLevel": {
       "name": "StopCondition.ReachLevel.name",
       "help": "StopCondition.ReachLevel.help"
+    }
+  },
+  "EventPt": {
+    "_info": {
+      "name": "EventPt._info.name",
+      "help": "EventPt._info.help"
+    },
+    "EventPtSwitch": {
+      "name": "EventPt.EventPtSwitch.name",
+      "help": "EventPt.EventPtSwitch.help"
+    },
+    "Event2MapName": {
+      "name": "EventPt.Event2MapName.name",
+      "help": "EventPt.Event2MapName.help"
+    },
+    "EventDailyAMapName": {
+      "name": "EventPt.EventDailyAMapName.name",
+      "help": "EventPt.EventDailyAMapName.help"
+    },
+    "EventDailySpMapName": {
+      "name": "EventPt.EventDailySpMapName.name",
+      "help": "EventPt.EventDailySpMapName.help"
+    },
+    "EventDailyCD": {
+      "name": "EventPt.EventDailyCD.name",
+      "help": "EventPt.EventDailyCD.help"
     }
   },
   "Fleet": {
