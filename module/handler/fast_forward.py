@@ -418,7 +418,7 @@ class FastForwardHandler(AutoSearchHandler):
                 )
                 self.config.Scheduler_Enable = False
                 # logger.warning(f'{self.config.StopCondition_EventSwitch}')
-                if self.config.task.command == 'Event'and self.config.StopCondition_EventSwitch == True:      
+                if self.config.task.command == 'Event'and self.config.StopCondition_EventSwitch != 'none':      
                     # logger.warning(f'{self.config.task.command}')
                     KEYS = ['.Fleet.Fleet1','.Fleet.Fleet2','.Fleet.FleetOrder','.Emotion.Fleet1Record','.Emotion.Fleet1Recover','.Emotion.Fleet2Record','.Emotion.Fleet2Recover',]
                     for key in KEYS:#只传舰队和心情恢复情况,不传心情值
@@ -435,17 +435,24 @@ class FastForwardHandler(AutoSearchHandler):
                         self.config.cross_set(keys=f'EventD{key}', value=f'{data}')
                         self.config.cross_set(keys=f'Event2{key}', value=f'{data}')
                         logger.hr(f"copy:{key},{data}")
-                    eventDailyStageFilter_A = "A1>A2>A3 >B1>B2>B3" 
-                    event2MapName = "D3"
+                    eventDailyStageFilter_A = self.config.StopCondition_EventAMapName
+                    event2MapName = self.config.StopCondition_Event2MapName
                     self.config.cross_set(keys=f'EventA.EventDaily.StageFilter', value=f'{eventDailyStageFilter_A}')  #ab图一般用同一队,所以为了心情同步用同一队
                     self.config.cross_set(keys=f'Event2.Campaign.Name',value = f'{event2MapName}') 
                     self.config.cross_set(keys=f'EventSp.EventDaily.StageFilter',value = f'SP') 
-                    self.config.task_call('EventA')
-                    # self.config.task_call('EventB')
-                    self.config.task_call('EventC') #######复刻活动开/新活动关
-                    self.config.task_call('EventD') #######复刻活动开/新活动关
-                    self.config.task_call('EventSp')
-                    self.config.task_call('Event2')
+                    if self.config.StopCondition_EventSwitch == 'event2':
+                        self.config.task_call('Event2')
+                    elif self.config.StopCondition_EventSwitch == 'event2_and_daily':
+                        self.config.task_call('Event2')
+                        self.config.task_call('EventA')
+                        self.config.task_call('EventSp')
+                    elif self.config.StopCondition_EventSwitch == 'event2_and_daily_fork':
+                        self.config.task_call('Event2')
+                        self.config.task_call('EventA')
+                        self.config.task_call('EventC')
+                        self.config.task_call('EventD')
+                        self.config.task_call('EventSp')
+                    
                 
                 # logger.info(f"{self.config.Fleet_FleetOrder},{self.config.Emotion_Fleet1Value},{self.config.Emotion_Fleet1Recover}")
 

@@ -21,17 +21,23 @@ Main:
   Campaign:
     Event: campaign_main
   StopCondition:
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 Main2:
   Campaign:
     Event: campaign_main
   StopCondition:
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 Main3:
   Campaign:
     Event: campaign_main
   StopCondition:
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 GemsFarming:
   Campaign:
     Event:
@@ -47,7 +53,9 @@ GemsFarming:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
   Fleet:
     FleetOrder:
       display: display
@@ -62,6 +70,15 @@ Event:
     Event:
       type: state
     AmbushEvade: true
+  StopCondition:
+    Event2MapName: 
+      value: ht3
+      type: state
+      display: display
+    EventAMapName:
+      value: null
+      type: state
+      display: display
 Event2:
   Campaign:
     Mode: normal
@@ -69,7 +86,9 @@ Event2:
       type: state
     AmbushEvade: true
   StopCondition:
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 Event3:
   Campaign:
     Mode: normal
@@ -77,7 +96,9 @@ Event3:
       type: state
     AmbushEvade: true
   StopCondition:
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 EventA:
   Scheduler:
     SuccessInterval: 30
@@ -96,7 +117,9 @@ EventA:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 EventB:
   Scheduler:
     SuccessInterval: 30
@@ -115,7 +138,9 @@ EventB:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 EventC:
   Scheduler:
     SuccessInterval: 30
@@ -134,7 +159,9 @@ EventC:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 EventD:
   Scheduler:
     SuccessInterval: 30
@@ -153,7 +180,9 @@ EventD:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 EventSp:
   Scheduler:
     SuccessInterval: 30
@@ -172,7 +201,9 @@ EventSp:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
   Submarine:
     AutoSearchMode: sub_standby
 Raid:
@@ -191,7 +222,9 @@ Raid:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
@@ -205,7 +238,9 @@ Hospital:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
   Emotion:
     Fleet1Control: prevent_yellow_face
     Fleet1Recover: not_in_dormitory
@@ -236,7 +271,9 @@ RaidDaily:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
@@ -299,7 +336,9 @@ CoalitionSp:
     StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
@@ -416,7 +455,9 @@ WarArchives:
     Mode: normal
     AmbushEvade: true
   StopCondition:
-    EventSwitch: false
+    EventSwitch: none
+    Event2MapName: D3
+    EventAMapName: A1
 
 # ==================== Opsi ====================
 

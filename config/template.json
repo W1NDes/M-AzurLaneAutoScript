@@ -184,7 +184,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -259,7 +261,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -334,7 +338,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -416,7 +422,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -473,7 +481,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "ht3",
+      "EventAMapName": null,
       "ReachLevel": 0
     },
     "Fleet": {
@@ -548,7 +558,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -623,7 +635,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -702,7 +716,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Emotion": {
@@ -741,7 +757,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Emotion": {
@@ -791,7 +809,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1>A2>A3\nB1>B2>B3",
       "ReachLevel": 0
     },
     "Emotion": {
@@ -852,7 +872,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -932,7 +954,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1012,7 +1036,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1092,7 +1118,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1172,7 +1200,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1252,7 +1282,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Fleet": {
@@ -1330,7 +1362,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Emotion": {
@@ -1380,7 +1414,9 @@
       "MapAchievement": "non_stop",
       "StageIncrease": false,
       "GetNewShip": false,
-      "EventSwitch": false,
+      "EventSwitch": "none",
+      "Event2MapName": "D3",
+      "EventAMapName": "A1",
       "ReachLevel": 0
     },
     "Emotion": {

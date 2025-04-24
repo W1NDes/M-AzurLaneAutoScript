@@ -784,8 +784,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -1166,8 +1182,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -1548,8 +1580,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -2065,8 +2113,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -2407,8 +2471,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ]
+      },
+      "Event2MapName": {
+        "type": "state",
+        "value": "ht3",
+        "display": "display"
+      },
+      "EventAMapName": {
+        "type": "state",
+        "value": null,
+        "display": "display"
       },
       "ReachLevel": {
         "type": "input",
@@ -2870,8 +2950,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -3334,8 +3430,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -3757,8 +3869,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -3936,8 +4064,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -4187,8 +4331,22 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ]
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1>A2>A3\nB1>B2>B3"
       },
       "ReachLevel": {
         "type": "input",
@@ -4489,8 +4647,24 @@
         "value": false
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -4973,8 +5147,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -5458,8 +5648,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -5943,8 +6149,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -6428,8 +6650,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -6913,8 +7151,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -7329,8 +7583,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {
@@ -7580,8 +7850,24 @@
         "display": "hide"
       },
       "EventSwitch": {
-        "type": "checkbox",
-        "value": false,
+        "type": "select",
+        "value": "none",
+        "option": [
+          "none",
+          "event2",
+          "event2_and_daily",
+          "event2_and_daily_fork"
+        ],
+        "display": "hide"
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "D3",
+        "display": "hide"
+      },
+      "EventAMapName": {
+        "type": "textarea",
+        "value": "A1",
         "display": "hide"
       },
       "ReachLevel": {

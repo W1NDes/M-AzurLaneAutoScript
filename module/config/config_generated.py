@@ -160,7 +160,9 @@ class GeneratedConfig:
     StopCondition_MapAchievement = 'non_stop'  # non_stop, 100_percent_clear, map_3_stars, threat_safe, threat_safe_without_3_stars
     StopCondition_StageIncrease = False
     StopCondition_GetNewShip = False
-    StopCondition_EventSwitch = False
+    StopCondition_EventSwitch = 'none'  # none, event2, event2_and_daily, event2_and_daily_fork
+    StopCondition_Event2MapName = 'D3'
+    StopCondition_EventAMapName = 'A1>A2>A3\nB1>B2>B3'
     StopCondition_ReachLevel = 0
 
     # Group `Fleet`

@@ -1136,7 +1136,19 @@
     },
     "EventSwitch": {
       "name": "刷活动PT",
-      "help": "开荒完毕后开启活动图每日和活动图2刷pt"
+      "help": "开荒完毕后开启活动图每日和活动图2刷pt",
+      "none": "否",
+      "event2": "活动图2",
+      "event2_and_daily": "活动图2和活动每日",
+      "event2_and_daily_fork": "活动图2和活动每日(复刻)"
+    },
+    "Event2MapName": {
+      "name": "刷pt关卡名称",
+      "help": ""
+    },
+    "EventAMapName": {
+      "name": "每日活动图关卡顺序",
+      "help": ""
     },
     "ReachLevel": {
       "name": "舰船升至 X 级后停止",
