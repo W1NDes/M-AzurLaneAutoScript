@@ -97,7 +97,8 @@
       "ScreenshotInterval": 0.3,
       "CombatScreenshotInterval": 1.0,
       "TaskHoardingDuration": 0,
-      "WhenTaskQueueEmpty": "goto_main"
+      "WhenTaskQueueEmpty": "goto_main",
+      "otherLoginTime": "15,30,60"
     },
     "DropRecord": {
       "SaveFolder": "./screenshots",

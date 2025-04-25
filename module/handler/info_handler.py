@@ -4,7 +4,7 @@ from module.base.base import ModuleBase
 from module.base.button import Button
 from module.base.timer import Timer
 from module.base.utils import *
-from module.exception import GameNotRunningError
+from module.exception import GameNotRunningError, OtherLogin
 from module.handler.assets import *
 from module.logger import logger
 from module.os_handler.assets import CLICK_SAFE_AREA as OS_CLICK_SAFE_AREA
@@ -34,7 +34,6 @@ class InfoHandler(ModuleBase):
     """
     Info bar
     """
-
     def info_bar_count(self):
         """
         Detect info bar by the blue lines on the top of it.
@@ -171,15 +170,8 @@ class InfoHandler(ModuleBase):
                     self._hot_fix_check_wait.reset()
                     return False
             if appear2 or appear3:
-                from module.base.resource import release_resources
                 logger.warning('Other login in')
-                logger.warning('Other login in')
-                logger.warning('Other login in')
-                self.device.app_stop()
-                release_resources()
-                self.device.release_during_wait()
-                self.device.sleep(60*15)
-                return True
+                raise OtherLogin
 
         # Check game client existence after 3s to 6s
         # Hot fixes will kill AL if you clicked the confirm button

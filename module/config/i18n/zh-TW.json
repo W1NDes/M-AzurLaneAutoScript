@@ -779,6 +779,10 @@
       "stay_there": "停在原處",
       "goto_main": "前往主界面",
       "close_game": "關閉遊戲"
+    },
+    "otherLoginTime": {
+      "name": "Optimization.otherLoginTime.name",
+      "help": "Optimization.otherLoginTime.help"
     }
   },
   "DropRecord": {

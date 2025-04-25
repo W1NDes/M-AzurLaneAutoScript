@@ -429,6 +429,10 @@
           "goto_main",
           "close_game"
         ]
+      },
+      "otherLoginTime": {
+        "type": "textarea",
+        "value": "15,30,60"
       }
     },
     "DropRecord": {

@@ -141,6 +141,8 @@ class Camera(MapOperation):
                 self.ensure_no_story(skip_first_screenshot=False)
                 return False
             elif self.appear(GET_MISSION, offset=(20, 20)):
+                logger.warning('GET_MISSION in UPDATE_VIEW')
+                self.handle_urgent_commission()
                 logger.warning('Perspective error caused by GET_MISSION')
                 self.device.click(GET_MISSION)
                 return False

@@ -779,6 +779,10 @@
       "stay_there": "Stay There",
       "goto_main": "Goto Main Page",
       "close_game": "Close Game"
+    },
+    "otherLoginTime": {
+      "name": "Remote Login Wait Time",
+      "help": "Waiting time (minutes) when another device login is detected, a comma-separated list of numbers, each login detection will use the next value in sequence. Example: 15,30,60"
     }
   },
   "DropRecord": {

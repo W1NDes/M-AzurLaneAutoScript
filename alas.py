@@ -8,6 +8,7 @@ import inflection
 from cached_property import cached_property
 
 from module.base.decorator import del_cached_property
+from module.base.resource import release_resources
 from module.config.config import AzurLaneConfig, TaskEnd
 from module.config.deep import deep_get, deep_set
 from module.exception import *
@@ -21,7 +22,7 @@ class AzurLaneAutoScript:
     AutoRestart_Enabled = False
     AutoRestart_AttemptsToRestart = 0
     AutoRestart_NotifyWhenAutoRestart = False
-
+    OtherLoginCount = 0
     def __init__(self, config_name='alas'):
         logger.hr('Start', level=0)
         self.config_name = config_name
@@ -76,6 +77,23 @@ class AzurLaneAutoScript:
             logger.exception(e)
             exit(1)
 
+    def handle_otherlogin(self):
+        self.OtherLoginCount += 1
+        logger.warning(f'OtherLogin_Count: {self.OtherLoginCount}')
+        # self.device.app_stop()
+        release_resources()
+        self.device.release_during_wait()
+        # 将Optimization_otherLoginTime字符串转换为列表
+        wait_times = [int(t) for t in self.config.Optimization_otherLoginTime.split(',')]
+        # 根据计数选择等待时间，如果计数超过列表长度，使用最后一个值
+        index = min(self.OtherLoginCount - 1, len(wait_times) - 1)
+        wait_time = wait_times[index]
+        logger.warning(f'Waiting for {wait_time} minutes before restarting')
+        self.device.sleep(60 * wait_time)
+        logger.warning("======OtherLogin_Sleep Over,now restart======")
+        self.config.task_call('Restart')
+        self.device.sleep(10)
+
     def run(self, command, skip_first_screenshot=False):
         self.AutoRestart_Enabled = deep_get(self.config.data, "Restart.AutoRestart.Enabled")
         self.AutoRestart_NotifyWhenAutoRestart = deep_get(self.config.data, "Restart.AutoRestart.NotifyWhenAutoRestart")
@@ -93,15 +111,19 @@ class AzurLaneAutoScript:
             logger.warning(e)
             self.config.task_call('Restart')
             return False
+        except OtherLogin as e:
+            logger.error(e)
+            self.handle_otherlogin()
+            return False
         except (GameStuckError, GameTooManyClickError) as e:
             logger.error(e)
             self.save_error_log()
             from module.handler.info_handler import InfoHandler
             info_handler = InfoHandler(config=self.config,device=self.device)
-            if info_handler.handle_urgent_commission():
-                logger.warning("======OtherLogin_Sleep Over,now restart======")
-                self.config.task_call('Restart')
-                self.device.sleep(10)
+            try:
+                info_handler.handle_urgent_commission()
+            except OtherLogin:
+                self.handle_otherlogin()
                 return False
             logger.warning(f'Game stuck, {self.device.package} will be restarted in 10 seconds')
             logger.warning('If you are playing by hand, please stop Alas')
