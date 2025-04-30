@@ -74,7 +74,10 @@ class Device(Screenshot, Control, AppControl):
             try:
                 super().__init__(*args, **kwargs)
                 break
-            except EmulatorNotRunningError:
+            except EmulatorNotRunningError as e:
+                logger.error(e)
+                # if e.args[0] == "nemud_player_version_failed":#mumu启动失败
+                #     self.emulator_info_get()
                 if trial >= 3:
                     logger.critical('Failed to start emulator after 3 trial')
                     raise RequestHumanTakeover

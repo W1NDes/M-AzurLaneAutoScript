@@ -137,6 +137,18 @@ class PlatformBase(Connection, EmulatorManagerBase):
         select = instances.select(**search_args)
         if select.count == 0:
             logger.warning(f'No emulator instance with {search_args}, serial invalid')
+            logger.warning(f'Now searching by name {name}')
+            if name:
+                search_args = dict(serial="127.0.0.1:7555") #启动失败的mumu模拟器启动adb端口为7555
+                search_args['name'] = name
+                select = instances.select(**search_args)
+                if select.count == 1:
+                    instance = select[0]
+                    logger.hr('Emulator instance', level=2)
+                    logger.info(f'Found emulator instance: {instance}')
+                    return instance
+                else:
+                    logger.warning(f'No emulator instances with {search_args}, name invalid')
             return None
         if select.count == 1:
             instance = select[0]

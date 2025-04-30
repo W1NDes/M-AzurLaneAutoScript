@@ -71,6 +71,8 @@ def retry(func):
                 def init():
                     pass
 
+        if func.__name__ == 'nemud_player_version':
+            raise EmulatorNotRunningError(f'nemud_player_version_failed') #mumu启动失败
         logger.critical(f'Retry {func.__name__}() failed')
         raise RequestHumanTakeover
 
