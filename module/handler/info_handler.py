@@ -4,7 +4,7 @@ from module.base.base import ModuleBase
 from module.base.button import Button
 from module.base.timer import Timer
 from module.base.utils import *
-from module.exception import GameNotRunningError, OtherLogin
+from module.exception import GameNotRunningError, OtherLogin, RequestHumanTakeover
 from module.handler.assets import *
 from module.logger import logger
 from module.os_handler.assets import CLICK_SAFE_AREA as OS_CLICK_SAFE_AREA
@@ -157,11 +157,17 @@ class InfoHandler(ModuleBase):
         """
         appear = self.appear(GET_MISSION, offset=True, interval=2)
         appear2 = self.appear(otherlogin, offset=True, interval=2,threshold=0.7)
+        dead_loop  = Button(area=(430, 328, 832, 356),color=(),button=(430, 328, 832, 356))
         if appear:
             if not appear2:
                 self.device.sleep(2)
                 appear3 = self.appear(otherlogin, offset=True, interval=2,threshold=0.6)
                 if not appear3:
+                    from module.ocr.ocr import Ocr
+                    result = Ocr(dead_loop, lang="cnocr", letter=(255,255,247)).ocr(self.device.image)
+                    if "无法抵达" in result:
+                        logger.info("OSPI: auto search failed")
+                        raise RequestHumanTakeover("Need fix the dead loop in auto research")
                     logger.info('Get urgent commission')
                     if drop:
                         self.handle_info_bar()
