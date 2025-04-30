@@ -166,8 +166,8 @@ class InfoHandler(ModuleBase):
                     from module.ocr.ocr import Ocr
                     result = Ocr(dead_loop, lang="cnocr", letter=(255,255,247)).ocr(self.device.image)
                     if "无法抵达" in result:
-                        logger.info("OSPI: auto search failed")
-                        raise RequestHumanTakeover("Need fix the dead loop in auto research")
+                        logger.warning("OS: found dead loop in auto search")
+                        raise RequestHumanTakeover
                     logger.info('Get urgent commission')
                     if drop:
                         self.handle_info_bar()
