@@ -168,6 +168,9 @@ class InfoHandler(ModuleBase):
                     if "无法抵达" in result:
                         logger.warning("OS: found dead loop in auto search")
                         raise RequestHumanTakeover
+                    if "您在别" in result or "处登录" in result:
+                        logger.warning('Other login in')
+                        raise OtherLogin
                     logger.info('Get urgent commission')
                     if drop:
                         self.handle_info_bar()

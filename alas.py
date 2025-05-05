@@ -688,11 +688,16 @@ class AzurLaneAutoScript:
             # Skip first restart
             if task == 'Restart':
                 if self.is_first_task:
-                    logger.info('Skip task `Restart` at scheduler start')
+                    logger.warning('Skip task `Restart` at scheduler start')
                 else:
                     from module.handler.login import LoginHandler
                     try:
                         LoginHandler(self.config, self.device).app_restart()
+                    except OtherLogin as e:
+                        logger.warning("otherLogin when restarting")
+                        self.handle_otherlogin()
+                        self.is_first_task = False
+                        continue
                     except RequestHumanTakeover:
                         handle_notify(
                         self.config.Error_OnePushConfig,
