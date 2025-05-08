@@ -127,7 +127,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         return 'unknown'
 
     def run(self):
-        if 1==1:
+        if 1==0:
             self.run_event_story()
 
         # Scheduler
