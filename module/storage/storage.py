@@ -1,3 +1,4 @@
+import time
 import numpy as np
 
 from module.base.button import ButtonGrid
@@ -67,8 +68,11 @@ class StorageHandler(StorageUI):
             GET_ITEMS_2,
             EQUIPMENT_FULL,
         ])
-
+        appearQUIT_ENSURE = False
+        used_button = Button(area=(712,308,716,312),color=(0,0,0),button=(712,308,716,312))
+        click_count=0
         while 1:
+            logger.info("in _storage_use_one_box")
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
@@ -79,25 +83,43 @@ class StorageHandler(StorageUI):
                 continue
             # 75 is a magic number to distinguish `use 1` and `use 10`
             # See https://github.com/LmeSzinc/AzurLaneAutoScript/pull/1529#issuecomment-1221315455
-            if self.appear_then_click(BOX_USE, offset=(-75, -20, 10, 20), interval=5):
+            # if self.appear_then_click(BOX_USE, offset=(-75, -20, 10, 20), interval=5):
+            #     used = 10
+            #     self.interval_reset(MATERIAL_CHECK)
+            #     continue
+            # if self.appear_then_click(BOX_USE, offset=(-330, -20, -75, 20), interval=5):
+            #     used = 1
+            #     self.interval_reset(MATERIAL_CHECK)
+            #     continue
+            if self.appear_then_click(BOX_USE, offset=(5, 5), interval=5):
                 used = 10
-                self.interval_reset(MATERIAL_CHECK)
-                continue
-            if self.appear_then_click(BOX_USE, offset=(-330, -20, -75, 20), interval=5):
-                used = 1
                 self.interval_reset(MATERIAL_CHECK)
                 continue
             if self.appear(GET_ITEMS_1, offset=(5, 5), interval=5):
                 self.device.click(MATERIAL_ENTER)
                 self.interval_reset(MATERIAL_CHECK)
-                success = True
+                # success = True
                 continue
             if self.appear(GET_ITEMS_2, offset=(5, 5), interval=5):
                 self.device.click(MATERIAL_ENTER)
                 self.interval_reset(MATERIAL_CHECK)
-                success = True
+                # success = True
                 continue
-
+            if self.appear(BOX_USE_PAGE, offset=(5, 5), interval=5):
+                while click_count <= 10:
+                    click_count += 1
+                    self.device.click(used_button,control_check=False)
+                    time.sleep(0.5)    
+                if self.appear_then_click(BOX_USE_ENSURE, offset=(5, 5), interval=5):
+                    continue
+                continue
+            if self.appear_then_click(BOX_USE_QUIT, offset=(5, 5), interval=5):
+                appearQUIT_ENSURE = True
+                continue
+            if appearQUIT_ENSURE:
+                if self.appear_then_click(BOX_USE_QUIT_ENSURE, offset=(5, 5), interval=5):
+                    success = True
+                    continue
             # Storage full
             if self.appear(EQUIPMENT_FULL, offset=(20, 20)):
                 logger.info('Storage full')
@@ -180,14 +202,14 @@ class StorageHandler(StorageUI):
                 MATERIAL_SCROLL.set_top(main=self)
 
             while amount > used:
-                logger.hr('Use boxes in page')
+                logger.hr('Use boxes in page1')
                 used += self._storage_use_box_in_page(rarity=rarity, amount=amount - used)
                 if MATERIAL_SCROLL.at_bottom(main=self):
                     logger.info('Scroll bar reached end, stop')
                     break
                 MATERIAL_SCROLL.next_page(main=self)
         else:
-            logger.hr('Use boxes in page')
+            logger.hr('Use boxes in page2')
             used += self._storage_use_box_in_page(rarity=rarity, amount=amount)
 
         return used
@@ -263,7 +285,7 @@ class StorageHandler(StorageUI):
                 # Probably because no item is selected,
                 # _storage_disassemble_equipment_execute() will retry selecting
                 logger.warning('Failed to confirm disassemble after 3 trial')
-                disassembled = 0
+                # disassembled = disassembled
                 break
 
             if self.appear_then_click(DISASSEMBLE_CONFIRM, offset=(20, 20), interval=5):
