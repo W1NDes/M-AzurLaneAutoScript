@@ -474,10 +474,10 @@
     },
     "EventPt": {
       "EventPtSwitch": false,
-      "Event2MapName": "D3",
-      "EventDailyAMapName": "A1>A2>A3>B1>B2>B3",
+      "Event2MapName": "HT6",
+      "EventDailyAMapName": "T1>T2>T3>T4>T5>T6",
       "EventDailySpMapName": "sp",
-      "EventDailyCD": false
+      "EventDailyCD": "HT1>HT2>HT3>HT4>HT5>HT6"
     },
     "Fleet": {
       "Fleet1": 1,

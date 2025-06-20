@@ -471,8 +471,8 @@ class FastForwardHandler(AutoSearchHandler):
                         self.config.cross_set(keys=f'EventSp.EventDaily.StageFilter',value = f'{self.config.EventPt_EventDailySpMapName}') 
                         self.config.task_call('EventSp')
                     if self.config.EventPt_EventDailyCD != False:
+                        self.config.cross_set(keys=f'EventC.EventDaily.StageFilter', value=f'{self.config.EventPt_EventDailyCD}')
                         self.config.task_call('EventC')
-                        self.config.task_call('EventD')
                     
                 
                 # logger.info(f"{self.config.Fleet_FleetOrder},{self.config.Emotion_Fleet1Value},{self.config.Emotion_Fleet1Recover}")

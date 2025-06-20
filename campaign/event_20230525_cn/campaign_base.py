@@ -10,13 +10,15 @@ BALL = Button(area=(589, 279, 685, 374), color=(), button=(589, 279, 685, 374))
 
 
 class CampaignBase(CampaignBase_):
+    # STAGE_INCREASE = [
+    #     'T1 > T2 > TS1 > T3',
+    #     'T4 > T5 > TS2 > T6',
+    #     'HT1 > HT2 > HTS1 > HT3',
+    #     'HT4 > HT5 > HTS2 > HT6',
+    # ]
     STAGE_INCREASE = [
-        'T1 > T2 > TS1 > T3',
-        'T4 > T5 > TS2 > T6',
-        'HT1 > HT2 > HTS1 > HT3',
-        'HT4 > HT5 > HTS2 > HT6',
+        'T1 > T2 > TS1 > T3 > T4 > T5 > TS2 > T6 > HT1 > HT2 > HTS1 > HT3 > HT4 > HT5 > HTS2 > HT6',
     ]
-
     def campaign_set_chapter(self, name, mode='normal'):
         """
         Args:
