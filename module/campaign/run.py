@@ -426,16 +426,20 @@ class CampaignRun(CampaignEvent, ShopStatus):
                     self.campaign.withdraw()
                 except CampaignEnd:
                     pass
-                self.campaign.ensure_campaign_ui(name=self.stage, mode=mode)
+                ensure_campaign_ui_result = self.campaign.ensure_campaign_ui(name=self.stage, mode=mode)
             elif self.campaign.is_in_auto_search_menu():
                 if self.can_use_auto_search_continue():
                     logger.info('In auto search menu, skip ensure_campaign_ui.')
                 else:
                     logger.info('In auto search menu, closing.')
                     # Because event_20240725 task balancer delete self.campaign.ensure_auto_search_exit()
-                    self.campaign.ensure_campaign_ui(name=self.stage, mode=mode)
+                    ensure_campaign_ui_result = self.campaign.ensure_campaign_ui(name=self.stage, mode=mode)
             else:
-                self.campaign.ensure_campaign_ui(name=self.stage, mode=mode)
+                ensure_campaign_ui_result = self.campaign.ensure_campaign_ui(name=self.stage, mode=mode)
+            if ensure_campaign_ui_result is False:
+                logger.info('Maybe Already pass the stage, goto next.')
+                self.campaign.handle_map_stop()
+                break
             self.disable_raid_on_event()
             self.handle_commission_notice()
 

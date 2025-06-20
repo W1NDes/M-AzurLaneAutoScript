@@ -225,6 +225,11 @@ class CampaignUI(MapOperation, CampaignEvent, CampaignOcr):
                     name = mode_name
 
         if name not in self.stage_entrance:
+            if name.lower() in ["hts1", "hts2", "ts1", "ts2"]:
+                if any(stage.upper() in [s.upper() for s in self.stage_entrance] for stage in ["T3", "T6", "HT3", "HT6"]):
+                    logger.warning(f'Maybe already Pass the Stage: {name}')
+                    raise CampaignNameError("AlreadyPassed")
+
             logger.warning(f'Stage not found: {name}')
             raise CampaignNameError
 
@@ -377,7 +382,9 @@ class CampaignUI(MapOperation, CampaignEvent, CampaignOcr):
                 self.campaign_set_chapter(name, mode)
                 self.ENTRANCE = self.campaign_get_entrance(name=name)
                 return True
-            except CampaignNameError:
+            except CampaignNameError as e:
+                if getattr(e, 'args', [None])[0] == "AlreadyPassed":
+                    return False
                 pass
 
             if self.handle_campaign_ui_additional():
