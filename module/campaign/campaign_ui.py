@@ -383,7 +383,7 @@ class CampaignUI(MapOperation, CampaignEvent, CampaignOcr):
                 self.ENTRANCE = self.campaign_get_entrance(name=name)
                 return True
             except CampaignNameError as e:
-                if getattr(e, 'args', [None])[0] == "AlreadyPassed":
+                if hasattr(e, 'args') and e.args and e.args[0] == "AlreadyPassed":
                     return False
                 pass
 
