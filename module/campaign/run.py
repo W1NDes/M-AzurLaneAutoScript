@@ -340,7 +340,37 @@ class CampaignRun(CampaignEvent, ShopStatus):
             data = DATA[i]
             self.config.cross_set(keys=f'Event2{key}', value=f'{data}')
         logger.hr('detect emotion delay,sync emotion to event2')    
-        
+    def solve_emotion_error(self,name):
+        method = self.config.Fleet_FleetOrder
+        if method == 'fleet1_mob_fleet2_boss':
+            fleet = 'fleet_1'
+        elif method == 'fleet1_boss_fleet2_mob':
+            fleet = 'fleet_2'
+        elif method == 'fleet1_all_fleet2_standby':
+            fleet = 'fleet_1'
+        elif method == 'fleet1_standby_fleet2_all':
+            fleet = 'fleet_2'
+        logger.info(f"now combat is {method}")    
+        logger.warning(f"{name} recorded {fleet} is :{getattr(self.campaign.emotion, fleet).current}")
+        if getattr(self.campaign.emotion, fleet).current > 75:    
+            handle_notify(
+                self.config.Error_OnePushConfig,
+                title=f"Alas <{self.config.config_name}> {name} Emotion calculate error ",
+                content=f"<{self.config.config_name}> {fleet} recorded is {getattr(self.campaign.emotion, fleet).current},Emotion calculate error"
+            )
+        setattr(getattr(self.campaign.emotion, fleet), 'current', 0)
+        self.campaign.emotion.record()
+        self.campaign.emotion.show()
+        try:
+            self.campaign.emotion.check_reduce(self.campaign._map_battle)
+        except ScriptEnd as e:
+            logger.hr('Script end')
+            logger.info(str(e))
+            if self.appear_then_click(LOW_EMOTION_LEFT, offset=(30, 30), interval=3):
+                return True
+            else:
+                raise GamePageUnknownError(f'LOW EMOTION TIP FOUND, BUT NO LEFT button')      
+            
     def detect_low_emotion(self,name):
         EMOTION_TIP_L1=Button(area=(352, 311, 929, 348), color=(), button=(352, 311, 929, 348))
         EMOTION_TIP_L2=Button(area=(352, 350, 929, 387), color=(), button=(352, 350, 929, 387))
@@ -352,40 +382,22 @@ class CampaignRun(CampaignEvent, ShopStatus):
         logger.info(result)
         if "低心情" in result or "降低好感" in result:
             logger.warning("舰队心情低")
-
-            method = self.config.Fleet_FleetOrder
-            if method == 'fleet1_mob_fleet2_boss':
-                fleet = 'fleet_1'
-            elif method == 'fleet1_boss_fleet2_mob':
-                fleet = 'fleet_2'
-            elif method == 'fleet1_all_fleet2_standby':
-                fleet = 'fleet_1'
-            elif method == 'fleet1_standby_fleet2_all':
-                fleet = 'fleet_2'
-            logger.info(f"now combat is {method}")    
-            logger.warning(f"{name} recorded {fleet} is :{getattr(self.campaign.emotion, fleet).current}")
-            if getattr(self.campaign.emotion, fleet).current > 75:    
-                handle_notify(
-                    self.config.Error_OnePushConfig,
-                    title=f"Alas <{self.config.config_name}> {name} Emotion calculate error ",
-                    content=f"<{self.config.config_name}> {fleet} recorded is {getattr(self.campaign.emotion, fleet).current},Emotion calculate error"
-                )
-            setattr(getattr(self.campaign.emotion, fleet), 'current', 0)
-            self.campaign.emotion.record()
-            self.campaign.emotion.show()
-            try:
-                self.campaign.emotion.check_reduce(self.campaign._map_battle)
-            except ScriptEnd as e:
-                logger.hr('Script end')
-                logger.info(str(e))
-                if self.appear_then_click(LOW_EMOTION_LEFT, offset=(30, 30), interval=3):
-                    return True
-                else:
-                    raise GamePageUnknownError(f'LOW EMOTION TIP FOUND, BUT NO LEFT button')
-                            
+            self.solve_emotion_error(name)
         else:
-            logger.warning("Game stuck, but not emotion error")
-            raise GameStuckError(f'Wait too long but not emotion error')   
+            logger.info("开始第二轮心情OCR识别")
+            EMOTION_TIP_L4=Button(area=(352, 290, 929, 325), color=(), button=(352, 290, 929, 325))
+            EMOTION_TIP_L5=Button(area=(352, 325, 929, 360), color=(), button=(352, 325, 929, 360))
+            EMOTION_TIP_L6=Button(area=(352, 360, 929, 395), color=(), button=(352, 360, 929, 395))
+
+            result2 =  Ocr(EMOTION_TIP_L4, lang= 'cnocr').ocr(image)
+            result2 += Ocr(EMOTION_TIP_L5, lang= 'cnocr').ocr(image)
+            result2 += Ocr(EMOTION_TIP_L6, lang= 'cnocr').ocr(image)
+            if "低心情" in result2 or "降低好感" in result2:
+                logger.warning("舰队心情低")
+                self.solve_emotion_error(name)
+            else:
+                logger.warning("Game stuck, but not emotion error")
+                raise GameStuckError(f'Wait too long but not emotion error')  
         
     def run(self, name, folder='campaign_main', mode='normal', total=0,from_eventDaily=False):
         """
@@ -505,3 +517,48 @@ class CampaignRun(CampaignEvent, ShopStatus):
                 self.config.task_stop()
 
         self.campaign.ensure_auto_search_exit()
+
+
+if __name__ == '__main__':
+    import numpy as np
+    from PIL import Image   
+    # 初始化logger
+    logger.hr('测试低心情检测')
+    
+    def detect_low_emotion_TEST(image: np.ndarray):
+        EMOTION_TIP_L1=Button(area=(352, 311, 929, 348), color=(), button=(352, 311, 929, 348))
+        EMOTION_TIP_L2=Button(area=(352, 350, 929, 387), color=(), button=(352, 350, 929, 387))
+        EMOTION_TIP_L3=Button(area=(352, 390, 929, 427), color=(), button=(352, 390, 929, 427))
+
+        logger.info("开始OCR识别")
+        # 获取识别结果
+        result =  Ocr(EMOTION_TIP_L1, lang= 'cnocr').ocr(image)
+        result += Ocr(EMOTION_TIP_L2, lang= 'cnocr').ocr(image)
+        result += Ocr(EMOTION_TIP_L3, lang= 'cnocr').ocr(image)
+        logger.info(f"OCR识别结果: {result}")
+        
+        if "低心情" in result or "降低好感" in result:
+            logger.warning("舰队心情低")
+        else:
+            logger.info("开始第二轮OCR识别")
+            EMOTION_TIP_L4=Button(area=(352, 290, 929, 325), color=(), button=(352, 290, 929, 325))
+            EMOTION_TIP_L5=Button(area=(352, 325, 929, 360), color=(), button=(352, 325, 929, 360))
+            EMOTION_TIP_L6=Button(area=(352, 360, 929, 395), color=(), button=(352, 360, 929, 395))
+
+            result2 =  Ocr(EMOTION_TIP_L4, lang= 'cnocr').ocr(image)
+            result2 += Ocr(EMOTION_TIP_L5, lang= 'cnocr').ocr(image)
+            result2 += Ocr(EMOTION_TIP_L6, lang= 'cnocr').ocr(image)
+            if "低心情" in result2 or "降低好感" in result2:
+                logger.warning("舰队心情低")
+            else:
+                logger.warning("Game stuck, but not emotion error")
+                raise GameStuckError(f'Wait too long but not emotion error')  
+    
+    # 测试用例
+    logger.info("正在读取测试图片")
+    try:
+        image = np.array(Image.open(r'C:\Users\W1NDe\Documents\GitHub\M-AzurLaneAutoScript\module\campaign\test.png').convert('RGB'))
+        logger.info(f"成功读取图片,尺寸: {image.shape}")
+        detect_low_emotion_TEST(image)
+    except Exception as e:
+        logger.warning(f"读取图片失败: {str(e)}")
