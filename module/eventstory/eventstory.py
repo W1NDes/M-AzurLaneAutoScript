@@ -1,10 +1,12 @@
+import sys
+sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 from module.campaign.campaign_ui import CampaignUI
 from module.combat.combat import Combat
 from module.eventstory.assets import *
 from module.handler.login import LoginHandler
 from module.logger import logger
 from module.ui.page import page_event
-
+from datetime import datetime
 
 class EventStory(CampaignUI, Combat, LoginHandler):
     def ui_goto_event_story(self):
@@ -127,9 +129,11 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         return 'unknown'
 
     def run(self):
-        if 1==1:
+        now = datetime.now()
+        if now.month == 6 and now.day <= 23 and now.hour <= 11:#设置活动结束时间
             self.run_event_story()
-
+        else:
+            logger.info('Event story expired')
         # Scheduler
         self.config.task_delay(server_update=True)
         pass
