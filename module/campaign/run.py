@@ -389,9 +389,9 @@ class CampaignRun(CampaignEvent, ShopStatus):
             EMOTION_TIP_L5=Button(area=(352, 325, 929, 360), color=(), button=(352, 325, 929, 360))
             EMOTION_TIP_L6=Button(area=(352, 360, 929, 395), color=(), button=(352, 360, 929, 395))
 
-            result2 =  Ocr(EMOTION_TIP_L4, lang= 'cnocr').ocr(image)
-            result2 += Ocr(EMOTION_TIP_L5, lang= 'cnocr').ocr(image)
-            result2 += Ocr(EMOTION_TIP_L6, lang= 'cnocr').ocr(image)
+            result2 =  Ocr(EMOTION_TIP_L4, lang= 'cnocr').ocr(self.device.image)
+            result2 += Ocr(EMOTION_TIP_L5, lang= 'cnocr').ocr(self.device.image)
+            result2 += Ocr(EMOTION_TIP_L6, lang= 'cnocr').ocr(self.device.image)
             if "低心情" in result2 or "降低好感" in result2:
                 logger.warning("舰队心情低")
                 self.solve_emotion_error(name)
