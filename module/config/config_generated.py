@@ -264,7 +264,7 @@ class GeneratedConfig:
 
     # Group `Coalition`
     Coalition_UseRecommendFleet = True
-    Coalition_Mode = 'tc1'  # tc1, tc2, tc3, sp, ex
+    Coalition_Mode = 'hard'  # easy, normal, hard, sp, ex
     Coalition_Fleet = 'single'  # single, multi
 
     # Group `Commission`
