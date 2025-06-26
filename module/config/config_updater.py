@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:/Users/W1NDes/Documents/GitHub/M-AzurLaneAutoScript')
+sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 import re
 import typing as t
 from copy import deepcopy

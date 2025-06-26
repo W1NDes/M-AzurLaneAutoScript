@@ -107,9 +107,9 @@ class Coalition(CoalitionCombat, CampaignEvent):
                 Coalition_Fleet='multi',
             )
         self.emotion.check_reduce(battle=self.coalition_get_battles(event, stage))
+        self.enter_map(event=event, stage=stage, mode=fleet)
         if self.triggered_stop_condition(oil_check=True):
             raise ScriptEnd
-        self.enter_map(event=event, stage=stage, mode=fleet)
         self.coalition_combat()
 
     @staticmethod
@@ -183,7 +183,7 @@ class Coalition(CoalitionCombat, CampaignEvent):
                     self.config.Coalition_Mode = next_stage
                     event, mode, fleet = self.get_run_info(event, self.config.Coalition_Mode, fleet)
                     continue
-                elif self.config.StopCondition_EventSwitch:
+                elif self.config.EventPt_EventPtSwitch:
                     if not self.config.is_task_enabled('CoalitionSp'):
                         self.config.task_call('CoalitionSp')
                     continue

@@ -20,7 +20,7 @@ class TeamSwitch(Switch):
             bool
         """
         for data in self.state_list:
-            if main.image_color_count(data['check_button'], color=(222, 222, 222), threshold=221, count=100):
+            if main.image_color_count(data['check_button'], color=(191, 192, 198), threshold=221, count=100):
                 return True
 
         return False
@@ -34,7 +34,7 @@ class TeamSwitch(Switch):
             str: state name or 'unknown'.
         """
         for data in self.state_list:
-            if main.image_color_count(data['check_button'], color=(222, 222, 222), threshold=221, count=100):
+            if main.image_color_count(data['check_button'], color=(191, 192, 198), threshold=221, count=100):
                 return data['state']
 
         return 'unknown'
@@ -314,42 +314,49 @@ class CoalitionUI(Combat):
                                 "This stage can only be farmed once a day, "
                                 "but it's the second time that you are entering")
                 raise RequestHumanTakeover
-            # if self.appear(FLEET_NOT_PREPARED, offset=(20, 20)) and stage != 'sp':
-            #     if self.config.Hospital_UseRecommendFleet:
-            #         fleet_1 = FleetOperator(
-            #         choose=COALITION_FLEET_1_CHOOSE, advice=FLEET_1_ADVICE, bar=FLEET_1_BAR, clear=FLEET_1_CLEAR,
-            #         in_use=COALITION_FLEET_1_IN_USE, hard_satisfied=FLEET_1_HARD_SATIESFIED, main=self)
-            #         logger.info('Recommend fleet')
-            #         fleet_1.recommend()
-            #         continue
-            #     else:   
-            #         logger.critical('FLEET_NOT_PREPARED')
-            #         logger.critical('Please prepare you fleets before running coalition battles')
-            #         raise RequestHumanTakeover
-            # if self.appear(FLEET_NOT_PREPARED, offset=(20, 20)) and stage == 'sp':
-            #     if self.config.Hospital_UseRecommendFleet:
-            #         fleet_1 = FleetOperator(
-            #             choose=COALITION_FLEET_1_CHOOSE, advice=FLEET_1_ADVICE, bar=FLEET_1_BAR, clear=FLEET_1_CLEAR,
-            #             in_use=COALITION_FLEET_1_IN_USE, hard_satisfied=FLEET_1_HARD_SATIESFIED, main=self)
-            #         if fleet_1.in_use():
-            #             team_id += 1
-            #             if team_id <= 4:
-            #                 self.TEAM_SIDEBAR.set(f'TEAM_{team_id}', main=self)
-            #             continue
-            #         else:
-            #             fleet_1.recommend()
-            #             continue
-            #     # End
+            def handle_fleet_recommend(stage):
+                if self.config.Coalition_UseRecommendFleet:
+                    fleet_i = FleetOperator(
+                    choose=COALITION_FLEET_1_CHOOSE, advice=FLEET_1_ADVICE, bar=FLEET_1_BAR, clear=FLEET_1_CLEAR,
+                    in_use=COALITION_FLEET_1_IN_USE, hard_satisfied=FLEET_1_HARD_SATIESFIED, main=self)
+                    nonlocal team_id  
+                    if team_id < 5:
+                        if stage in ['sp', 'ex']:
+                            if fleet_i.in_use():
+                                team_id += 1
+                                if team_id <= 4:
+                                    self.TEAM_SIDEBAR.set(f'TEAM_{team_id}', main=self)
+                                return 'continue'
+                            else:
+                                fleet_i.recommend()
+                                return 'continue'
+                    logger.info('Recommend fleet')
+                    fleet_i.recommend()
+                    return True
+                else:
+                    return False
             if self.appear(FLEET_NOT_PREPARED, offset=(20, 20)):
-                logger.critical('FLEET_NOT_PREPARED')
-                logger.critical('Please prepare you fleets before running coalition battles')
-                raise RequestHumanTakeover
+                result = handle_fleet_recommend(stage)
+                if result == 'continue':
+                    continue
+                elif result == False:
+                    logger.critical('FLEET_NOT_PREPARED')
+                    logger.critical('Please prepare you fleets before running coalition battles')
+                    raise RequestHumanTakeover
             if self.appear(EMPTY_FLAGSHIP, offset=(20, 20)):
-                logger.critical('EMPTY_FLAGSHIP, Please prepare you fleets before running coalition battles')
-                raise RequestHumanTakeover
+                result = handle_fleet_recommend(stage)
+                if result == 'continue':
+                    continue
+                elif result == False:
+                    logger.critical('EMPTY_FLAGSHIP, Please prepare you fleets before running coalition battles')
+                    raise RequestHumanTakeover
             if self.appear(EMPTY_VANGUARD, offset=(20, 20)):
-                logger.critical('EMPTY_VANGUARD, Please prepare you fleets before running coalition battles')
-                raise RequestHumanTakeover
+                result = handle_fleet_recommend(stage)
+                if result == 'continue':
+                    continue
+                elif result == False:
+                    logger.critical('EMPTY_VANGUARD, Please prepare you fleets before running coalition battles')
+                    raise RequestHumanTakeover
 
             # End
             if self.appear(BATTLE_PREPARATION, offset=(20, 20)):

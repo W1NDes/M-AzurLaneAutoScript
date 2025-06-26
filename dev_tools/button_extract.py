@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.append(r'C:/Users/W1NDes/Documents/GitHub/M-AzurLaneAutoScript')
+sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 import imageio
 import numpy as np
 from tqdm.contrib.concurrent import process_map

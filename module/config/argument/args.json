@@ -2359,6 +2359,32 @@
         "display": "hide"
       }
     },
+    "EventPt": {
+      "EventPtSwitch": {
+        "type": "checkbox",
+        "value": false
+      },
+      "Event2MapName": {
+        "type": "textarea",
+        "value": "HT6",
+        "display": "hide"
+      },
+      "EventDailyAMapName": {
+        "type": "textarea",
+        "value": "T1>T2>T3>T4>T5>T6",
+        "display": "hide"
+      },
+      "EventDailySpMapName": {
+        "type": "textarea",
+        "value": "sp",
+        "display": "hide"
+      },
+      "EventDailyCD": {
+        "type": "textarea",
+        "value": "HT1>HT2>HT3>HT4>HT5>HT6",
+        "display": "hide"
+      }
+    },
     "Emotion": {
       "Mode": {
         "type": "select",
@@ -4860,8 +4886,8 @@
         "display": "hide"
       },
       "Fleet": {
-        "type": "select",
-        "value": "single",
+        "type": "state",
+        "value": "multi",
         "option": [
           "single",
           "multi"

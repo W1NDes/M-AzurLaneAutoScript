@@ -477,6 +477,13 @@
       "GetNewShip": false,
       "ReachLevel": 0
     },
+    "EventPt": {
+      "EventPtSwitch": false,
+      "Event2MapName": "HT6",
+      "EventDailyAMapName": "T1>T2>T3>T4>T5>T6",
+      "EventDailySpMapName": "sp",
+      "EventDailyCD": "HT1>HT2>HT3>HT4>HT5>HT6"
+    },
     "Emotion": {
       "Mode": "calculate",
       "Fleet1Value": 119,
@@ -921,7 +928,7 @@
     "Coalition": {
       "UseRecommendFleet": true,
       "Mode": "sp",
-      "Fleet": "single"
+      "Fleet": "multi"
     },
     "StopCondition": {
       "OilLimit": 1000,

@@ -77,6 +77,7 @@ Event:
       - Campaign
       - Coalition
       - StopCondition
+      - EventPt
       - Emotion
     Event:
       - Scheduler
