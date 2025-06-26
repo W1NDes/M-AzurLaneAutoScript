@@ -132,6 +132,7 @@ class GeneratedConfig:
 
     # Group `OneClickRetire`
     OneClickRetire_KeepLimitBreak = 'keep_limit_break'  # keep_limit_break, do_not_keep
+    OneClickRetire_modify_one_click_retire = 'do_not_modify'  # do_not_modify, modify
 
     # Group `Enhance`
     Enhance_ShipToEnhance = 'all'  # all, favourite

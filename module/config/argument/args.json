@@ -567,6 +567,14 @@
           "keep_limit_break",
           "do_not_keep"
         ]
+      },
+      "modify_one_click_retire": {
+        "type": "select",
+        "value": "do_not_modify",
+        "option": [
+          "do_not_modify",
+          "modify"
+        ]
       }
     },
     "Enhance": {

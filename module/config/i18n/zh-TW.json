@@ -895,6 +895,12 @@
       "help": "沒有滿星的同名艦船時，保留幾艘符合退役條件的同名艦船\n如果一鍵退役無法退役，請設定為 \"不保留\"",
       "keep_limit_break": "保留滿星所需",
       "do_not_keep": "不保留"
+    },
+    "modify_one_click_retire": {
+      "name": "嘗試矯正一鍵退役設定",
+      "help": "如果一鍵退役無法退役，則會嘗試修改其設定",
+      "do_not_modify": "不修改",
+      "modify": "嘗試矯正"
     }
   },
   "Enhance": {

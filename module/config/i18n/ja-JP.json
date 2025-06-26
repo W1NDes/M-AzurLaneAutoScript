@@ -895,6 +895,12 @@
       "help": "OneClickRetire.KeepLimitBreak.help",
       "keep_limit_break": "keep_limit_break",
       "do_not_keep": "do_not_keep"
+    },
+    "modify_one_click_retire": {
+      "name": "一括退役設定の修正を試みる",
+      "help": "一括退役が実行できない場合、設定の修正を試みます",
+      "do_not_modify": "修正しない",
+      "modify": "修正を試みる"
     }
   },
   "Enhance": {

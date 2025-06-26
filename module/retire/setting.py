@@ -95,4 +95,4 @@ class QuickRetireSettingHandler(UI):
         """
         Fallback to the correct quick retire settings if user has wrong set.
         """
-        return self.config.SERVER in ['cn', 'en', 'jp']
+        return self.config.SERVER in ['cn', 'en', 'jp'] and self.config.OneClickRetire_modify_one_click_retire == 'modify'

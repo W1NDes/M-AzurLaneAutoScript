@@ -895,6 +895,12 @@
       "help": "If you own multiple copies of a ship that has not been fully Limit Broken, this option determines what you want to do with those copies.\nIf one-click retire cannot retire ships, please set to \"Don't Keep\"",
       "keep_limit_break": "Keep Enough to Max LB",
       "do_not_keep": "Don't Keep"
+    },
+    "modify_one_click_retire": {
+      "name": "Try to modify one-click retire settings",
+      "help": "If one-click retire cannot retire ships, it will try to modify its settings",
+      "do_not_modify": "Do not modify",
+      "modify": "Try to modify"
     }
   },
   "Enhance": {

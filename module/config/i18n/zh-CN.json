@@ -895,6 +895,12 @@
       "help": "没有满星的同名舰船时，保留几艘符合退役条件的同名舰船\n如果一键退役无法退役，请设置为 \"不保留\"",
       "keep_limit_break": "保留满星所需",
       "do_not_keep": "不保留"
+    },
+    "modify_one_click_retire": {
+      "name": "尝试矫正一键退役设置",
+      "help": "如果一键退役无法退役，则会尝试修改其设置",
+      "do_not_modify": "不修改",
+      "modify": "尝试矫正"
     }
   },
   "Enhance": {
