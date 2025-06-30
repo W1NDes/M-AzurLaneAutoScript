@@ -3,13 +3,14 @@ import re
 from module.campaign.campaign_event import CampaignEvent
 from module.coalition.assets import *
 from module.coalition.combat import CoalitionCombat
-from module.exception import ScriptError, ScriptEnd
+from module.exception import ScriptError, ScriptEnd, GameTooManyClickError
 from module.logger import logger
 from module.ocr.ocr import Digit
 from module.log_res.log_res import LogRes
 from module.campaign.assets import OCR_OIL, OCR_OIL_CHECK
 from module.base.utils import  get_color
 import module.config.server as server
+from module.notify import handle_notify
 
 class AcademyPtOcr(Digit):
     def __init__(self, *args, **kwargs):
@@ -147,6 +148,33 @@ class Coalition(CoalitionCombat, CampaignEvent):
         event, mode = self.handle_stage_name(event, mode)
         return event, mode, fleet
     
+    def solve_emotion_error(self, event, stage):
+        method = self.config.Fleet_FleetOrder
+        if method == 'fleet1_mob_fleet2_boss':
+            fleet = 'fleet_1'
+        elif method == 'fleet1_boss_fleet2_mob':
+            fleet = 'fleet_2'
+        elif method == 'fleet1_all_fleet2_standby':
+            fleet = 'fleet_1'
+        elif method == 'fleet1_standby_fleet2_all':
+            fleet = 'fleet_2'
+        logger.info(f"now combat is {method}")    
+        logger.warning(f"{event}_{stage} recorded {fleet} is :{getattr(self.emotion, fleet).current}")
+        if getattr(self.emotion, fleet).current > 75:    
+            handle_notify(
+                self.config.Error_OnePushConfig,
+                title=f"Alas <{self.config.config_name}> {event}_{stage} Emotion calculate error ",
+                content=f"<{self.config.config_name}> {fleet} recorded is {getattr(self.emotion, fleet).current},Emotion calculate error"
+            )
+        setattr(getattr(self.emotion, fleet), 'current', 0)
+        self.emotion.record()
+        self.emotion.show()
+        try:
+            self.emotion.check_reduce(battle=self.coalition_get_battles(event, stage))
+        except ScriptEnd as e:
+            logger.hr('Script end')
+            logger.info(str(e))
+            
     def run(self, event='', mode='', fleet='', total=0):
         event, mode, fleet = self.get_run_info(event, mode, fleet)
 
@@ -185,7 +213,11 @@ class Coalition(CoalitionCombat, CampaignEvent):
                 logger.hr('Script end')
                 logger.info(str(e))
                 break
-
+            except GameTooManyClickError as e:
+               if self.appear(COALITION_LOW_EMOTION, offset=(20, 20)):
+                   logger.warning("连战舰队心情低")
+                   self.solve_emotion_error(event=event, stage=mode)
+                   break
             # After run
             self.run_count += 1
             if self.config.StopCondition_RunCount:
