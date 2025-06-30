@@ -155,7 +155,7 @@ class CampaignStatus(UI):
                 break
 
             _oil = {
-                'Value': self._get_num(OCR_OIL, 'OCR_OIL'),
+                'Value': self._get_oil(),
                 'Limit': self._get_num(OCR_OIL_LIMIT, 'OCR_OIL_LIMIT')
             }
             if _oil['Value'] >= 100:

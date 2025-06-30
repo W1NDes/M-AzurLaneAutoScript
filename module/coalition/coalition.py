@@ -7,7 +7,9 @@ from module.exception import ScriptError, ScriptEnd
 from module.logger import logger
 from module.ocr.ocr import Digit
 from module.log_res.log_res import LogRes
-
+from module.campaign.assets import OCR_OIL, OCR_OIL_CHECK
+from module.base.utils import  get_color
+import module.config.server as server
 
 class AcademyPtOcr(Digit):
     def __init__(self, *args, **kwargs):
@@ -50,6 +52,16 @@ class Coalition(CoalitionCombat, CampaignEvent):
         self.config.update()
         return pt
 
+    def _get_oil(self):
+        logger.info("using coalition_get_num")
+        # Update offset
+        _ = self.appear(OCR_OIL_CHECK)
+
+        color = get_color(self.device.image, OCR_OIL_CHECK.button)
+        ocr = Digit(OCR_OIL, name='OCR_OIL', letter=(165, 165, 165), threshold=152)
+
+        return ocr.ocr(self.device.image)
+    
     def triggered_stop_condition(self, oil_check=False, pt_check=False):
         """
         Returns:
