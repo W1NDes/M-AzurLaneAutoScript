@@ -366,7 +366,11 @@ class MeowfficerEnhance(MeowfficerBase):
         for _ in range(2):
             # Select target meowfficer
             # for enhancement
-            self._meow_select()
+            try:
+                self._meow_select()
+            except GameTooManyClickError:
+                logger.warning(f"槽位{self.config.MeowfficerTrain_EnhanceIndex}没有指挥猫")
+                return f'none cat in slot {self.config.MeowfficerTrain_EnhanceIndex}'
 
             if self._meow_get_level() >= 30:
                 logger.info('Current meowfficer is already leveled max')
