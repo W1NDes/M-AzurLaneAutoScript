@@ -7,6 +7,7 @@ from module.meowfficer.buy import MEOWFFICER_COINS
 from module.ocr.ocr import Digit, DigitCounter
 from module.ui.assets import MEOWFFICER_GOTO_DORMMENU
 from module.ui.page import page_meowfficer
+from module.exception import GameTooManyClickError
 
 MEOWFFICER_SELECT_GRID = ButtonGrid(
     origin=(751, 237), delta=(130, 147), button_shape=(70, 20), grid_shape=(4, 3),
@@ -183,12 +184,16 @@ class MeowfficerEnhance(MeowfficerBase):
                 same_button_time = 0
                 last_button_names = current_button_names
             if same_button_time >= 7:
-                logger.warning("指挥猫在大世界中!")
+                logger.warning("指挥猫素材在大世界中!") #重复点击太多次猫说明这个猫在大世界
                 current = 0 #修改扫描数，不然还会"ENHANCE ONCE"
-                self.ui_click(MEOWFFICER_FEED_CONFIRM, check_button=MEOWFFICER_ENHANCE_CONFIRM,
-                             offset=(20, 20), skip_first_screenshot=True)
-                self.meow_enhance_confirm()
-                break #重复点击太多次猫说明这个猫在大世界
+                try:
+                    self.ui_click(MEOWFFICER_FEED_CONFIRM, check_button=MEOWFFICER_ENHANCE_CONFIRM,
+                                 offset=(20, 20), skip_first_screenshot=True)
+                    self.meow_enhance_confirm()
+                except GameTooManyClickError:
+                    logger.warning(f"没有陪玩的指挥猫素材")
+                    break
+                break
 
             # Else click each button to
             # apply green check mark
