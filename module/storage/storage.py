@@ -15,7 +15,7 @@ from module.storage.assets import *
 from module.storage.ui import StorageUI
 from module.ui.assets import BACK_ARROW, STORAGE_CHECK
 from module.ui.scroll import Scroll
-
+from module.exception import GameTooManyClickError
 MATERIAL_SCROLL = Scroll(METERIAL_SCROLL, color=(247, 211, 66))
 
 EQUIPMENT_GRIDS = ButtonGrid(origin=(140, 88), delta=(159, 178), button_shape=(124, 124),
@@ -96,10 +96,13 @@ class StorageHandler(StorageUI):
 
             if retry.reached():
                 button = AMOUNT_PLUS if diff > 0 else AMOUNT_MINUS
-                self.device.multi_click(button, n=abs(diff), interval=(0.1, 0.2))
+                try:
+                    self.device.multi_click(button, n=abs(diff), interval=(0.1, 0.2))
+                except GameTooManyClickError:
+                    return current
                 retry.reset()
 
-        return True
+        return amount
 
     def _storage_use_one_box(self, button, amount=1):
         """
@@ -156,10 +159,10 @@ class StorageHandler(StorageUI):
             # use match_template_color on BOX_AMOUNT_CONFIRM
             # a long animation that opens a box, will be on the top of BOX_AMOUNT_CONFIRM
             if self.match_template_color(BOX_AMOUNT_CONFIRM, offset=(20, 20), interval=5):
-                self._handle_use_box_amount(amount)
+                real_used = self._handle_use_box_amount(amount)
                 self.device.click(BOX_AMOUNT_CONFIRM)
                 self.interval_reset(BOX_AMOUNT_CONFIRM)
-                used = amount
+                used = real_used
                 continue
             if self.appear_then_click(EQUIP_CONFIRM, offset=(20, 20), interval=5):
                 self.interval_reset(MATERIAL_CHECK)
