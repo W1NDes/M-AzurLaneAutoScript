@@ -22,7 +22,7 @@ from module.ui.scroll import Scroll
 from module.ui.switch import Switch
 from module.ui.ui import UI
 from module.ui_white.assets import REWARD_1_WHITE, REWARD_GOTO_COMMISSION_WHITE
-
+from module.ocr.ocr import Ocr
 COMMISSION_SWITCH = Switch('Commission_switch', is_selector=True)
 COMMISSION_SWITCH.add_state('daily', COMMISSION_DAILY)
 COMMISSION_SWITCH.add_state('urgent', COMMISSION_URGENT)
@@ -324,7 +324,14 @@ class RewardCommission(UI, InfoHandler):
         self.urgent = urgent
         self.daily_choose, self.urgent_choose = self._commission_choose(self.daily, self.urgent)
         return daily, urgent
-
+    
+    def UNFIT_TEXT_OCR(self, OCR_obj):
+        # self.device.sleep(1)
+        self.device.screenshot()
+        result = OCR_obj.ocr(self.device.image)
+        if any(x in result for x in ["无符合推荐", "自动添加"]):
+            return True
+        
     def _commission_start_click(self, comm, is_urgent=False, skip_first_screenshot=True):
         """
         Start a commission.
@@ -346,6 +353,7 @@ class RewardCommission(UI, InfoHandler):
         self.interval_clear(COMMISSION_START)
         comm_timer = Timer(7)
         count = 0
+        COMMISSION_UNFIT_TEXT_OCR = Ocr(Button(area=(351, 313, 926, 342), color=(), button=(351, 313, 926, 342),name="COMMISSION_UNFIT_TEXT_OCR"), lang='cnocr')
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -368,9 +376,13 @@ class RewardCommission(UI, InfoHandler):
                 self.interval_reset(COMMISSION_ADVICE)
                 comm_timer.reset()
                 continue
-            if self.appear(COMMISSION_UNFIT, offset=(5, 5), similarity=0.65):
-                logger.warning('UNFIT THE COMMISSION REQUEST')
+            
+            if self.appear(COMMISSION_UNFIT, offset=(10, 10), similarity=0.65):
+                logger.warning('UNFIT THE COMMISSION REQUEST by Image')
                 return False 
+            elif self.UNFIT_TEXT_OCR(COMMISSION_UNFIT_TEXT_OCR):
+                logger.warning(f'UNFIT THE COMMISSION REQUEST by Text')
+                return False
             elif self.handle_popup_confirm('COMMISSION_START'):
                     self.interval_reset(COMMISSION_ADVICE)
                     comm_timer.reset()
