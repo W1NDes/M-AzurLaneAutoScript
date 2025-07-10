@@ -802,6 +802,7 @@ OpsiExplore:
   ForceRun: false
   LastZone: 0
 OpsiShop:
+  BuySpecialRadar: false
   PresetFilter:
     value: max_benefit_meta
     option:

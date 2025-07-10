@@ -2755,6 +2755,10 @@
       "name": "OpSi Shop Settings",
       "help": "Completes OpSi daily activities\nThe following must be satisfied:\n- OpSi story and practice battles must be complete\n- Task OpSi Explore enabled or consuming 5000 oil for special radar in OpSi voucher shop\nAvailable only in the next month after clearing OpSi story, i.e., after the port shop becomes a new version of the shop"
     },
+    "BuySpecialRadar": {
+      "name": "Buy Special Radar",
+      "help": "Automatically purchase the Operation Siren Data Logger (5k oil item)"
+    },
     "PresetFilter": {
       "name": "OpSi Shop Filter",
       "help": "Generally does not need to be modified. Use \"High value items and META material\"` if Voucher Coins spilled or \"Without META materials\" if you are newcomer.\nHigh value items include ActionPoint, Logger and T4 or higher items; META materials include METABook and META enhance materials.",

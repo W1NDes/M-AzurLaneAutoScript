@@ -5,6 +5,7 @@ from module.os.map_operation import OSMapOperation
 from module.os.operation_siren import OperationSiren
 from module.os_handler.action_point import ActionPointLimit
 
+from module.oilkeep.oilkeep import Oilkeep
 
 class OSCampaignRun(OSMapOperation):
     campaign: OperationSiren
@@ -29,6 +30,12 @@ class OSCampaignRun(OSMapOperation):
             self.config.opsi_task_delay(ap_limit=True)
 
     def opsi_shop(self):
+        if self.config.OpsiShop_BuySpecialRadar:
+            if Oilkeep(self.config, self.device).update_oil() > 6000:
+                self.load_campaign()
+                self.campaign.os_voucher_buy_loggerUnlock()
+            else:
+                logger.warning('oil < 6000, skip buying loggerUnlock')
         try:
             self.load_campaign()
             self.campaign.os_shop()

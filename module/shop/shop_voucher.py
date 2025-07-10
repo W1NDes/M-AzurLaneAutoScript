@@ -209,6 +209,32 @@ class VoucherShop(ShopClerk, ShopStatus):
                 del_cached_property(self, 'shop_voucher_items')
                 continue
 
+    def run_loggerUnlock(self):
+        """
+        Run Voucher Shop
+        """
+        # Base case; exit run if filter empty
+        if not self.shop_filter:
+            return
+
+        # When called, expected to be in
+        # correct Voucher Shop interface
+        logger.hr('Voucher Shop', level=1)
+        self.wait_until_voucher_appear()
+
+        # Execute buy operations
+        VOUCHER_SHOP_SCROLL.set_top(main=self)
+        while 1:
+            self.shop_buy_loggerUnlock()
+            if VOUCHER_SHOP_SCROLL.at_bottom(main=self):
+                logger.info('Voucher Shop reach bottom, stop')
+                break
+            else:
+                VOUCHER_SHOP_SCROLL.next_page(main=self)
+                del_cached_property(self, 'shop_grid')
+                del_cached_property(self, 'shop_voucher_items')
+                continue
+
     def run_once(self):
         """
         Run Voucher Shop to purchase

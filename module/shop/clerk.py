@@ -344,3 +344,34 @@ class ShopClerk(ShopBase, Retirement):
 
         logger.warning('Too many items to buy, stopped')
         return True
+
+    def shop_buy_loggerUnlock(self):
+        """
+        Returns:
+            bool: If success, and able to continue.
+        """
+        for _ in range(12):
+            logger.hr('Shop buy loggerUnlock', level=2)
+            # Get first for innate delay to ocr
+            # shop currency for accurate parse
+            items = self.shop_get_items(cost=False)
+            self.shop_currency()
+            if self._currency <= 0:
+                logger.warning(f'Current funds: {self._currency}, stopped')
+                return False
+            
+            if items is None:
+                logger.info('Shop buy finished')
+                return True
+            
+            for item in items:
+                if item.price == 5000:
+                    logger.warning(f'Found loggerUnlock, buy it')
+                    self.shop_buy_execute(item)
+                    return True
+                else:
+                    continue
+            
+
+        logger.warning('no loggerUnlock to buy, stopped')
+        return True
