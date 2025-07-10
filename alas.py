@@ -384,6 +384,10 @@ class AzurLaneAutoScript:
         from module.smallevent.samllevent import SmallEvent
         SmallEvent(config=self.config, device=self.device).run()
 
+    def private_quarters(self):
+        from module.private_quarters.private_quarters import PrivateQuarters
+        PrivateQuarters(config=self.config, device=self.device).run()
+
     def daily(self):
         from module.daily.daily import Daily
         Daily(config=self.config, device=self.device).run()

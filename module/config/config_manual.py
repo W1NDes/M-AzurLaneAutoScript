@@ -17,6 +17,7 @@ class ManualConfig:
     > Reward
     > ShopFrequent > ShopOnce > Shipyard > Freebies > Daily > Hard 
     > Oilkeep > Event 
+    > PrivateQuarters
     > OpsiExplore
     > EventStory > Smallevent > Minigame > Awaken
     > OpsiAshBeacon
