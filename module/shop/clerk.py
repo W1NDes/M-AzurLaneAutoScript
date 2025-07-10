@@ -368,6 +368,7 @@ class ShopClerk(ShopBase, Retirement):
                 if item.price == 5000:
                     logger.warning(f'Found loggerUnlock, buy it')
                     self.shop_buy_execute(item)
+                    self.config.cross_set(keys=f'OpsiExplore.OpsiExplore.SpecialRadar', value=True)
                     return True
                 else:
                     continue
