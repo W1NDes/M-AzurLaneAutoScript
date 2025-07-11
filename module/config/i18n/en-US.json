@@ -1772,6 +1772,13 @@
       "name": "Empty selection is allowed, that is, only eligible projects are selected for scientific research",
       "help": "By default, Alas will force the selection when no conditions are met"
     },
+    "CheckSeries": {
+      "name": "Check Research Series",
+      "help": "Check the current selected research series and switch to the corresponding strategy",
+      "change_series_only": "Change Series Only (Keep Original Type)",
+      "change_series_normal": "Change Series (Blueprint+Equipment)",
+      "not_change": "Not Change Series"
+    },
     "PresetFilter": {
       "name": "Preset Filter Select",
       "help": "See research drops rates and spawn rates in https://azur-stats.lyoko.io/. People without a basic knowledge of these are recommended to use pre-optimized presets instead of writing custom filters",

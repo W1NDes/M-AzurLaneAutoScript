@@ -473,6 +473,9 @@ Research:
     option: [ always_use, only_05_hour, only_no_project, do_not_use ]
   AllowDelay: true
   AllowNone: false
+  CheckSeries: 
+    value: change_series_normal
+    option: [ change_series_only, change_series_normal, not_change]
   PresetFilter:
     value: series_8_blueprint_305
     option:

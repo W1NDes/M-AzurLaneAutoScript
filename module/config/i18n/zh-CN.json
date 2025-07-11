@@ -1772,6 +1772,13 @@
       "name": "允许空选，即科研只选符合条件的项目",
       "help": "Alas默认会在无符合条件时强制选择"
     },
+    "CheckSeries": {
+      "name": "检查科研期数",
+      "help": "检测当前选择的科研期数并切换对应策略（不涉及自定义过滤器）",
+      "change_series_only": "仅切换期数（保持原类型）",
+      "change_series_normal": "切换期数（蓝图+装备）",
+      "not_change": "不切换期数"
+    },
     "PresetFilter": {
       "name": "科研过滤器",
       "help": "科研掉落和项目刷新见 https://azur-stats.lyoko.io/，对这些没有基本了解的人不建议编写自定义过滤器，建议使用预优化科研过滤器",

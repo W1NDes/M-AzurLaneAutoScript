@@ -7955,6 +7955,15 @@
         "type": "checkbox",
         "value": false
       },
+      "CheckSeries": {
+        "type": "select",
+        "value": "change_series_normal",
+        "option": [
+          "change_series_only",
+          "change_series_normal",
+          "not_change"
+        ]
+      },
       "PresetFilter": {
         "type": "select",
         "value": "series_8_blueprint_305",

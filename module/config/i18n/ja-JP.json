@@ -1772,6 +1772,13 @@
       "name": "Research.AllowNone.name",
       "help": "Research.AllowNone.help"
     },
+    "CheckSeries": {
+      "name": "研究シリーズの確認",
+      "help": "現在選択されている研究シリーズを検出し、対応する戦略に切り替えます",
+      "change_series_only": "シリーズのみ切り替え（タイプは維持）",
+      "change_series_normal": "シリーズ切り替え（設計図＋装備）",
+      "not_change": "シリーズを切り替えない"
+    },
     "PresetFilter": {
       "name": "Research.PresetFilter.name",
       "help": "Research.PresetFilter.help",

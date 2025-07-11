@@ -9,7 +9,7 @@ from module.logger import logger
 from module.research.assets import *
 from module.research.preset import *
 from module.research.project import research_detect, research_jp_detect
-from module.research.series import check_series_selected
+from module.research.series import check_research_series
 from module.research.ui import ResearchUI
 
 RESEARCH_ENTRANCE = [ENTRANCE_1, ENTRANCE_2, ENTRANCE_3, ENTRANCE_4, ENTRANCE_5]
@@ -141,14 +141,22 @@ class ResearchSelector(ResearchUI):
                 continue
             else:
                 break
+        self.projects = projects
+
+
+        if self.config.Research_CheckSeries == 'not_change':
+            logger.info('Do not change series')
+            return
+        
         timeout = Timer(5, count=5).start()
         while 1:
-            series_detected = check_series_selected(self.device.image,series_button=SELECTED_SERIES)
+            series_detected = check_research_series(self.device.image,series_button=SELECTED_SERIES)
             logger.info(f'Series detected: {series_detected}') 
             if series_detected != 0:
                 preset = self.config.Research_PresetFilter
                 logger.info(f'Preset: {preset}')
                 if preset == 'custom':
+                    logger.info('Custom preset, do not change series')
                     pass
                 elif preset.split('_')[1] != str(series_detected):
                     parts = preset.split('_')
@@ -164,17 +172,16 @@ class ResearchSelector(ResearchUI):
                         '3': '234',
                         '2': '457'
                     }
-
-                    if 'blueprint' in parts and 'only' in parts:
-                        new_preset = f'series_{new_series}_blueprint_only'
-                    elif 'blueprint' in parts:
-                        gear = series_gears.get(new_series)
-                        if gear:
+                    gear = series_gears.get(new_series)
+                    if self.config.Research_CheckSeries == 'change_series_only':
+                        if 'blueprint' in parts and 'only' in parts:
+                            new_preset = f'series_{new_series}_blueprint_only'
+                        elif 'blueprint' in parts:
                             new_preset = f'series_{new_series}_blueprint_{gear}'
-                    elif 'only' in parts:
-                        gear = series_gears.get(new_series)
-                        if gear:
+                        elif 'only' in parts:
                             new_preset = f'series_{new_series}_{gear}_only'
+                    elif self.config.Research_CheckSeries == 'change_series_normal':
+                        new_preset = f'series_{new_series}_blueprint_{gear}'
 
                     if new_preset != preset:
                         self.config.cross_set(keys=f'Research.Research.PresetFilter', value=f'{new_preset}')
@@ -186,7 +193,7 @@ class ResearchSelector(ResearchUI):
             self.device.sleep(1)
             self.device.screenshot()
 
-        self.projects = projects
+
 
     def research_sort_filter(self, enforce=False):
         """

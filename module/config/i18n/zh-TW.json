@@ -1772,6 +1772,13 @@
       "name": "Research.AllowNone.name",
       "help": "Research.AllowNone.help"
     },
+    "CheckSeries": {
+      "name": "檢查科研期數",
+      "help": "檢測當前選擇的科研期數並切換對應策略",
+      "change_series_only": "僅切換期數（保持原類型）",
+      "change_series_normal": "切換期數（藍圖+裝備）",
+      "not_change": "不切換期數"
+    },
     "PresetFilter": {
       "name": "科研過濾器",
       "help": "科研掉落和項目刷新見 https://azur-stats.lyoko.io/，對這些沒有基本了解的人不建議編寫自定義過濾器，建議使用預優化科研過濾器",

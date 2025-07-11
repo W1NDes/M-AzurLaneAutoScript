@@ -80,7 +80,7 @@ def get_detail_series(image):
     """
     return match_series(crop(image, area_pad(SERIES_DETAIL.area, pad=-30), copy=False), scaling=1.0)
 
-def detect_research_series(image,series_button):
+def check_research_series(image,series_button):
     """
     Args:
         image:
