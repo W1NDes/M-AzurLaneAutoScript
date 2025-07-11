@@ -432,6 +432,7 @@ class GeneratedConfig:
     # Group `Oilkeep`
     Oilkeep_OilkeepLevel = 8000
     Oilkeep_OilMaxGet = 3000
+
     # Group `PrivateQuarters`
     PrivateQuarters_BuyRoses = True
     PrivateQuarters_TargetInteract = True
