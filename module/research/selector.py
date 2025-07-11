@@ -9,6 +9,7 @@ from module.logger import logger
 from module.research.assets import *
 from module.research.preset import *
 from module.research.project import research_detect, research_jp_detect
+from module.research.series import check_series_selected
 from module.research.ui import ResearchUI
 
 RESEARCH_ENTRANCE = [ENTRANCE_1, ENTRANCE_2, ENTRANCE_3, ENTRANCE_4, ENTRANCE_5]
@@ -140,6 +141,50 @@ class ResearchSelector(ResearchUI):
                 continue
             else:
                 break
+        timeout = Timer(5, count=5).start()
+        while 1:
+            series_detected = check_series_selected(self.device.image,series_button=SELECTED_SERIES)
+            logger.info(f'Series detected: {series_detected}') 
+            if series_detected != 0:
+                preset = self.config.Research_PresetFilter
+                logger.info(f'Preset: {preset}')
+                if preset == 'custom':
+                    pass
+                elif preset.split('_')[1] != str(series_detected):
+                    parts = preset.split('_')
+                    new_series = str(series_detected)
+                    new_preset = preset
+
+                    series_gears = {
+                        '8': '305',
+                        '7': 'la9',
+                        '6': '203',
+                        '5': '152',
+                        '4': 'tenrai',
+                        '3': '234',
+                        '2': '457'
+                    }
+
+                    if 'blueprint' in parts and 'only' in parts:
+                        new_preset = f'series_{new_series}_blueprint_only'
+                    elif 'blueprint' in parts:
+                        gear = series_gears.get(new_series)
+                        if gear:
+                            new_preset = f'series_{new_series}_blueprint_{gear}'
+                    elif 'only' in parts:
+                        gear = series_gears.get(new_series)
+                        if gear:
+                            new_preset = f'series_{new_series}_{gear}_only'
+
+                    if new_preset != preset:
+                        self.config.cross_set(keys=f'Research.Research.PresetFilter', value=f'{new_preset}')
+                        logger.info(f'change the Preset to: {new_preset}')
+                break
+            if timeout.reached():
+                logger.warning('Failed to OCR research series after 3 trial, assume correct')
+                break
+            self.device.sleep(1)
+            self.device.screenshot()
 
         self.projects = projects
 

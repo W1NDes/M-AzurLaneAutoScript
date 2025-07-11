@@ -34,6 +34,26 @@ def match_series(image, scaling):
         return 1
     return 0
 
+def check_series_selected(image, scaling):
+    image = rgb2gray(image)
+
+    if TEMPLATE_S8_SELECTED.match(image, scaling=scaling):
+        return 8
+    if TEMPLATE_S7_SELECTED.match(image, scaling=scaling):
+        return 7
+    if TEMPLATE_S6_SELECTED.match(image, scaling=scaling):
+        return 6
+    if TEMPLATE_S4_SELECTED.match(image, scaling=scaling):
+        return 4
+    if TEMPLATE_S5_SELECTED.match(image, scaling=scaling):
+        return 5
+    if TEMPLATE_S3_SELECTED.match(image, scaling=scaling):
+        return 3
+    if TEMPLATE_S2_SELECTED.match(image, scaling=scaling):
+        return 2
+    if TEMPLATE_S1_SELECTED.match(image, scaling=scaling):
+        return 1
+    return 0
 
 def get_research_series_3(image, series_button=RESEARCH_SERIES):
     """
@@ -59,3 +79,13 @@ def get_detail_series(image):
         int:
     """
     return match_series(crop(image, area_pad(SERIES_DETAIL.area, pad=-30), copy=False), scaling=1.0)
+
+def detect_research_series(image,series_button):
+    """
+    Args:
+        image:
+
+    Returns:
+        int:
+    """
+    return check_series_selected(crop(image, area_pad(series_button.area, pad=0), copy=False), scaling=1.0)
