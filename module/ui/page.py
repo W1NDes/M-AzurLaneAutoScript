@@ -7,7 +7,7 @@ from module.raid.assets import *
 from module.retire.assets import DOCK_CHECK
 from module.ui.assets import *
 from module.ui_white.assets import *
-from module.shipIR.assets import HANDBOOK_CHECK,MAIN_GOTO_COLLECTION,MAIN_GOTO_COLLECTION_WHITE,COLLECTION_CHECK,COLLECTION_GOTO_HANDBOOK
+from module.ship_ir.assets import HANDBOOK_CHECK,MAIN_GOTO_COLLECTION,MAIN_GOTO_COLLECTION_WHITE,COLLECTION_CHECK,COLLECTION_GOTO_HANDBOOK
 
 class Page:
     # Key: str, page name like "page_main"

@@ -351,6 +351,9 @@ class AzurLaneAutoScript:
         from module.oilkeep.oilkeep import Oilkeep
         Oilkeep(config=self.config, device=self.device).run()
         
+    def ship_ir(self):
+        from module.ship_ir.ship_ir import ShipIr
+        ShipIr(config=self.config, device=self.device).run()
 
     def awaken(self):
         from module.awaken.awaken import Awaken

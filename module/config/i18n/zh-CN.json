@@ -206,6 +206,10 @@
       "name": "活动总览小任务",
       "help": ""
     },
+    "ShipIr": {
+      "name": "图鉴识别",
+      "help": "识别舰船图鉴中已获取和未获取的舰船，支持过滤器"
+    },
     "PrivateQuarters": {
       "name": "宿舍计划",
       "help": ""
@@ -2664,6 +2668,52 @@
       "8": "8",
       "9": "9",
       "10": "10"
+    }
+  },
+  "ShipIr": {
+    "_info": {
+      "name": "舰船识别",
+      "help": "根据过滤器进行舰船识别,名称前为UN的为未获取的舰船"
+    },
+    "check_filter_show_1": {
+      "name": "过滤器1",
+      "help": ""
+    },
+    "check_filter_result_1": {
+      "name": "过滤器1结果",
+      "help": ""
+    },
+    "check_filter_show_2": {
+      "name": "过滤器2",
+      "help": ""
+    },
+    "check_filter_result_2": {
+      "name": "过滤器2结果",
+      "help": ""
+    },
+    "check_filter_show_3": {
+      "name": "过滤器3",
+      "help": ""
+    },
+    "check_filter_result_3": {
+      "name": "过滤器3结果",
+      "help": ""
+    },
+    "check_filter_show_4": {
+      "name": "过滤器4",
+      "help": ""
+    },
+    "check_filter_result_4": {
+      "name": "过滤器4结果",
+      "help": ""
+    },
+    "check_filter_show_5": {
+      "name": "过滤器5",
+      "help": ""
+    },
+    "check_filter_result_5": {
+      "name": "过滤器5结果",
+      "help": ""
     }
   },
   "OpsiAshAssist": {

@@ -9526,6 +9526,93 @@
       }
     }
   },
+  "ShipIr": {
+    "Scheduler": {
+      "Enable": {
+        "type": "checkbox",
+        "value": false,
+        "option": [
+          true,
+          false
+        ]
+      },
+      "NextRun": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      },
+      "Command": {
+        "type": "input",
+        "value": "ShipIr",
+        "display": "hide"
+      },
+      "SuccessInterval": {
+        "type": "input",
+        "value": 30,
+        "display": "hide"
+      },
+      "FailureInterval": {
+        "type": "input",
+        "value": 30,
+        "display": "hide"
+      },
+      "ServerUpdate": {
+        "type": "input",
+        "value": "00:00",
+        "display": "hide"
+      }
+    },
+    "ShipIr": {
+      "check_filter_show_1": {
+        "type": "input",
+        "value": "none,none,none,none"
+      },
+      "check_filter_result_1": {
+        "type": "textarea",
+        "value": "undo > undo"
+      },
+      "check_filter_show_2": {
+        "type": "input",
+        "value": "none,none,none,none"
+      },
+      "check_filter_result_2": {
+        "type": "textarea",
+        "value": "undo"
+      },
+      "check_filter_show_3": {
+        "type": "input",
+        "value": "none,none,none,none"
+      },
+      "check_filter_result_3": {
+        "type": "textarea",
+        "value": "undo"
+      },
+      "check_filter_show_4": {
+        "type": "input",
+        "value": "none,none,none,none"
+      },
+      "check_filter_result_4": {
+        "type": "textarea",
+        "value": "undo"
+      },
+      "check_filter_show_5": {
+        "type": "input",
+        "value": "none,none,none,none"
+      },
+      "check_filter_result_5": {
+        "type": "textarea",
+        "value": "undo"
+      }
+    },
+    "Storage": {
+      "Storage": {
+        "type": "storage",
+        "value": {},
+        "valuetype": "ignore",
+        "display": "disabled"
+      }
+    }
+  },
   "PrivateQuarters": {
     "Scheduler": {
       "Enable": {

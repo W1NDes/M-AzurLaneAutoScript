@@ -778,6 +778,27 @@ Sos:
   Chapter:
     value: 3
     option: [ 3, 4, 5, 6, 7, 8, 9, 10 ]
+ShipIr:
+  check_filter_show_1: none,none,none,none
+  check_filter_result_1:
+    value: undo > undo
+    type: textarea
+  check_filter_show_2: none,none,none,none
+  check_filter_result_2:
+    value: undo
+    type: textarea
+  check_filter_show_3: none,none,none,none
+  check_filter_result_3:
+    value: undo
+    type: textarea
+  check_filter_show_4: none,none,none,none
+  check_filter_result_4:
+    value: undo
+    type: textarea
+  check_filter_show_5: none,none,none,none
+  check_filter_result_5:
+    value: undo
+    type: textarea
 
 # ==================== Opsi ====================
 

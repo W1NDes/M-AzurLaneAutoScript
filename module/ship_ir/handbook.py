@@ -14,7 +14,7 @@ from module.meowfficer.assets import MEOWFFICER_BUY
 from module.os_handler.assets import AUTO_SEARCH_REWARD
 from module.raid.assets import *
 from module.ui.assets import *
-from module.shipIR.assets import *
+from module.ship_ir.assets import *
 from module.logger import logger
 
 
@@ -130,7 +130,7 @@ class Handbook(Dock):
         return False
 
     def handbook_swipe(self,x,delay_time=0.3):
-        self.device.drag((x+random.randint(-3,3),300),(x+random.randint(-3,3),220),control_check=False)
+        self.device.drag((x+random.randint(-3,3),300),(x+random.randint(-3,3),220))
         # self.device.sleep(delay_time)
         self.device.sleep(delay_time)
 

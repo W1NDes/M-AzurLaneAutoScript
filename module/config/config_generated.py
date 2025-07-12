@@ -471,6 +471,18 @@ class GeneratedConfig:
     # Group `Sos`
     Sos_Chapter = 3  # 3, 4, 5, 6, 7, 8, 9, 10
 
+    # Group `ShipIr`
+    ShipIr_check_filter_show_1 = 'none,none,none,none'
+    ShipIr_check_filter_result_1 = 'undo > undo'
+    ShipIr_check_filter_show_2 = 'none,none,none,none'
+    ShipIr_check_filter_result_2 = 'undo'
+    ShipIr_check_filter_show_3 = 'none,none,none,none'
+    ShipIr_check_filter_result_3 = 'undo'
+    ShipIr_check_filter_show_4 = 'none,none,none,none'
+    ShipIr_check_filter_result_4 = 'undo'
+    ShipIr_check_filter_show_5 = 'none,none,none,none'
+    ShipIr_check_filter_result_5 = 'undo'
+
     # Group `OpsiAshAssist`
     OpsiAshAssist_Tier = 15
 

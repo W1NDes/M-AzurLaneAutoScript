@@ -206,6 +206,10 @@
       "name": "Task.Smallevent.name",
       "help": "Task.Smallevent.help"
     },
+    "ShipIr": {
+      "name": "Task.ShipIr.name",
+      "help": "Task.ShipIr.help"
+    },
     "PrivateQuarters": {
       "name": "Private Quarters",
       "help": ""
@@ -2664,6 +2668,52 @@
       "8": "8",
       "9": "9",
       "10": "10"
+    }
+  },
+  "ShipIr": {
+    "_info": {
+      "name": "ShipIr._info.name",
+      "help": "ShipIr._info.help"
+    },
+    "check_filter_show_1": {
+      "name": "ShipIr.check_filter_show_1.name",
+      "help": "ShipIr.check_filter_show_1.help"
+    },
+    "check_filter_result_1": {
+      "name": "ShipIr.check_filter_result_1.name",
+      "help": "ShipIr.check_filter_result_1.help"
+    },
+    "check_filter_show_2": {
+      "name": "ShipIr.check_filter_show_2.name",
+      "help": "ShipIr.check_filter_show_2.help"
+    },
+    "check_filter_result_2": {
+      "name": "ShipIr.check_filter_result_2.name",
+      "help": "ShipIr.check_filter_result_2.help"
+    },
+    "check_filter_show_3": {
+      "name": "ShipIr.check_filter_show_3.name",
+      "help": "ShipIr.check_filter_show_3.help"
+    },
+    "check_filter_result_3": {
+      "name": "ShipIr.check_filter_result_3.name",
+      "help": "ShipIr.check_filter_result_3.help"
+    },
+    "check_filter_show_4": {
+      "name": "ShipIr.check_filter_show_4.name",
+      "help": "ShipIr.check_filter_show_4.help"
+    },
+    "check_filter_result_4": {
+      "name": "ShipIr.check_filter_result_4.name",
+      "help": "ShipIr.check_filter_result_4.help"
+    },
+    "check_filter_show_5": {
+      "name": "ShipIr.check_filter_show_5.name",
+      "help": "ShipIr.check_filter_show_5.help"
+    },
+    "check_filter_result_5": {
+      "name": "ShipIr.check_filter_result_5.name",
+      "help": "ShipIr.check_filter_result_5.help"
     }
   },
   "OpsiAshAssist": {

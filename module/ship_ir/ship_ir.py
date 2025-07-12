@@ -1,11 +1,12 @@
 import random
-from module.shipIR.assets import *
+
 from module.base.button import Button, ButtonGrid
 from module.ocr.ocr import Ocr
 from module.logger import logger
-from module.shipIR.utils import convert_filter_to_params
-from module.shipIR.handbook import Handbook
 from module.ui.scroll import Scroll
+from module.ship_ir.assets import *
+from module.ship_ir.utils import convert_filter_to_params
+from module.ship_ir.handbook import Handbook
 
 NAMEBAR_G = [NAMEBAR1_G, NAMEBAR2_G, NAMEBAR3_G, NAMEBAR4_G, NAMEBAR5_G, NAMEBAR6_G]
 NAMEBAR_P = [NAMEBAR1_P, NAMEBAR2_P, NAMEBAR3_P, NAMEBAR4_P, NAMEBAR5_P, NAMEBAR6_P]
@@ -13,7 +14,14 @@ NAMEBAR_LIST = [NAMEBAR1_G, NAMEBAR1_P, NAMEBAR2_G, NAMEBAR2_P, NAMEBAR3_G, NAME
 HANDBOOK_SCROLL = Scroll(HANDBOOK_SCROLL_AREA, color=(244, 208, 66))
 SHIP_NAME_BUTTON = ButtonGrid(origin=(200, 448), delta=(164 + 1 / 3, 226), button_shape=(135,21), grid_shape=(6, 2), name='SHIP_NAME')
 
-class shipIR(Handbook):
+CHECK_FILTER1 = ["前排先锋","白鹰","稀有","无限制"]
+CHECK_FILTER2 = ["轻巡","白鹰","精锐","无限制"]
+CHECK_FILTER3 = ["轻巡","重樱","全部","无限制"]
+CHECK_FILTER4 = ["战列","白鹰","金色","无限制"]
+CHECK_FILTER5 = ["航母","皇家","全部","无限制"]
+CHECK_FILTER_LIST = [CHECK_FILTER1, CHECK_FILTER2, CHECK_FILTER3, CHECK_FILTER4, CHECK_FILTER5]
+
+class ShipIr(Handbook):
 
     def name_ocr(self,name_area):
         """
@@ -89,16 +97,42 @@ class shipIR(Handbook):
 
 
     def run(self):
+        #更新过滤器显示
+        for i, check_filter in enumerate(CHECK_FILTER_LIST):
+            if check_filter[0] == '':
+                self.config.cross_set(keys=f"ShipIr.ShipIr.check_filter_show_{i+1}", value="PASS")
+                continue
+            check_filter_str = ",".join(check_filter)
+            self.config.cross_set(keys=f"ShipIr.ShipIr.check_filter_show_{i+1}", value=check_filter_str)
+        #进入图鉴页面
         while 1:
             if not self.pageCheck():
                 continue
-            params = convert_filter_to_params(check_filte)
+            else:
+                break
+        # 识别舰船
+        for i, check_filter in enumerate(CHECK_FILTER_LIST):
+            if check_filter[0] == '':
+                continue
+            params = convert_filter_to_params(check_filter)
             self.dock_filter_set(**params)
             recognized_names=self.ship_ir([])
-            logger.info(f"识别到{len(recognized_names)}个角色: {recognized_names}")
+            logger.info(f"过滤器{i+1}识别到{len(recognized_names)}个角色: {recognized_names}")
+            recognized_names_str = ",".join(recognized_names)
+            
+            check_filter[3] = "未获取"
+            params = convert_filter_to_params(check_filter)
+            self.dock_filter_set(**params)
+            recognized_names_unget=self.ship_ir([])
+            logger.info(f"过滤器{i+1}识别到未获取{len(recognized_names_unget)}个角色: {recognized_names_unget}")
+            recognized_names_unget_str = ",".join(recognized_names_unget)
+
+            self.config.cross_set(keys=f"ShipIr.ShipIr.check_filter_result_{i+1}", value=f"全部：{recognized_names_str}\n未获取：{recognized_names_unget_str}")
+        
+        self.config.task_delay(server_update=True)
 
 if __name__ == '__main__':
-    self = shipIR('alas')
+    self = ShipIr('alas')
     check_filter1 = ["前排先锋","白鹰","稀有","无限制"]
     check_filter2 = ["轻巡","白鹰","精锐","无限制"]
     check_filter3 = ["轻巡","白鹰","全部","无限制"]

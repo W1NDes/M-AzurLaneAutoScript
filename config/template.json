@@ -1850,6 +1850,31 @@
       "Storage": {}
     }
   },
+  "ShipIr": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "ShipIr",
+      "SuccessInterval": 30,
+      "FailureInterval": 30,
+      "ServerUpdate": "00:00"
+    },
+    "ShipIr": {
+      "check_filter_show_1": "none,none,none,none",
+      "check_filter_result_1": "undo > undo",
+      "check_filter_show_2": "none,none,none,none",
+      "check_filter_result_2": "undo",
+      "check_filter_show_3": "none,none,none,none",
+      "check_filter_result_3": "undo",
+      "check_filter_show_4": "none,none,none,none",
+      "check_filter_result_4": "undo",
+      "check_filter_show_5": "none,none,none,none",
+      "check_filter_result_5": "undo"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
   "PrivateQuarters": {
     "Scheduler": {
       "Enable": false,

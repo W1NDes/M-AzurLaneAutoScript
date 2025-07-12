@@ -285,6 +285,9 @@ DailyMission:
     Smallevent:
       - Scheduler
       - Smallevent
+    ShipIr:
+      - Scheduler
+      - ShipIr
     PrivateQuarters:
       - Scheduler
       - PrivateQuarters
