@@ -85,8 +85,9 @@ class Control(Hermit, Minitouch, Scrcpy, MaaTouch, NemuIpc):
         else:
             self.swipe_adb((x, y), (x, y), duration)
 
-    def swipe(self, p1, p2, duration=(0.1, 0.2), name='SWIPE', distance_check=True):
-        self.handle_control_check(name)
+    def swipe(self, p1, p2, duration=(0.1, 0.2), name='SWIPE', distance_check=True,control_check=True):
+        if control_check:
+            self.handle_control_check(name)
         p1, p2 = ensure_int(p1, p2)
         duration = ensure_time(duration)
         method = self.config.Emulator_ControlMethod

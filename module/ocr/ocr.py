@@ -79,7 +79,7 @@ class Ocr:
         """
         return result
 
-    def ocr(self, image, direct_ocr=False):
+    def ocr(self, image, direct_ocr=False, _pre_process=True):
         """
         Args:
             image (np.ndarray, list[np.ndarray]):
@@ -90,10 +90,18 @@ class Ocr:
         """
         start_time = time.time()
 
-        if direct_ocr:
-            image_list = [self.pre_process(i) for i in image]
+        if _pre_process:
+            if direct_ocr:
+                image_list = [self.pre_process(i) for i in image]
+            else:
+                image_list = [self.pre_process(crop(image, area)) for area in self.buttons]
         else:
-            image_list = [self.pre_process(crop(image, area)) for area in self.buttons]
+            if direct_ocr:
+                image_list = [i if len(i.shape) == 2 else cv2.cvtColor(i, cv2.COLOR_BGR2GRAY) for i in image]
+            else:
+                image_list = [crop(image, area) if len(crop(image, area).shape) == 2 
+                            else cv2.cvtColor(crop(image, area), cv2.COLOR_BGR2GRAY) 
+                            for area in self.buttons]   
 
         # This will show the images feed to OCR model
         # self.cnocr.debug(image_list)

@@ -117,7 +117,7 @@ class Scroll:
     def at_bottom(self, main):
         return self.cal_position(main) > 1 - self.edge_threshold
 
-    def set(self, position, main, random_range=(-0.05, 0.05), distance_check=True, skip_first_screenshot=True):
+    def set(self, position, main, random_range=(-0.05, 0.05), distance_check=True, skip_first_screenshot=True,control_check=True):
         """
         Set scroll to a specific position.
 
@@ -161,7 +161,7 @@ class Scroll:
             if self.drag_interval.reached():
                 p1 = random_rectangle_point(self.position_to_screen(current), n=1)
                 p2 = random_rectangle_point(self.position_to_screen(position, random_range=random_range), n=1)
-                main.device.swipe(p1, p2, name=self.name, distance_check=distance_check)
+                main.device.swipe(p1, p2, name=self.name, distance_check=distance_check,control_check=control_check)
                 self.drag_interval.reset()
                 dragged += 1
 
@@ -173,7 +173,7 @@ class Scroll:
     def set_bottom(self, main, random_range=(-0.05, 0.05), skip_first_screenshot=True):
         return self.set(1.00, main=main, random_range=random_range, skip_first_screenshot=skip_first_screenshot)
 
-    def drag_page(self, page, main, random_range=(-0.05, 0.05), skip_first_screenshot=True):
+    def drag_page(self, page, main, random_range=(-0.05, 0.05), skip_first_screenshot=True,control_check=True):
         """
         Drag scroll forward or backward.
 
@@ -190,7 +190,7 @@ class Scroll:
         multiply = self.length / (self.total - self.length)
         target = current + page * multiply
         target = round(min(max(target, 0), 1), 3)
-        return self.set(target, main=main, random_range=random_range, skip_first_screenshot=True)
+        return self.set(target, main=main, random_range=random_range, skip_first_screenshot=True,control_check=control_check)
 
     def next_page(self, main, page=0.8, random_range=(-0.01, 0.01), skip_first_screenshot=True):
         return self.drag_page(page, main=main, random_range=random_range, skip_first_screenshot=skip_first_screenshot)
