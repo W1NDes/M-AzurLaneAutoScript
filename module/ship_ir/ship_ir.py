@@ -133,22 +133,23 @@ class ShipIr(Handbook):
 
 if __name__ == '__main__':
     self = ShipIr('alas')
-    check_filter1 = ["前排先锋","白鹰","稀有","无限制"]
-    check_filter2 = ["轻巡","白鹰","精锐","无限制"]
-    check_filter3 = ["轻巡","白鹰","全部","无限制"]
-    check_filter4 = ["轻巡","白鹰","全部","未获取"]
-    check_filte = check_filter3
+    CHECK_FILTER1 = ["前排先锋","白鹰","稀有","无限制"]
+    CHECK_FILTER2 = ["轻巡","白鹰","精锐","无限制"]
+    CHECK_FILTER3 = ["轻巡","重樱","全部","无限制"]
+    CHECK_FILTER4 = ["战列","白鹰","金色","无限制"]
+    CHECK_FILTER5 = ["航母","皇家","全部","无限制"]
+    CHECK_FILTER_LIST = [CHECK_FILTER1, CHECK_FILTER2, CHECK_FILTER3, CHECK_FILTER4, CHECK_FILTER5]
     while 1:
-        
         if not self.pageCheck():
             continue
-        params = convert_filter_to_params(check_filte)
+    for check_filter in CHECK_FILTER_LIST:
+        params = convert_filter_to_params(check_filter)
         self.dock_filter_set(**params)
         recognized_names=self.ship_ir([])
         logger.info(f"识别到{len(recognized_names)}个角色: {recognized_names}")
 
-        check_filte[3] = "未获取"
-        params = convert_filter_to_params(check_filte)
+        check_filter[3] = "未获取"
+        params = convert_filter_to_params(check_filter)
         self.dock_filter_set(**params)
         recognized_names=self.ship_ir([])
         logger.info(f"识别到{len(recognized_names)}个角色: {recognized_names}")
