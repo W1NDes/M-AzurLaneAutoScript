@@ -705,6 +705,7 @@ Minigame:
   Collect: false
 Smallevent:
   SevenDayTask: true
+  UpdateInfoImmediately: false
 Oilkeep:
   OilkeepLevel: 8000
   OilMaxGet: 3000

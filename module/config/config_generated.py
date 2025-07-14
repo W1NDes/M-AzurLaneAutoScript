@@ -429,6 +429,7 @@ class GeneratedConfig:
 
     # Group `Smallevent`
     Smallevent_SevenDayTask = True
+    Smallevent_UpdateInfoImmediately = False
 
     # Group `Oilkeep`
     Oilkeep_OilkeepLevel = 8000

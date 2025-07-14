@@ -9515,6 +9515,10 @@
       "SevenDayTask": {
         "type": "checkbox",
         "value": true
+      },
+      "UpdateInfoImmediately": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Storage": {

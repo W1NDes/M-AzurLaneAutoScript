@@ -2428,6 +2428,10 @@
     "SevenDayTask": {
       "name": "Smallevent.SevenDayTask.name",
       "help": "Smallevent.SevenDayTask.help"
+    },
+    "UpdateInfoImmediately": {
+      "name": "Smallevent.UpdateInfoImmediately.name",
+      "help": "Smallevent.UpdateInfoImmediately.help"
     }
   },
   "Oilkeep": {

@@ -2427,7 +2427,11 @@
     },
     "SevenDayTask": {
       "name": "7日小任务",
-      "help": "本期为受选者之路-20250220"
+      "help": "现默认适配新活动(需要填入OCR-API"
+    },
+    "UpdateInfoImmediately": {
+      "name": "立即更新任务进度",
+      "help": "开启后，会立即更新任务进度(多消耗一次api调用)，否则会等到第二天更新"
     }
   },
   "Oilkeep": {

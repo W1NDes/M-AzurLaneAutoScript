@@ -1844,7 +1844,8 @@
       "ServerUpdate": "00:00"
     },
     "Smallevent": {
-      "SevenDayTask": true
+      "SevenDayTask": true,
+      "UpdateInfoImmediately": false
     },
     "Storage": {
       "Storage": {}
