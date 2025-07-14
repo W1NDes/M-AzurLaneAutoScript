@@ -9,8 +9,9 @@ from module.ship_ir.handbook import Handbook
 
 HANDBOOK_SCROLL = Scroll(HANDBOOK_SCROLL_AREA, color=(244, 208, 66))
 SHIP_NAME_BUTTON = ButtonGrid(origin=(200, 448), delta=(164 + 1 / 3, 226), button_shape=(135,21), grid_shape=(6, 2), name='SHIP_NAME')
+SHIP_NAME_BUTTON_2 = ButtonGrid(origin=(200, 511), delta=(164 + 1 / 3, 226), button_shape=(135,21), grid_shape=(6, 1), name='SHIP_NAME_2')
 
-CHECK_FILTER1 = ["全部","全阵营","彩色","无限制"]
+CHECK_FILTER1 = ["轻巡","皇家","超稀有","无限制"]
 CHECK_FILTER2 = ["","白鹰","精锐","无限制"]
 CHECK_FILTER3 = ["","重樱","全部","无限制"]
 CHECK_FILTER4 = ["","白鹰","金色","无限制"]
@@ -61,6 +62,11 @@ class ShipIr(Handbook):
         在滑动至底部时采用该方法
         """
         for button in SHIP_NAME_BUTTON.buttons:
+            ship_name = self.name_ocr(button)
+            if ship_name and ship_name not in recognized_names:
+                recognized_names.append(ship_name)
+                logger.info(f'识别为：{ship_name}')
+        for button in SHIP_NAME_BUTTON_2.buttons:#仅有两行时的方案
             ship_name = self.name_ocr(button)
             if ship_name and ship_name not in recognized_names:
                 recognized_names.append(ship_name)
