@@ -1,5 +1,3 @@
-import sys
-sys.path.append(r'C:/Users/W1NDes/Documents/GitHub/M-AzurLaneAutoScript')
 from module.base.timer import Timer
 from module.combat.assets import GET_SHIP
 from module.exception import ScriptError
@@ -12,7 +10,8 @@ from module.retire.retirement import Retirement
 from module.shop.shop_general import GeneralShop
 from module.log_res.log_res import LogRes
 from module.base.utils import crop, extract_letters
-import base64,requests,cv2,os,numpy
+import numpy
+from module.ocr.api_ocr import BaiduOcr
 from datetime import datetime
 RECORD_GACHA_OPTION = ('RewardRecord', 'gacha')
 RECORD_GACHA_SINCE = (0,)
@@ -361,31 +360,8 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
         self.gacha_run()
         self.config.task_delay(server_update=True)
 
-    @staticmethod
-    def get_access_token(client_id="xxxx", client_secret="yyyy"):
-        """
-        Get Baidu OCR API access token
-        
-        Returns:
-            str: access_token
-        """
-        url = f"https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}"
-        
-        payload = ""
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-        
-        response = requests.request("POST", url, headers=headers, data=payload)
-        result = response.json()
-        if 'access_token' in result:
-            return result['access_token']
-        else:
-            logger.warning('Failed to get Baidu OCR access token')
-            return None
     
-    def recognize_ship_name(self, image, area,model="general_basic"):
+    def recognize_ship_name(self, image, area, OCR_API, model="general_basic"):
         """
         Use Baidu OCR API to recognize ship name
         
@@ -408,31 +384,13 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
         image = image.astype(numpy.uint8)
         # Image.fromarray(image).show(title="Preprocessed Image")
         
-        # Convert image to base64
-        _, buffer = cv2.imencode('.png', image)
-        img_base64 = base64.b64encode(buffer).decode('utf-8')
-        
-        # Call Baidu OCR API
-        request_url = f"https://aip.baidubce.com/rest/2.0/ocr/v1/{model}"
-        params = {"image": img_base64}
-        api_key = self.config.DropRecord_BaiduAPIKey
-        secret_key = self.config.DropRecord_BaiduAPISecret
-        access_token = self.get_access_token(api_key, secret_key)  # Get access_token using class method
-        if not access_token:
-            logger.warning('Failed to get access token, cannot recognize ship name')
-            return "Unknown"
-            
-        request_url = request_url + "?access_token=" + access_token
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-        response = requests.post(request_url, data=params, headers=headers)
-        
-        if response:
-            result = response.json()
+        result = OCR_API.request_baidu_ocr(image,area,model)
+        if result:
             if 'words_result' in result and len(result['words_result']) > 0:
                 ship_name = result['words_result'][0]['words']
                 return ship_name
             else:
-                logger.info(response.text)
+                logger.info(result)
                 logger.warning('Failed to recognize ship name')
                 return "Unknown"
         else:
@@ -454,6 +412,7 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
         else:
             confirm_timer = Timer(1)
         confirm_timer.start()
+        OCR_API = BaiduOcr(self.config)
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -471,9 +430,9 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
                 if ocr_type == "LOCAL":
                     ship_name = Ocr(ship_name_area, lang="cnocr", letter=(247, 251, 247), threshold=128).ocr(self.device.image)#ocr_LOCAL
                 elif ocr_type == "API_BASIC":
-                    ship_name = self.recognize_ship_name(self.device.image, ship_name_area,model="general_basic")#ocr_API_basic
+                    ship_name = self.recognize_ship_name(self.device.image, ship_name_area,OCR_API,model="general_basic")#ocr_API_basic
                 elif ocr_type == "API_ACCURATE":
-                    ship_name = self.recognize_ship_name(self.device.image, ship_name_area,model="accurate_basic")#ocr_API_accurate
+                    ship_name = self.recognize_ship_name(self.device.image, ship_name_area,OCR_API,model="accurate_basic")#ocr_API_accurate
                 logger.info(f'New ship name: {ship_name}')
 
                 current_date = datetime.now()
@@ -495,11 +454,11 @@ class RewardGacha(GachaUI, GeneralShop, Retirement):
 
 if __name__ == "__main__":
     from module.base.utils import load_image
-    
+    import os
     self = RewardGacha('alas', task='RewardGacha')
-    folder_path = r"C:\Users\W1NDes\Documents\GitHub\M-AzurLaneAutoScript\screenshots\zTTT"
+    folder_path = r"C:\Users\W1NDe\Documents\GitHub\M-AzurLaneAutoScript\screenshots\zTTT"
     ship_name_area = (360, 552, 550, 582)  # Ship name area
-    
+    ocr_api = BaiduOcr(self.config,api_key="",secret_key="")
     # Traverse all images in the folder
     for filename in os.listdir(folder_path):
         if filename.endswith(('.png', '.jpg', '.jpeg')):
@@ -509,11 +468,11 @@ if __name__ == "__main__":
             try:
                 image = load_image(image_path)
                 # Use local OCR recognition
-                ship_name = Ocr(ship_name_area, lang="cnocr", letter=(247, 251, 247), threshold=128).ocr(image)
-                logger.info(f'Local OCR result: {ship_name}')
+                # ship_name = Ocr(ship_name_area, lang="cnocr", letter=(247, 251, 247), threshold=128).ocr(image)
+                # logger.info(f'Local OCR result: {ship_name}')
                 
                 # Use Baidu OCR API recognition
-                api_result = self.recognize_ship_name(image, ship_name_area)
+                api_result = self.recognize_ship_name(image, ship_name_area,ocr_api)
                 logger.info(f'API OCR result: {api_result}')
                 
                 # Save results to file
