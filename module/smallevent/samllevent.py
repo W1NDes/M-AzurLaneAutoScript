@@ -147,22 +147,27 @@ class SmallEvent(UI):
         #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
         #     )
         # else:LogRes(self.config).SevenDayStatus = 0
-        page_area = (281, 79, 1254, 560)
-        if self.goto_sevenD_page(page_area):
-            self.get_reward(page_area)
-            if self.config.Smallevent_UpdateInfoImmediately == True:
-                self.device.sleep(1)
-                self.device.screenshot()
-                update_words = self.recognize_activity_page(self.device.image,page_area)
-                if update_words:
-                    self.recognize_activiy_status(update_words)
-            pass
+        if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
+            ORC_API = BaiduOcr(self.config)
+            page_area = (281, 79, 1254, 560)
+            goPage_result = self.goto_sevenD_page(page_area, ORC_API)
+            if goPage_result == "no_get":
+                pass
+            elif goPage_result is True:
+                self.get_reward(page_area, ORC_API)
+                if self.config.Smallevent_UpdateInfoImmediately == True:
+                    self.device.sleep(1)
+                    self.device.screenshot()
+                    update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
+                    if update_words:
+                        self.recognize_activiy_status(update_words)
+            else:
+                logger.warning("未成功进入七天小任务页面")
         else:
-            logger.warning("未成功进入七天小任务页面")
-            pass
+            logger.warning("未配置Baidu API Key或Secret Key")
         self.config.task_delay(server_update=True)
 
-    def recognize_text(self, image, area,model="general_basic"):
+    def recognize_text(self, image, area, ocr_api=None, model="general_basic"):
         """
         Use Baidu OCR API to recognize the text
         
@@ -173,7 +178,7 @@ class SmallEvent(UI):
         """
         original_crop = crop(image, area)
         
-        result = BaiduOcr(self.config).request_baidu_ocr(original_crop,area,model)
+        result = ocr_api.request_baidu_ocr(original_crop,area,model)
         if result:
             if 'words_result' in result and len(result['words_result']) > 0:
                 return result
@@ -181,8 +186,8 @@ class SmallEvent(UI):
                 logger.info(result)
         return False
     
-    def recognize_activity_page(self,image,area=(281, 79, 1254, 560)):
-        result = self.recognize_text(image, area)
+    def recognize_activity_page(self,image,area=(281, 79, 1254, 560),orc_api=None):
+        result = self.recognize_text(image, area,orc_api)
         if result:
             all_words = "".join([word['words'] for word in result['words_result']])
             if "每日0点" in all_words or "解锁2个任务" in all_words:
@@ -209,12 +214,12 @@ class SmallEvent(UI):
         logger.info(f"发现{go_count}个前往按钮，发现{got_count}个已领取按钮，发现{get_count}个领取按钮")
         return go_count
     
-    def locate_button_by_text(self,image,text,text_exclude=None,area=(281, 79, 1254, 560),interval=0):
+    def locate_button_by_text(self,image,text,text_exclude=None,area=(281, 79, 1254, 560),interval=0,orc_api=None):
         if interval:
             timer = self.get_interval_timer(text, interval=interval, renew=True)
             if not timer.reached():
                 return "cooldowning"
-        result = self.recognize_text(image, area,model="general")
+        result = self.recognize_text(image, area,orc_api,model="general")
         if result:
             for word in result['words_result']:
                 if text in word['words'] and not any(text_exclude in word['words'] for text_exclude in text_exclude):
@@ -229,14 +234,14 @@ class SmallEvent(UI):
         logger.info(f"将{name}按钮的区域转换为：{area}")
         return Button(area=area, color=(), button=area,name=name)
     
-    def get_reward(self,page_area,skip_first_screenshot=True):
+    def get_reward(self,page_area,orc_api,skip_first_screenshot=True):
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
 
-            location = self.locate_button_by_text(self.device.image, "领取", ["已领取"], page_area,interval=5)
+            location = self.locate_button_by_text(self.device.image, "领取", ["已领取"], page_area,interval=5,orc_api=orc_api)
             if isinstance(location, dict):
                 button = self.location_2_button(location, "领取", base_loc=page_area)
                 self.device.click(button)
@@ -255,13 +260,14 @@ class SmallEvent(UI):
             if self.appear_then_click(GET_ITEMS_1,offset=(10, 10), interval=1):
                 continue 
 
-    def goto_sevenD_page(self,page_area):
+    def goto_sevenD_page(self,page_area,orc_api):
         self.ui_ensure(page_main)
         skip_first_screenshot = True
         CLICK_COUNT = 0
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
-        event_grid = ButtonGrid(origin=(12, 121), delta=(0, 82), button_shape=(150, 29), grid_shape=(1, 3))
+        button_list_length = 3
+        event_grid = ButtonGrid(origin=(12, 121), delta=(0, 82), button_shape=(150, 29), grid_shape=(1, button_list_length))
         drag_down_timer = self.get_interval_timer("drag_down", interval=2, renew=True)
         too_low_drag = False
         while 1:
@@ -271,7 +277,14 @@ class SmallEvent(UI):
                 self.device.screenshot()
             if self.appear_then_click(EVENT_NOTIFY_ENTRY, offset=(5, 5), interval=3):
                 continue
-            if CLICK_COUNT == 3:
+            if button_list_length == 3:
+                if self.appear(ACTIVITY_ONE_PAGE, offset=(5,3),similarity=0.95):
+                    button_list_length = 5
+                    event_grid = ButtonGrid(origin=(12, 121), delta=(0, 82), button_shape=(150, 29), grid_shape=(1, button_list_length))
+            if CLICK_COUNT >=5:
+                logger.info("reach the ACTIVITY_BOTTOM")
+                break
+            if CLICK_COUNT == button_list_length:
                 if drag_down_timer.reached() or too_low_drag:
                     if not self.appear(ACTIVITY_BOTTOM,offset=(5,3),similarity=0.95) and \
                         not self.appear(ACTIVITY_BOTTOM_2,offset=(5,3),similarity=0.95):
@@ -289,20 +302,20 @@ class SmallEvent(UI):
                     #     logger.info("selected button too low")
                     #     too_low_drag = True
                     #     continue
-                    event_grid = ButtonGrid(origin=(12,ACTIVITY_SELECTED_GRID.button[1]+27+82), delta=(0, 82), button_shape=(150, 29), grid_shape=(1, 3))
+                    event_grid = ButtonGrid(origin=(12,ACTIVITY_SELECTED_GRID.button[1]+27+82), delta=(0, 82), button_shape=(150, 29), grid_shape=(1, button_list_length))
                     CLICK_COUNT = 0
                     # logger.warning(
                     #     f"Selected grid updated, new area: (12, {ACTIVITY_SELECTED_GRID.button[1] + 27 + 82},\
                     #                                     121, {ACTIVITY_SELECTED_GRID.button[1] + 27 + 82 + 29})"
                     # )
                     continue
-            elif CLICK_COUNT < 3:
+            elif CLICK_COUNT < button_list_length:
                 if self.appear(EVENT_NOTIFY_PAGE, offset=(5,5)):
-                    all_words = self.recognize_activity_page(self.device.image,page_area)
+                    all_words = self.recognize_activity_page(self.device.image,page_area,orc_api)
                     # all_words = None
                     if not all_words:
                         if event_grid.buttons[CLICK_COUNT].button[3] > 585:
-                            CLICK_COUNT = 3
+                            CLICK_COUNT = button_list_length
                             too_low_drag = True
                             logger.info("click too low")
                             continue
@@ -314,8 +327,8 @@ class SmallEvent(UI):
                     else:
                         go_count = self.recognize_activiy_status(all_words)
                         if go_count >= 2:
-                            logger.info("七天小任务当前没有可领取项")
-                            return False
+                            logger.warning("七天小任务当前没有可领取项")
+                            return "no_get"
                         return True
             NOCLICK_TIMER.start()
             if NOCLICK_TIMER.reached():
@@ -332,13 +345,13 @@ if __name__ == "__main__":
     # self.adb=AdbClient(host="127.0.0.1", port=16448)
     self.device.screenshot()
     page_area = (281, 79, 1254, 560)
-
-    if self.goto_sevenD_page():
-        self.get_reward(page_area)
+    ORC_API = BaiduOcr(self.config)
+    if self.goto_sevenD_page(page_area,ORC_API):
+        self.get_reward(page_area,ORC_API)
         if self.config.Smallevent_SevenDayTask == True:
             self.device.sleep(1)
             self.device.screenshot()
-            update_words = self.recognize_activity_page(self.device.image,page_area)
+            update_words = self.recognize_activity_page(self.device.image,page_area,ORC_API)
             if update_words:
                 self.recognize_activiy_status(update_words)
         pass
