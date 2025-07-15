@@ -207,6 +207,21 @@
         "validate": "datetime"
       }
     },
+    "ResearchPercent": {
+      "Value": {
+        "type": "input",
+        "value": 0
+      },
+      "Color": {
+        "type": "input",
+        "value": "^0000FF"
+      },
+      "Record": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
+      }
+    },
     "Storage": {
       "Storage": {
         "type": "storage",
@@ -1177,6 +1192,20 @@
       "ReachLevel": {
         "type": "input",
         "value": 0
+      }
+    },
+    "ResearchSetting": {
+      "CurrentCampaignTimes": {
+        "type": "input",
+        "value": 0
+      },
+      "CheckInterval": {
+        "type": "input",
+        "value": 5
+      },
+      "OnepushNotify": {
+        "type": "checkbox",
+        "value": false
       }
     },
     "Fleet": {

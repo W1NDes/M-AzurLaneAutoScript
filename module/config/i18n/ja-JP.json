@@ -541,6 +541,24 @@
       "help": "SevenDayStatus.Record.help"
     }
   },
+  "ResearchPercent": {
+    "_info": {
+      "name": "ResearchPercent._info.name",
+      "help": "ResearchPercent._info.help"
+    },
+    "Value": {
+      "name": "ResearchPercent.Value.name",
+      "help": "ResearchPercent.Value.help"
+    },
+    "Color": {
+      "name": "ResearchPercent.Color.name",
+      "help": "ResearchPercent.Color.help"
+    },
+    "Record": {
+      "name": "ResearchPercent.Record.name",
+      "help": "ResearchPercent.Record.help"
+    }
+  },
   "Scheduler": {
     "_info": {
       "name": "Scheduler._info.name",
@@ -1160,6 +1178,24 @@
     "ReachLevel": {
       "name": "StopCondition.ReachLevel.name",
       "help": "StopCondition.ReachLevel.help"
+    }
+  },
+  "ResearchSetting": {
+    "_info": {
+      "name": "ResearchSetting._info.name",
+      "help": "ResearchSetting._info.help"
+    },
+    "CurrentCampaignTimes": {
+      "name": "ResearchSetting.CurrentCampaignTimes.name",
+      "help": "ResearchSetting.CurrentCampaignTimes.help"
+    },
+    "CheckInterval": {
+      "name": "ResearchSetting.CheckInterval.name",
+      "help": "ResearchSetting.CheckInterval.help"
+    },
+    "OnepushNotify": {
+      "name": "ResearchSetting.OnepushNotify.name",
+      "help": "ResearchSetting.OnepushNotify.help"
     }
   },
   "EventPt": {
@@ -3162,6 +3198,7 @@
       "Core": "Gui.Overview.Core",
       "GuildCoin": "Gui.Overview.GuildCoin",
       "SevenDayStatus": "Gui.Overview.SevenDayStatus",
+      "ResearchPercent": "Gui.Overview.ResearchPercent",
       "Log": "ログ",
       "Running": "実行中",
       "Pending": "隊列中",

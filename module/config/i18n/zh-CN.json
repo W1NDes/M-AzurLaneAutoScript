@@ -541,6 +541,24 @@
       "help": "SevenDayStatus.Record.help"
     }
   },
+  "ResearchPercent": {
+    "_info": {
+      "name": "ResearchPercent._info.name",
+      "help": "ResearchPercent._info.help"
+    },
+    "Value": {
+      "name": "ResearchPercent.Value.name",
+      "help": "ResearchPercent.Value.help"
+    },
+    "Color": {
+      "name": "ResearchPercent.Color.name",
+      "help": "ResearchPercent.Color.help"
+    },
+    "Record": {
+      "name": "ResearchPercent.Record.name",
+      "help": "ResearchPercent.Record.help"
+    }
+  },
   "Scheduler": {
     "_info": {
       "name": "任务设置",
@@ -1160,6 +1178,24 @@
     "ReachLevel": {
       "name": "舰船升至 X 级后停止",
       "help": "任意等级低于 X 的舰船升级至 X 级后停止\n0 表示不限制等级"
+    }
+  },
+  "ResearchSetting": {
+    "_info": {
+      "name": "研究经验设置",
+      "help": ""
+    },
+    "CheckInterval": {
+      "name": "每刷 X 次检查",
+      "help": ""
+    },
+    "CurrentCampaignTimes": {
+      "name": "当前已刷 X 次",
+      "help": "清空后立即检查是否刷完"
+    },
+    "OnepushNotify": {
+      "name": "刷完后通知",
+      "help": "推荐开启"
     }
   },
   "EventPt": {
@@ -3162,6 +3198,7 @@
       "Core": "核心数据",
       "GuildCoin": "舰队币",
       "SevenDayStatus": "7日小任务",
+      "ResearchPercent": "科研船进度",
       "Log": "日志",
       "Running": "运行中",
       "Pending": "队列中",

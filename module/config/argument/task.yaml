@@ -42,6 +42,7 @@ Farm:
       - Scheduler
       - Campaign
       - StopCondition
+      - ResearchSetting
       - Fleet
       - Submarine
       - Emotion

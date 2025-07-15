@@ -68,6 +68,11 @@
       "Color": "^AFAAAA",
       "Record": "2020-01-01 00:00:00"
     },
+    "ResearchPercent": {
+      "Value": 0,
+      "Color": "^0000FF",
+      "Record": "2020-01-01 00:00:00"
+    },
     "Storage": {
       "Storage": {}
     }
@@ -261,6 +266,11 @@
       "StageIncrease": false,
       "GetNewShip": false,
       "ReachLevel": 0
+    },
+    "ResearchSetting": {
+      "CurrentCampaignTimes": 0,
+      "CheckInterval": 5,
+      "OnepushNotify": false
     },
     "Fleet": {
       "Fleet1": 1,

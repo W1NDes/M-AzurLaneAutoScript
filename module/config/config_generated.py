@@ -77,6 +77,11 @@ class GeneratedConfig:
     SevenDayStatus_Color = '^AFAAAA'
     SevenDayStatus_Record = datetime.datetime(2020, 1, 1, 0, 0)
 
+    # Group `ResearchPercent`
+    ResearchPercent_Value = 0
+    ResearchPercent_Color = '^0000FF'
+    ResearchPercent_Record = datetime.datetime(2020, 1, 1, 0, 0)
+
     # Group `Scheduler`
     Scheduler_Enable = False  # True, False
     Scheduler_NextRun = datetime.datetime(2020, 1, 1, 0, 0)
@@ -163,6 +168,11 @@ class GeneratedConfig:
     StopCondition_StageIncrease = False
     StopCondition_GetNewShip = False
     StopCondition_ReachLevel = 0
+
+    # Group `ResearchSetting`
+    ResearchSetting_CurrentCampaignTimes = 0
+    ResearchSetting_CheckInterval = 5
+    ResearchSetting_OnepushNotify = False
 
     # Group `EventPt`
     EventPt_EventPtSwitch = False
