@@ -1195,6 +1195,10 @@
       }
     },
     "ResearchSetting": {
+      "IsResearchCheck": {
+        "type": "checkbox",
+        "value": false
+      },
       "CurrentCampaignTimes": {
         "type": "input",
         "value": 0

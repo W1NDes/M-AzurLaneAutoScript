@@ -1185,6 +1185,10 @@
       "name": "ResearchSetting._info.name",
       "help": "ResearchSetting._info.help"
     },
+    "IsResearchCheck": {
+      "name": "ResearchSetting.IsResearchCheck.name",
+      "help": "ResearchSetting.IsResearchCheck.help"
+    },
     "CurrentCampaignTimes": {
       "name": "ResearchSetting.CurrentCampaignTimes.name",
       "help": "ResearchSetting.CurrentCampaignTimes.help"

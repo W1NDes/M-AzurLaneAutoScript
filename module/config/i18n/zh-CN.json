@@ -1185,13 +1185,17 @@
       "name": "研究经验设置",
       "help": ""
     },
-    "CheckInterval": {
-      "name": "每刷 X 次检查",
+    "IsResearchCheck": {
+      "name": "是否检查研究经验",
       "help": ""
     },
     "CurrentCampaignTimes": {
       "name": "当前已刷 X 次",
       "help": "清空后立即检查是否刷完"
+    },
+    "CheckInterval": {
+      "name": "每刷 X 次检查",
+      "help": ""
     },
     "OnepushNotify": {
       "name": "刷完后通知",

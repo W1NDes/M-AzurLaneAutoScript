@@ -1,6 +1,8 @@
 import sys
 
 import re
+
+from datetime import datetime
 sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 from module.base.button import ButtonGrid
 from module.ui.ui import UI
@@ -147,24 +149,29 @@ class SmallEvent(UI):
         #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
         #     )
         # else:LogRes(self.config).SevenDayStatus = 0
-        if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
-            ORC_API = BaiduOcr(self.config)
-            page_area = (281, 79, 1254, 560)
-            goPage_result = self.goto_sevenD_page(page_area, ORC_API)
-            if goPage_result == "no_get":
-                pass
-            elif goPage_result is True:
-                self.get_reward(page_area, ORC_API)
-                if self.config.Smallevent_UpdateInfoImmediately == True:
-                    self.device.sleep(1)
-                    self.device.screenshot()
-                    update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
-                    if update_words:
-                        self.recognize_activiy_status(update_words)
+        now = datetime.now()
+        if now.month == 6 and now.day <= 23 and now.hour <= 11:#设置活动结束时间
+            if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
+                ORC_API = BaiduOcr(self.config)
+                page_area = (281, 79, 1254, 560)
+                goPage_result = self.goto_sevenD_page(page_area, ORC_API)
+                if goPage_result == "no_get":
+                    pass
+                elif goPage_result is True:
+                    self.get_reward(page_area, ORC_API)
+                    if self.config.Smallevent_UpdateInfoImmediately == True:
+                        self.device.sleep(1)
+                        self.device.screenshot()
+                        update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
+                        if update_words:
+                            self.recognize_activiy_status(update_words)
+                else:
+                    logger.warning("未成功进入七天小任务页面")
             else:
-                logger.warning("未成功进入七天小任务页面")
+                logger.warning("未配置Baidu API Key或Secret Key")
         else:
-            logger.warning("未配置Baidu API Key或Secret Key")
+            logger.info('7day task expired')
+
         self.config.task_delay(server_update=True)
 
     def recognize_text(self, image, area, ocr_api=None, model="general_basic"):

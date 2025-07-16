@@ -247,6 +247,7 @@ StopCondition:
   GetNewShip: false
   ReachLevel: 0
 ResearchSetting:
+  IsResearchCheck: false
   CurrentCampaignTimes: 0
   CheckInterval: 5
   OnepushNotify: false

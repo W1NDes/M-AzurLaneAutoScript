@@ -170,6 +170,7 @@ class GeneratedConfig:
     StopCondition_ReachLevel = 0
 
     # Group `ResearchSetting`
+    ResearchSetting_IsResearchCheck = False
     ResearchSetting_CurrentCampaignTimes = 0
     ResearchSetting_CheckInterval = 5
     ResearchSetting_OnepushNotify = False
