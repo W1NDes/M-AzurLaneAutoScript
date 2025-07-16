@@ -24,7 +24,7 @@ class ExpNotFinished(Exception):
     ...
 
 
-class ResearchFarming(UI, ModuleBase):
+class ResearchInspect(UI, ModuleBase):
     # def _DisableAllResearchFarmTask(self):
     #     for i in range(1, 7):
     #         self.config.modified[f"{self._GetResearchFarmTaskName(i)}.Scheduler.Enable"] = False
@@ -72,7 +72,7 @@ class ResearchFarming(UI, ModuleBase):
         raise ExpNotFinished
 
     def _Notify(self, Index):
-        IsPush = deep_get(self.config.data, "Main2.ResearchSetting.OnepushNotify")
+        IsPush = deep_get(self.config.data, "Main2.RegularInspections.ResearchCheckNotify")
         if IsPush:
             from module.notify import handle_notify
             handle_notify(self.config.Error_OnePushConfig,
@@ -106,5 +106,5 @@ class ResearchFarming(UI, ModuleBase):
         self.config.task_stop()
 
 if __name__ == "__main__":
-    self = ResearchFarming('zTTT')
+    self = ResearchInspect('zTTT')
     self.CheckResearchShipExperience()

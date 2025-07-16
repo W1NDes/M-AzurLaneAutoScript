@@ -267,11 +267,11 @@
       "GetNewShip": false,
       "ReachLevel": 0
     },
-    "ResearchSetting": {
-      "IsResearchCheck": false,
+    "RegularInspections": {
       "CurrentCampaignTimes": 0,
       "CheckInterval": 5,
-      "OnepushNotify": false
+      "IsResearchCheck": false,
+      "ResearchCheckNotify": false
     },
     "Fleet": {
       "Fleet1": 1,

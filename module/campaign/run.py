@@ -479,14 +479,14 @@ class CampaignRun(CampaignEvent, ShopStatus):
             try:
                 self.campaign.run()
                 if self.config.task.command in ['Main2']:
-                    if self.config.ResearchSetting_IsResearchCheck:
-                        CurrentTimes = self.config.ResearchSetting_CurrentCampaignTimes + 1
-                        CheckInterval = self.config.ResearchSetting_CheckInterval
-                        self.config.modified["Main2.ResearchSetting.CurrentCampaignTimes"] = CurrentTimes
+                    if self.config.RegularInspections_IsResearchCheck:
+                        CurrentTimes = self.config.RegularInspections_CurrentCampaignTimes + 1
+                        CheckInterval = self.config.RegularInspections_CheckInterval
+                        self.config.modified["Main2.RegularInspections.CurrentCampaignTimes"] = CurrentTimes
                         logger.info(f"Main2:CurrentTimes: {CurrentTimes}, CheckInterval: {CheckInterval}")
                         if CurrentTimes % CheckInterval == 0:
-                            from module.research_farming.check_research import ResearchFarming
-                            ResearchFarming(config=self.config, device=self.device).CheckResearchShipExperience()
+                            from module.regular_inspect.research_inspect import ResearchInspect
+                            ResearchInspect(config=self.config, device=self.device).CheckResearchShipExperience()
                         self.config.update()
             except ScriptEnd as e:
                 logger.hr('Script end')

@@ -1194,11 +1194,7 @@
         "value": 0
       }
     },
-    "ResearchSetting": {
-      "IsResearchCheck": {
-        "type": "checkbox",
-        "value": false
-      },
+    "RegularInspections": {
       "CurrentCampaignTimes": {
         "type": "input",
         "value": 0
@@ -1207,7 +1203,11 @@
         "type": "input",
         "value": 5
       },
-      "OnepushNotify": {
+      "IsResearchCheck": {
+        "type": "checkbox",
+        "value": false
+      },
+      "ResearchCheckNotify": {
         "type": "checkbox",
         "value": false
       }

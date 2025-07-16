@@ -1180,26 +1180,26 @@
       "help": "StopCondition.ReachLevel.help"
     }
   },
-  "ResearchSetting": {
+  "RegularInspections": {
     "_info": {
-      "name": "ResearchSetting._info.name",
-      "help": "ResearchSetting._info.help"
-    },
-    "IsResearchCheck": {
-      "name": "ResearchSetting.IsResearchCheck.name",
-      "help": "ResearchSetting.IsResearchCheck.help"
+      "name": "RegularInspections._info.name",
+      "help": "RegularInspections._info.help"
     },
     "CurrentCampaignTimes": {
-      "name": "ResearchSetting.CurrentCampaignTimes.name",
-      "help": "ResearchSetting.CurrentCampaignTimes.help"
+      "name": "RegularInspections.CurrentCampaignTimes.name",
+      "help": "RegularInspections.CurrentCampaignTimes.help"
     },
     "CheckInterval": {
-      "name": "ResearchSetting.CheckInterval.name",
-      "help": "ResearchSetting.CheckInterval.help"
+      "name": "RegularInspections.CheckInterval.name",
+      "help": "RegularInspections.CheckInterval.help"
     },
-    "OnepushNotify": {
-      "name": "ResearchSetting.OnepushNotify.name",
-      "help": "ResearchSetting.OnepushNotify.help"
+    "IsResearchCheck": {
+      "name": "RegularInspections.IsResearchCheck.name",
+      "help": "RegularInspections.IsResearchCheck.help"
+    },
+    "ResearchCheckNotify": {
+      "name": "RegularInspections.ResearchCheckNotify.name",
+      "help": "RegularInspections.ResearchCheckNotify.help"
     }
   },
   "EventPt": {
