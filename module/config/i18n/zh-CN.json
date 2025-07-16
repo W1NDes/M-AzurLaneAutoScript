@@ -1193,12 +1193,12 @@
       "name": "每刷 X 次检查",
       "help": ""
     },
-    "IsResearchCheck": {
+    "IsResearchInspect": {
       "name": "是否检查研究经验",
       "help": ""
     },
-    "ResearchCheckNotify": {
-      "name": "刷完后通知",
+    "ResearchInspectNotify": {
+      "name": "研究经验进度通知",
       "help": "推荐开启"
     }
   },

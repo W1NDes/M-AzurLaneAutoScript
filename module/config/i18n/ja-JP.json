@@ -1193,13 +1193,13 @@
       "name": "RegularInspections.CheckInterval.name",
       "help": "RegularInspections.CheckInterval.help"
     },
-    "IsResearchCheck": {
-      "name": "RegularInspections.IsResearchCheck.name",
-      "help": "RegularInspections.IsResearchCheck.help"
+    "IsResearchInspect": {
+      "name": "RegularInspections.IsResearchInspect.name",
+      "help": "RegularInspections.IsResearchInspect.help"
     },
-    "ResearchCheckNotify": {
-      "name": "RegularInspections.ResearchCheckNotify.name",
-      "help": "RegularInspections.ResearchCheckNotify.help"
+    "ResearchInspectNotify": {
+      "name": "RegularInspections.ResearchInspectNotify.name",
+      "help": "RegularInspections.ResearchInspectNotify.help"
     }
   },
   "EventPt": {

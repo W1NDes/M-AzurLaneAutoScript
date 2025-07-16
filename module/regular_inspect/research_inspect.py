@@ -5,7 +5,7 @@ from module.base.base import ModuleBase
 from module.ui.ui import UI
 from module.ui.page import page_shipyard
 from module.shipyard.shipyard_reward import RewardShipyard
-from module.research_farming.assets import (SHIP_EXPERIENCE_PERCENT_1, SHIP_EXPERIENCE_PERCENT_2,
+from module.regular_inspect.assets import (SHIP_EXPERIENCE_PERCENT_1, SHIP_EXPERIENCE_PERCENT_2,
                                             SHIP_EXPERIENCE_FINISHED_1, SHIP_EXPERIENCE_FINISHED_2,
                                             SHIP_EXPERIENCE_COMPLETE_1, SHIP_EXPERIENCE_COMPLETE_2,
                                             SHIP_EXPERIENCE_COMMIT_1, SHIP_EXPERIENCE_COMMIT_2)
@@ -72,7 +72,7 @@ class ResearchInspect(UI, ModuleBase):
         raise ExpNotFinished
 
     def _Notify(self, Index):
-        IsPush = deep_get(self.config.data, "Main2.RegularInspections.ResearchCheckNotify")
+        IsPush = deep_get(self.config.data, "Main2.RegularInspections.ResearchInspectNotify")
         if IsPush:
             from module.notify import handle_notify
             handle_notify(self.config.Error_OnePushConfig,

@@ -1203,11 +1203,11 @@
         "type": "input",
         "value": 5
       },
-      "IsResearchCheck": {
+      "IsResearchInspect": {
         "type": "checkbox",
         "value": false
       },
-      "ResearchCheckNotify": {
+      "ResearchInspectNotify": {
         "type": "checkbox",
         "value": false
       }

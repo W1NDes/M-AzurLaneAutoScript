@@ -479,7 +479,7 @@ class CampaignRun(CampaignEvent, ShopStatus):
             try:
                 self.campaign.run()
                 if self.config.task.command in ['Main2']:
-                    if self.config.RegularInspections_IsResearchCheck:
+                    if self.config.RegularInspections_IsResearchInspect:
                         CurrentTimes = self.config.RegularInspections_CurrentCampaignTimes + 1
                         CheckInterval = self.config.RegularInspections_CheckInterval
                         self.config.modified["Main2.RegularInspections.CurrentCampaignTimes"] = CurrentTimes

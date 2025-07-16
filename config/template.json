@@ -270,8 +270,8 @@
     "RegularInspections": {
       "CurrentCampaignTimes": 0,
       "CheckInterval": 5,
-      "IsResearchCheck": false,
-      "ResearchCheckNotify": false
+      "IsResearchInspect": false,
+      "ResearchInspectNotify": false
     },
     "Fleet": {
       "Fleet1": 1,

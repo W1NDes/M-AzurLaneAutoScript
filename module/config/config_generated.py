@@ -172,8 +172,8 @@ class GeneratedConfig:
     # Group `RegularInspections`
     RegularInspections_CurrentCampaignTimes = 0
     RegularInspections_CheckInterval = 5
-    RegularInspections_IsResearchCheck = False
-    RegularInspections_ResearchCheckNotify = False
+    RegularInspections_IsResearchInspect = False
+    RegularInspections_ResearchInspectNotify = False
 
     # Group `EventPt`
     EventPt_EventPtSwitch = False
