@@ -271,7 +271,10 @@
       "CurrentCampaignTimes": 0,
       "CheckInterval": 5,
       "IsResearchInspect": false,
-      "ResearchInspectNotify": false
+      "ResearchInspectNotify": false,
+      "IsFleetInspect": false,
+      "FleetInspectIndex": 0,
+      "FleetInspectInfo": "undo"
     },
     "Fleet": {
       "Fleet1": 1,

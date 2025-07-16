@@ -479,14 +479,32 @@ class CampaignRun(CampaignEvent, ShopStatus):
             try:
                 self.campaign.run()
                 if self.config.task.command in ['Main2']:
+                    CurrentTimes = self.config.RegularInspections_CurrentCampaignTimes + 1
+                    CheckInterval = self.config.RegularInspections_CheckInterval
+                    self.config.modified["Main2.RegularInspections.CurrentCampaignTimes"] = CurrentTimes
                     if self.config.RegularInspections_IsResearchInspect:
-                        CurrentTimes = self.config.RegularInspections_CurrentCampaignTimes + 1
-                        CheckInterval = self.config.RegularInspections_CheckInterval
-                        self.config.modified["Main2.RegularInspections.CurrentCampaignTimes"] = CurrentTimes
-                        logger.info(f"Main2:CurrentTimes: {CurrentTimes}, CheckInterval: {CheckInterval}")
+                        # logger.info(f"Main2:CurrentTimes: {CurrentTimes}, CheckInterval: {CheckInterval}")
                         if CurrentTimes % CheckInterval == 0:
                             from module.regular_inspect.research_inspect import ResearchInspect
                             ResearchInspect(config=self.config, device=self.device).CheckResearchShipExperience()
+                        self.config.update()
+                    if self.config.RegularInspections_IsFleetInspect:
+                        if CurrentTimes % CheckInterval == 0:
+                            from module.regular_inspect.fleet_inspect import FleetInfoCheck
+                            fleet_index = self.config.RegularInspections_FleetInspectIndex
+                            if fleet_index == 0:
+                                method = self.config.Fleet_FleetOrder
+                                if method == 'fleet1_mob_fleet2_boss':
+                                    fleet = 'Fleet1'
+                                elif method == 'fleet1_boss_fleet2_mob':
+                                    fleet = 'Fleet2'
+                                elif method == 'fleet1_all_fleet2_standby':
+                                    fleet = 'Fleet1'
+                                elif method == 'fleet1_standby_fleet2_all':
+                                    fleet = 'Fleet2'
+                                fleet_index = getattr(self.config, f'Fleet_{fleet}')   
+                                logger.info(f"now combat is {method}, fleet_index: {fleet_index}")
+                            FleetInfoCheck(config=self.config, device=self.device).get_fleet_info(fleet_index)
                         self.config.update()
             except ScriptEnd as e:
                 logger.hr('Script end')

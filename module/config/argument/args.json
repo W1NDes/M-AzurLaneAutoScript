@@ -1210,6 +1210,27 @@
       "ResearchInspectNotify": {
         "type": "checkbox",
         "value": false
+      },
+      "IsFleetInspect": {
+        "type": "checkbox",
+        "value": false
+      },
+      "FleetInspectIndex": {
+        "type": "select",
+        "value": 0,
+        "option": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "FleetInspectInfo": {
+        "type": "textarea",
+        "value": "undo"
       }
     },
     "Fleet": {

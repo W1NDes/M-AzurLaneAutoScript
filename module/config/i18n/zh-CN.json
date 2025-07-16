@@ -1199,7 +1199,26 @@
     },
     "ResearchInspectNotify": {
       "name": "研究经验进度通知",
-      "help": "推荐开启"
+      "help": "在研究完成时进行通知推送"
+    },
+    "IsFleetInspect": {
+      "name": "是否检查舰队信息",
+      "help": ""
+    },
+    "FleetInspectIndex": {
+      "name": "舰队编号",
+      "help": "",
+      "0": "同步主线图2道中队",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6"
+    },
+    "FleetInspectInfo": {
+      "name": "舰队信息",
+      "help": "格式为:后排舰船，前排舰船\n后排等级，前排等级"
     }
   },
   "EventPt": {

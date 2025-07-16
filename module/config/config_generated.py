@@ -174,6 +174,9 @@ class GeneratedConfig:
     RegularInspections_CheckInterval = 5
     RegularInspections_IsResearchInspect = False
     RegularInspections_ResearchInspectNotify = False
+    RegularInspections_IsFleetInspect = False
+    RegularInspections_FleetInspectIndex = 0  # 0, 1, 2, 3, 4, 5, 6
+    RegularInspections_FleetInspectInfo = 'undo'
 
     # Group `EventPt`
     EventPt_EventPtSwitch = False
