@@ -875,6 +875,14 @@
       "name": "DropRecord.BaiduAPISecret.name",
       "help": "DropRecord.BaiduAPISecret.help"
     },
+    "VolcAPIKey": {
+      "name": "DropRecord.VolcAPIKey.name",
+      "help": "DropRecord.VolcAPIKey.help"
+    },
+    "VolcAPISecret": {
+      "name": "DropRecord.VolcAPISecret.name",
+      "help": "DropRecord.VolcAPISecret.help"
+    },
     "OpsiRecord": {
       "name": "DropRecord.OpsiRecord.name",
       "help": "DropRecord.OpsiRecord.help",
@@ -2491,6 +2499,12 @@
     "UpdateInfoImmediately": {
       "name": "Smallevent.UpdateInfoImmediately.name",
       "help": "Smallevent.UpdateInfoImmediately.help"
+    },
+    "OcrModel": {
+      "name": "Smallevent.OcrModel.name",
+      "help": "Smallevent.OcrModel.help",
+      "baidu": "baidu",
+      "volc": "volc"
     }
   },
   "Oilkeep": {

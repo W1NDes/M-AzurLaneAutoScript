@@ -187,6 +187,14 @@ DropRecord:
     type: textarea
     mode: yaml
     value: 'null'
+  VolcAPIKey:
+    type: textarea
+    mode: yaml
+    value: 'null'
+  VolcAPISecret:
+    type: textarea
+    mode: yaml
+    value: 'null'
   OpsiRecord:
     value: do_not
     option: [ do_not, save, upload, save_and_upload ]
@@ -722,6 +730,9 @@ Minigame:
 Smallevent:
   SevenDayTask: true
   UpdateInfoImmediately: false
+  OcrModel:
+    value: volc
+    option: [ baidu, volc ]
 Oilkeep:
   OilkeepLevel: 8000
   OilMaxGet: 3000

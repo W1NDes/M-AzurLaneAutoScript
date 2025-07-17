@@ -14,7 +14,7 @@ from module.logger import logger
 from module.base.timer import Timer
 from module.log_res.log_res import LogRes
 from module.base.utils import crop
-from module.ocr.api_ocr import BaiduOcr
+from module.ocr.api_ocr import BaiduOcr, VolcOcr
 class SmallEvent(UI):
     SEVEND_DATE = "20250320"  # 集中管理活动日期
     
@@ -127,52 +127,6 @@ class SmallEvent(UI):
                 LogRes(self.config).SevenDayStatus = 15
                 logger.info(f"SEVEND_TASK_{self.SEVEND_DATE} FINISH")
                 break
-                
-            
-    def run(self):
-        # # LogRes(self.config).SevenDayStatus += 11
-        # # logger.hr(LogRes(self.config).SevenDayStatus)
-        # # logger.hr(self.config.cross_get('Dashboard.SevenDayStatus.Value'))
-        # if self.config.Smallevent_SevenDayTask == True:
-        #     task_icon = f"SEVEND_TASK_{self.SEVEND_DATE}"
-        #     task_get1 = f"SEVEND_TASK_GET1_{self.SEVEND_DATE}"
-        #     task_get2 = f"SEVEND_TASK_GET2_{self.SEVEND_DATE}"
-        #     task_finish = f"SEVEND_TASK_FINISH_{self.SEVEND_DATE}"
-        #     # task_unget1 = f"SEVEND_TASK_UNGET1_{self.SEVEND_DATE}"
-        #     # task_unget2 = f"SEVEND_TASK_UNGET2_{self.SEVEND_DATE}"   
-        #     self.SevenDayTask(
-        #         SEVEND_TASK_ICON_MAIN=globals()[task_icon],
-        #         SEVEND_TASK_GET1=globals()[task_get1],
-        #         SEVEND_TASK_GET2=globals()[task_get2],
-        #         SEVEND_TASK_FINISH=globals()[task_finish],
-        #         # SEVEND_TASK_UNGET1=globals()[task_unget1],
-        #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
-        #     )
-        # else:LogRes(self.config).SevenDayStatus = 0
-        now = datetime.now()
-        if now.month == 6 and now.day <= 23 and now.hour <= 11:#设置活动结束时间
-            if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
-                ORC_API = BaiduOcr(self.config)
-                page_area = (281, 79, 1254, 560)
-                goPage_result = self.goto_sevenD_page(page_area, ORC_API)
-                if goPage_result == "no_get":
-                    pass
-                elif goPage_result is True:
-                    self.get_reward(page_area, ORC_API)
-                    if self.config.Smallevent_UpdateInfoImmediately == True:
-                        self.device.sleep(1)
-                        self.device.screenshot()
-                        update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
-                        if update_words:
-                            self.recognize_activiy_status(update_words)
-                else:
-                    logger.warning("未成功进入七天小任务页面")
-            else:
-                logger.warning("未配置Baidu API Key或Secret Key")
-        else:
-            logger.info('7day task expired')
-
-        self.config.task_delay(server_update=True)
 
     def recognize_text(self, image, area, ocr_api=None, model="general_basic"):
         """
@@ -185,7 +139,7 @@ class SmallEvent(UI):
         """
         original_crop = crop(image, area)
         
-        result = ocr_api.request_baidu_ocr(original_crop,area,model)
+        result = ocr_api.request_ocr(image=original_crop,model=model)
         if result:
             if 'words_result' in result and len(result['words_result']) > 0:
                 return result
@@ -193,11 +147,11 @@ class SmallEvent(UI):
                 logger.info(result)
         return False
     
-    def recognize_activity_page(self,image,area=(281, 79, 1254, 560),orc_api=None):
-        result = self.recognize_text(image, area,orc_api)
+    def recognize_activity_page(self,image,area=(281, 79, 1254, 560),orc_api=None,model="general_basic"):
+        result = self.recognize_text(image, area,orc_api,model)
         if result:
             all_words = "".join([word['words'] for word in result['words_result']])
-            if "每日0点" in all_words or "解锁2个任务" in all_words:
+            if any(word in all_words for word in ["每日0点","解锁2个任务","每天零点","完成七日活动"]):
                 logger.info(f"发现七天小任务：{all_words}")
                 return all_words
             logger.info('当前页未发现七天小任务')
@@ -345,7 +299,70 @@ class SmallEvent(UI):
                     logger.info("GOTO_SEVEND_TASK No click TIMER REACHED")
                     break
         return False
-    
+
+    def ocr_api_init(self):
+        if self.config.Smallevent_OcrModel == "baidu":
+            if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
+                ORC_API = BaiduOcr(self.config)
+                return ORC_API
+            else:
+                logger.warning("未配置Baidu API Key或Secret Key")
+                return False
+        elif self.config.Smallevent_OcrModel == "volc":
+            if self.config.DropRecord_VolcAPIKey != "null" and self.config.DropRecord_VolcAPISecret != "null":
+                ORC_API = VolcOcr(self.config)
+                return ORC_API
+            else:
+                logger.warning("未配置Volc API Key或Secret Key")
+                return False
+        else:
+            logger.warning("未配置OcrModel")
+            return False
+            
+    def run(self):
+        # # LogRes(self.config).SevenDayStatus += 11
+        # # logger.hr(LogRes(self.config).SevenDayStatus)
+        # # logger.hr(self.config.cross_get('Dashboard.SevenDayStatus.Value'))
+        # if self.config.Smallevent_SevenDayTask == True:
+        #     task_icon = f"SEVEND_TASK_{self.SEVEND_DATE}"
+        #     task_get1 = f"SEVEND_TASK_GET1_{self.SEVEND_DATE}"
+        #     task_get2 = f"SEVEND_TASK_GET2_{self.SEVEND_DATE}"
+        #     task_finish = f"SEVEND_TASK_FINISH_{self.SEVEND_DATE}"
+        #     # task_unget1 = f"SEVEND_TASK_UNGET1_{self.SEVEND_DATE}"
+        #     # task_unget2 = f"SEVEND_TASK_UNGET2_{self.SEVEND_DATE}"   
+        #     self.SevenDayTask(
+        #         SEVEND_TASK_ICON_MAIN=globals()[task_icon],
+        #         SEVEND_TASK_GET1=globals()[task_get1],
+        #         SEVEND_TASK_GET2=globals()[task_get2],
+        #         SEVEND_TASK_FINISH=globals()[task_finish],
+        #         # SEVEND_TASK_UNGET1=globals()[task_unget1],
+        #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
+        #     )
+        # else:LogRes(self.config).SevenDayStatus = 0
+        if datetime.now() < datetime(2025, 8, 1, 1, 0, 0):#设置活动结束时间
+            ORC_API = self.ocr_api_init()
+            if ORC_API:
+                page_area = (281, 79, 1254, 560)
+                # page_area =(0,0,1280,720)
+                goPage_result = self.goto_sevenD_page(page_area, ORC_API)
+                if goPage_result == "no_get":
+                    pass
+                elif goPage_result is True:
+                    self.get_reward(page_area, ORC_API)
+                    if self.config.Smallevent_UpdateInfoImmediately == True:
+                        self.device.sleep(1)
+                        self.device.screenshot()
+                        update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
+                        if update_words:
+                            self.recognize_activiy_status(update_words)
+                else:
+                    logger.warning("未成功进入七天小任务页面")
+            else:
+                logger.warning("Ocr API 初始化失败")
+        else:
+            logger.info('7day task expired')
+
+        self.config.task_delay(server_update=True)
 if __name__ == "__main__":
     self = SmallEvent('zTTT')
     # from adbutils import AdbClient

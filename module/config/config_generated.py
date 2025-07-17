@@ -128,6 +128,8 @@ class GeneratedConfig:
     DropRecord_NewShipOcrMethod = 'LOCAL'  # LOCAL, API_BASIC, API_ACCURATE
     DropRecord_BaiduAPIKey = 'null'
     DropRecord_BaiduAPISecret = 'null'
+    DropRecord_VolcAPIKey = 'null'
+    DropRecord_VolcAPISecret = 'null'
     DropRecord_OpsiRecord = 'do_not'  # do_not, save, upload, save_and_upload
     DropRecord_MeowfficerBuy = 'do_not'  # do_not, save
     DropRecord_MeowfficerTalent = 'do_not'  # do_not, save, upload, save_and_upload
@@ -444,6 +446,7 @@ class GeneratedConfig:
     # Group `Smallevent`
     Smallevent_SevenDayTask = True
     Smallevent_UpdateInfoImmediately = False
+    Smallevent_OcrModel = 'volc'  # baidu, volc
 
     # Group `Oilkeep`
     Oilkeep_OilkeepLevel = 8000

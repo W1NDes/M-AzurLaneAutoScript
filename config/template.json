@@ -116,6 +116,8 @@
       "NewShipOcrMethod": "LOCAL",
       "BaiduAPIKey": "null",
       "BaiduAPISecret": "null",
+      "VolcAPIKey": "null",
+      "VolcAPISecret": "null",
       "OpsiRecord": "do_not",
       "MeowfficerBuy": "do_not",
       "MeowfficerTalent": "do_not"
@@ -1859,7 +1861,8 @@
     },
     "Smallevent": {
       "SevenDayTask": true,
-      "UpdateInfoImmediately": false
+      "UpdateInfoImmediately": false,
+      "OcrModel": "volc"
     },
     "Storage": {
       "Storage": {}

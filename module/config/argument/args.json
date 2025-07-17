@@ -524,6 +524,16 @@
         "value": "null",
         "mode": "yaml"
       },
+      "VolcAPIKey": {
+        "type": "textarea",
+        "value": "null",
+        "mode": "yaml"
+      },
+      "VolcAPISecret": {
+        "type": "textarea",
+        "value": "null",
+        "mode": "yaml"
+      },
       "OpsiRecord": {
         "type": "select",
         "value": "do_not",
@@ -9573,6 +9583,14 @@
       "UpdateInfoImmediately": {
         "type": "checkbox",
         "value": false
+      },
+      "OcrModel": {
+        "type": "select",
+        "value": "volc",
+        "option": [
+          "baidu",
+          "volc"
+        ]
       }
     },
     "Storage": {

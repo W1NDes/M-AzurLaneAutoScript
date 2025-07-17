@@ -875,6 +875,14 @@
       "name": "百度OCR的API_Secret",
       "help": ""
     },
+    "VolcAPIKey": {
+      "name": "火山OCR的API_Key",
+      "help": ""
+    },
+    "VolcAPISecret": {
+      "name": "火山OCR的API_Secret",
+      "help": ""
+    },
     "OpsiRecord": {
       "name": "大世界掉落截图",
       "help": "",
@@ -2491,6 +2499,12 @@
     "UpdateInfoImmediately": {
       "name": "立即更新任务进度",
       "help": "开启后，会立即更新任务进度(多消耗一次api调用)，否则会等到第二天更新"
+    },
+    "OcrModel": {
+      "name": "OCR模型",
+      "help": "选择OCR模型，火山OCR和百度OCR",
+      "baidu": "baidu",
+      "volc": "volc"
     }
   },
   "Oilkeep": {
