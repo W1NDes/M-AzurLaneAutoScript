@@ -869,18 +869,18 @@
     },
     "BaiduAPIKey": {
       "name": "百度OCR的API_Key",
-      "help": ""
+      "help": "参考https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjhhu"
     },
     "BaiduAPISecret": {
       "name": "百度OCR的API_Secret",
       "help": ""
     },
     "VolcAPIKey": {
-      "name": "火山OCR的API_Key",
-      "help": ""
+      "name": "火山OCR的Access Key ID",
+      "help": "参考https://www.volcengine.com/docs/6291/65568"
     },
     "VolcAPISecret": {
-      "name": "火山OCR的API_Secret",
+      "name": "火山OCR的Secret Access Key",
       "help": ""
     },
     "OpsiRecord": {
