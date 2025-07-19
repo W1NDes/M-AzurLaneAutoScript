@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 from module.base.utils import color_bar_percentage
 from module.config.deep import deep_get
 from module.logger import logger
@@ -45,13 +47,14 @@ class ResearchInspect(UI, ModuleBase):
 
     def _UiGotoTargetShip(self):
         self.ui_goto(page_shipyard)
+        self.device.sleep(1.2)#wait for the expBar load completely
         # Series = deep_get(self.config.data, "ResearchFarmingSetting.ResearchFarmingSetting.ResearchSeries")
         # Index = deep_get(self.config.data, "ResearchFarmingSetting.ResearchFarmingSetting.ShipIndex")
         # RewardShipyard(config=self.config, device=self.device).shipyard_set_focus(series=Series, index=Index)
 
     def _IsSingleFinished(self, Index):
         self._Override(Index)
-
+        self.device.screenshot()
         if self.appear(self.SHIP_EXPERIENCE_COMPLETE,offset=(10,15)):
             logger.info(f"ship's exp {Index} has completed")
             raise ExpHasFinished
@@ -107,4 +110,31 @@ class ResearchInspect(UI, ModuleBase):
 
 if __name__ == "__main__":
     self = ResearchInspect('zTTT')
-    self.CheckResearchShipExperience()
+    # self.CheckResearchShipExperience()
+    from PIL import Image
+    import numpy as np
+    # 截图文件
+    file = r'C:\Users\W1NDe\Documents\GitHub\M-AzurLaneAutoScript\module\regular_inspect\test.png'
+
+    self.device.image = np.array(Image.open(file).convert('RGB'))
+
+    def test(self):
+        try:
+            self._IsSingleFinished(1)
+        except ExpHasFinished:
+            pass
+        except ExpFinished:
+            self._Notify(1)
+            return
+        except ExpNotFinished:
+            return
+
+        try:
+            self._IsSingleFinished(2)
+        except (ExpHasFinished, ExpFinished):
+            # self._DisableAllResearchFarmTask()
+            self._Notify(2)
+        except ExpNotFinished:
+            return
+    test(self)
+    
