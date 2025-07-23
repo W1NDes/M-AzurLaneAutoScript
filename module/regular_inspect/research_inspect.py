@@ -93,7 +93,6 @@ class ResearchInspect(UI, ModuleBase):
         try:
             self._IsSingleFinished(1)
         except ExpHasFinished:
-            LogRes(self.config).ResearchPercent =100
             pass
         except ExpFinished:
             self._Notify(1)
