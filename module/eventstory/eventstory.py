@@ -178,7 +178,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
 
     def run(self):
         now = datetime.now()
-        if now.month == 6 and now.day <= 23 and now.hour <= 11:#设置活动结束时间
+        if datetime.now() < datetime(2025, 8, 7, 12, 0, 0):#eventSet
             self.run_event_story()
         else:
             logger.info('Event story expired')
