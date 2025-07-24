@@ -73,13 +73,6 @@ Event:
     EventGeneral:
       - EventGeneral
       - TaskBalancer
-    Coalition:
-      - Scheduler
-      - Campaign
-      - Coalition
-      - StopCondition
-      - EventPt
-      - Emotion
     Event:
       - Scheduler
       - Campaign
@@ -119,6 +112,13 @@ Event:
       - Hospital
       - StopCondition
       - Emotion
+    Coalition:
+      - Scheduler
+      - Campaign
+      - Coalition
+      - StopCondition
+      - EventPt
+      - Emotion
     MaritimeEscort:
       - Scheduler
       - MaritimeEscort
@@ -139,12 +139,6 @@ EventDaily:
   menu: 'collapse'
   page: 'setting'
   tasks:
-    CoalitionSp:
-      - Scheduler
-      - Campaign
-      - Coalition
-      - StopCondition
-      - Emotion
     EventA:
       - Scheduler
       - EventDaily
@@ -203,6 +197,12 @@ EventDaily:
       - Emotion
     EventStory:
       - Scheduler
+    CoalitionSp:
+      - Scheduler
+      - Campaign
+      - Coalition
+      - StopCondition
+      - Emotion
 
 # ==================== Reward ====================
 
