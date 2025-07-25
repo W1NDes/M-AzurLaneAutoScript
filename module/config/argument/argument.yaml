@@ -740,6 +740,7 @@ Oilkeep:
   OilMaxGet: 3000
 PrivateQuarters:
     BuyRoses: true
+    BuyCake: false
     TargetInteract: true
     TargetShip:
       value: anchorage
