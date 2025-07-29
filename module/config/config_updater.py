@@ -669,7 +669,7 @@ class ConfigUpdater:
                 # Get current event from user's config
                 current_event = deep_get(new, keys=f'{task}.Campaign.Event', default='')
                 # Get system default latest event
-                latest_event = deep_get(self.args, f'{task}.Campaign.Event.{server}'))
+                latest_event = deep_get(self.args, f'{task}.Campaign.Event.{server}')
                 if current_event == '' or current_event == 'campaign_main' or \
                         current_event != "event_20221124_cn":
                     deep_set(new,
