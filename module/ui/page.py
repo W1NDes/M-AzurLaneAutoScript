@@ -4,7 +4,7 @@ from module.coalition.assets import *
 from module.event_hospital.assets import HOSIPITAL_CHECK
 from module.freebies.assets import MAIL_ENTER
 from module.raid.assets import *
-from module.retire.assets import DOCK_CHECK
+from module.retire.assets import DOCK_CHECK,IN_RETIREMENT_CHECK
 from module.ui.assets import *
 from module.ui_white.assets import *
 from module.ship_ir.assets import HANDBOOK_CHECK,MAIN_GOTO_COLLECTION,MAIN_GOTO_COLLECTION_WHITE,COLLECTION_CHECK,COLLECTION_GOTO_HANDBOOK
@@ -315,6 +315,11 @@ page_build = Page(BUILD_CHECK)
 page_build.link(button=GOTO_MAIN, destination=page_main)
 page_main.link(button=MAIN_GOTO_BUILD, destination=page_build)
 page_main_white.link(button=MAIN_GOTO_BUILD_WHITE, destination=page_build)
+
+#Retire
+page_retire = Page(IN_RETIREMENT_CHECK)
+page_retire.link(button=GOTO_MAIN, destination=page_main)
+page_build.link(button=BUILD_GOTO_RETIRE, destination=page_retire)
 
 # Mail
 page_mail = Page(MAIL_CHECK)

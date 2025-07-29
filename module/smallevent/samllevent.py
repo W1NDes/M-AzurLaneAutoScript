@@ -164,7 +164,9 @@ class SmallEvent(UI):
         if "任意科技箱" in text:
             logger.info(f'resolve the task: 打开科技箱')
             from module.storage.storage import StorageHandler
-            StorageHandler(self.config).storage_disassemble_equipment(rarity=1, amount=1)
+            boxDisassemble = StorageHandler(self.config)
+            boxDisassemble.device.screenshot()
+            boxDisassemble.storage_disassemble_equipment(rarity=1, amount=1)
             return True
         if "舰船强化" in text:
             logger.info(f'resolve the task: 舰船强化')
@@ -172,6 +174,7 @@ class SmallEvent(UI):
             from module.retire.retirement import Retirement
             self.ui_ensure(destination=page_dock)
             enhance = Retirement(self.config)
+            enhance.device.screenshot()
             enhance.handle_dock_cards_loading()
             total, remain = enhance._enhance_handler()
             if not total:
@@ -180,7 +183,20 @@ class SmallEvent(UI):
             return True
         if "舰船退役" in text:
             logger.info(f'resolve the task: 舰船退役')
-            logger.info(f'afraid of ship retirement, skip it')
+            from module.retire.retirement import Retirement
+            from module.ui.page import page_retire
+            self.ui_ensure(destination=page_retire)
+            retire = Retirement(self.config)
+            retire.device.screenshot()
+            total = retire.retire_ships_one_click()
+            if not total:
+                logger.warning(
+                    'No ship retired, trying to reset dock filter and disable favourite, then retire again')
+                retire.dock_favourite_set(False, wait_loading=False)
+                retire.dock_filter_set()
+                total = retire.retire_ships_one_click()
+            if not total:
+                logger.critical('No ship retired')
             return True
         return False
         
