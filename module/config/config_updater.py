@@ -665,10 +665,16 @@ class ConfigUpdater:
         # Update to latest event
         server = to_server(deep_get(new, 'Alas.Emulator.PackageName', 'cn'))
         if not is_template:
-            # for task in EVENTS + RAIDS + COALITIONS:
-            #     deep_set(new,
-            #              keys=f'{task}.Campaign.Event',
-            #              value=deep_get(self.args, f'{task}.Campaign.Event.{server}'))
+            for task in EVENTS + RAIDS + COALITIONS:
+                # Get current event from user's config
+                current_event = deep_get(new, keys=f'{task}.Campaign.Event', default='')
+                # Get system default latest event
+                latest_event = deep_get(self.args, f'{task}.Campaign.Event.{server}'))
+                if current_event == '' or current_event == 'campaign_main' or \
+                        current_event != "event_20221124_cn":
+                    deep_set(new,
+                            keys=f'{task}.Campaign.Event',
+                            value=latest_event)
             for task in ['GemsFarming']:
                 if deep_get(new, keys=f'{task}.Campaign.Event', default='campaign_main') != 'campaign_main':
                     deep_set(new,
