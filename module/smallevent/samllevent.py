@@ -160,6 +160,31 @@ class SmallEvent(UI):
             logger.warning('Failed to recognize text')
             return False
         
+    def resolve_task(self,text):
+        if "任意科技箱" in text:
+            logger.info(f'resolve the task: 打开科技箱')
+            from module.storage.storage import StorageHandler
+            StorageHandler(self.config).storage_disassemble_equipment(rarity=1, amount=1)
+            return True
+        if "舰船强化" in text:
+            logger.info(f'resolve the task: 舰船强化')
+            from module.ui.page import page_dock
+            from module.retire.retirement import Retirement
+            self.ui_ensure(destination=page_dock)
+            enhance = Retirement(self.config)
+            enhance.handle_dock_cards_loading()
+            total, remain = enhance._enhance_handler()
+            if not total:
+                logger.info('No ship to enhance')
+            logger.info(f'The remaining spare dock amount is {remain}')
+            return True
+        if "舰船退役" in text:
+            logger.info(f'resolve the task: 舰船退役')
+            logger.info(f'afraid of ship retirement, skip it')
+            return True
+        return False
+        
+        
     def recognize_activiy_status(self,text):
         if "进度" in text:
             progress_text = text.split("进度")[1]
@@ -289,8 +314,8 @@ class SmallEvent(UI):
                         go_count = self.recognize_activiy_status(all_words)
                         if go_count >= 2:
                             logger.warning("七天小任务当前没有可领取项")
-                            return "no_get"
-                        return True
+                            return "no_get",all_words
+                        return True,all_words
             NOCLICK_TIMER.start()
             if NOCLICK_TIMER.reached():
                 NOCLICK_COUNT += 1
@@ -298,7 +323,7 @@ class SmallEvent(UI):
                 if NOCLICK_COUNT >= 5:
                     logger.info("GOTO_SEVEND_TASK No click TIMER REACHED")
                     break
-        return False
+        return False,None
 
     def ocr_api_init(self):
         if self.config.Smallevent_OcrModel == "baidu":
@@ -345,10 +370,13 @@ class SmallEvent(UI):
                 page_area = (281, 79, 1254, 560)
                 # page_area =(0,0,1280,720)
                 goPage_result = self.goto_sevenD_page(page_area, ORC_API)
-                if goPage_result == "no_get":
+                if goPage_result[0] == "no_get":
                     pass
-                elif goPage_result is True:
+                elif goPage_result[0] is True:
                     self.get_reward(page_area, ORC_API)
+                    if self.resolve_task(goPage_result[1]):
+                        logger.info("resolved the task, skip the update immediately")
+                        return True 
                     if self.config.Smallevent_UpdateInfoImmediately == True:
                         self.device.sleep(1)
                         self.device.screenshot()

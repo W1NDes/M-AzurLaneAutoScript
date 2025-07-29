@@ -3,6 +3,7 @@ from module.base.utils import rgb2gray
 from module.campaign.campaign_ui import CampaignUI
 from module.combat.combat import Combat
 from module.eventstory.assets import *
+from module.exception import GameStuckError
 from module.handler.login import LoginHandler
 from module.logger import logger
 from module.ui.page import page_event
@@ -83,6 +84,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         """
         logger.hr('Event story', level=1)
         while 1:
+            logger.info('run_story start')
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
@@ -140,7 +142,11 @@ class EventStory(CampaignUI, Combat, LoginHandler):
             state = self.ui_goto_event_story()
             if state == 'finish':
                 break
-            result = self.event_story()
+            try:
+                result = self.event_story()
+            except GameStuckError as e:
+                logger.error(f'Event story error: {e}')
+                break
             if result == 'battle':
                 # Kill game is considered cleared battles
                 # It's much faster than waiting event battles
@@ -185,6 +191,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         # Scheduler
         self.config.task_delay(server_update=True)
         pass
+
 
 
 if __name__ == '__main__':
