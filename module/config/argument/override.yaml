@@ -160,7 +160,7 @@ EventSp:
     FailureInterval: 30
     ServerUpdate: 00:00
   Campaign:
-    Name: sp
+    Name: dynamic
     Mode: normal
     Use2xBook: false
     AmbushEvade: true
