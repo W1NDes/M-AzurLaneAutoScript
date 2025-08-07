@@ -380,7 +380,7 @@ class SmallEvent(UI):
         #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
         #     )
         # else:LogRes(self.config).SevenDayStatus = 0
-        if datetime.now() < datetime(2025, 8, 1, 1, 0, 0):#eventSet
+        if datetime.now() < datetime(2025, 8, 28, 12, 0, 0):#eventSet
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 page_area = (281, 79, 1254, 560)
