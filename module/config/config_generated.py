@@ -447,6 +447,7 @@ class GeneratedConfig:
     # Group `Smallevent`
     Smallevent_SevenDayTask = True
     Smallevent_UpdateInfoImmediately = False
+    Smallevent_autoRetire = False
     Smallevent_OcrModel = 'volc'  # baidu, volc
 
     # Group `Oilkeep`

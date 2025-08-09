@@ -183,22 +183,27 @@ class SmallEvent(UI):
             return True
         if "舰船退役" in text:
             logger.info(f'resolve the task: 舰船退役')
-            from module.retire.retirement import Retirement
-            from module.ui.page import page_retire
-            self.ui_ensure(destination=page_retire)
-            retire = Retirement(self.config)
-            retire._unable_to_enhance = True
-            retire.device.screenshot()
-            total = retire.retire_ships_one_click()
-            if not total:
-                logger.warning(
-                    'No ship retired, trying to reset dock filter and disable favourite, then retire again')
-                retire.dock_favourite_set(False, wait_loading=False)
-                retire.dock_filter_set()
+            if self.config.Smallevent_autoRetire == True:
+                logger.info("resolve the 7Dtask with auto retire")
+                from module.retire.retirement import Retirement
+                from module.ui.page import page_retire
+                self.ui_ensure(destination=page_retire)
+                retire = Retirement(self.config)
+                retire._unable_to_enhance = True
+                retire.device.screenshot()
                 total = retire.retire_ships_one_click()
-            if not total:
-                logger.critical('No ship retired')
-            return True
+                if not total:
+                    logger.warning(
+                        'No ship retired, trying to reset dock filter and disable favourite, then retire again')
+                    retire.dock_favourite_set(False, wait_loading=False)
+                    retire.dock_filter_set()
+                    total = retire.retire_ships_one_click()
+                if not total:
+                    logger.critical('No ship retired')
+                return True
+            else:
+                logger.info("skip the retire task")
+                return False
         return False
         
         

@@ -732,6 +732,7 @@ Minigame:
 Smallevent:
   SevenDayTask: true
   UpdateInfoImmediately: false
+  autoRetire: false
   OcrModel:
     value: volc
     option: [ baidu, volc ]

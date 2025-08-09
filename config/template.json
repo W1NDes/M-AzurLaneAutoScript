@@ -1863,6 +1863,7 @@
     "Smallevent": {
       "SevenDayTask": true,
       "UpdateInfoImmediately": false,
+      "autoRetire": false,
       "OcrModel": "volc"
     },
     "Storage": {

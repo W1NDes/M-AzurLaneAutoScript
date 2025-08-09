@@ -2507,6 +2507,10 @@
       "name": "Smallevent.UpdateInfoImmediately.name",
       "help": "Smallevent.UpdateInfoImmediately.help"
     },
+    "autoRetire": {
+      "name": "Smallevent.autoRetire.name",
+      "help": "Smallevent.autoRetire.help"
+    },
     "OcrModel": {
       "name": "Smallevent.OcrModel.name",
       "help": "Smallevent.OcrModel.help",

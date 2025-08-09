@@ -9164,6 +9164,10 @@
         "type": "checkbox",
         "value": false
       },
+      "autoRetire": {
+        "type": "checkbox",
+        "value": false
+      },
       "OcrModel": {
         "type": "select",
         "value": "volc",
