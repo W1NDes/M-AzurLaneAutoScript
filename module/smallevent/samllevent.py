@@ -187,6 +187,7 @@ class SmallEvent(UI):
             from module.ui.page import page_retire
             self.ui_ensure(destination=page_retire)
             retire = Retirement(self.config)
+            retire._unable_to_enhance = True
             retire.device.screenshot()
             total = retire.retire_ships_one_click()
             if not total:
@@ -392,7 +393,7 @@ class SmallEvent(UI):
                     self.get_reward(page_area, ORC_API)
                     if self.resolve_task(goPage_result[1]):
                         logger.info("resolved the task, skip the update immediately")
-                        return True 
+                        # return True 
                     if self.config.Smallevent_UpdateInfoImmediately == True:
                         self.device.sleep(1)
                         self.device.screenshot()
