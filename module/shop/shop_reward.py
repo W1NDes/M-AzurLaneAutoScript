@@ -10,6 +10,9 @@ from module.shop_event.ui import OCR_EVENT_SHOP_SECOND_ENSURE
 
 class RewardShop(ShopUI):
     def run_frequent(self):
+        self.config.task_delay(server_update=True)
+        self.config.task_stop()
+
         # Munitions shops
         self.ui_goto_shop()
 
@@ -21,6 +24,9 @@ class RewardShop(ShopUI):
         self.config.task_delay(server_update=True)
 
     def run_once(self):
+        self.config.task_delay(server_update=True)
+        self.config.task_stop()
+
         # Munitions shops
         if self.config.EventShop_Enable:
             self.ui_goto_event_shop()
