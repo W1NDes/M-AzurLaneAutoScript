@@ -71,7 +71,7 @@ Event:
       type: state
       display: display
     EventDailyCD:
-      value: HT1>HT2>HT3>HT4>HT5>HT6
+      value: false
       type: state
       display: display
 
