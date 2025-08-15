@@ -68,7 +68,28 @@ class Config:
     MAP_CHAPTER_SWITCH_20241219 = True
     # MAP_HAS_MODE_SWITCH = True
     STAGE_ENTRANCE = ['half', '20240725']
-
+    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
+        'height': (120, 255 - 17),
+        'width': (1.5, 10),
+        'prominence': 10,
+        'distance': 35,
+    }
+    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
+        'height': (255 - 17, 255),
+        'prominence': 10,
+        'distance': 50,
+        'wlen': 1000
+    }
+    HOMO_EDGE_COLOR_RANGE = (0, 17)
+    HOMO_EDGE_HOUGHLINES_THRESHOLD = 210
+    MAP_HAS_MOVABLE_NORMAL_ENEMY = True
+    MAP_SIREN_MOVE_WAIT = 0.5
+    MAP_WALK_USE_CURRENT_FLEET = True
+    MAP_SIREN_HAS_BOSS_ICON_SMALL = True
+    MAP_ENSURE_EDGE_INSIGHT_CORNER = 'bottom'
+    MAP_SWIPE_MULTIPLY = (1.160, 1.182)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.122, 1.143)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.089, 1.109)
 class Campaign(CampaignBase):
     MAP = MAP
     ENEMY_FILTER = '1L > 1M > 1E > 1C > 2L > 2M > 2E > 2C > 3L > 3M > 3E > 3C'
