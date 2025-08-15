@@ -8,6 +8,7 @@ from module.handler.login import LoginHandler
 from module.logger import logger
 from module.ui.page import page_event
 from datetime import datetime
+import random
 
 class EventStory(CampaignUI, Combat, LoginHandler):
     def ui_goto_event_story(self):
@@ -52,6 +53,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         sim, button = TEMPLATE_ALCHEMIST_STORY.match_result(image)
         if sim >= 0.85:
             button = button.move(area[:2])
+            button=button.move((0, random.randint(20, 50)))
             return button
         else:
             return None
@@ -67,6 +69,42 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         if not interval.reached():
             return False
         button = self.get_event_20250724_button()
+
+        if button:
+            self.device.click(button)
+            interval.reset()
+            return True
+        else:
+            return False
+        
+
+    def get_event_20250814_button(self):
+        """
+        Returns:
+            Button | None:
+        """
+        area = (0, 72, 1280, 560)
+        image = self.image_crop(area, copy=False)
+        image = rgb2gray(image)
+        sim, button = TEMPLATE_BATTLE_STORY.match_result(image)
+        if sim >= 0.85:
+            button = button.move(area[:2])
+            button=button.move((0, random.randint(5, 25)))
+            return button
+        else:
+            return None
+        
+    def handle_event_20250814(self, interval=2):
+        """
+        In Alchemist collab 2, story button just appear everywhere
+
+        Returns:
+            bool: If clicked
+        """
+        interval = self.get_interval_timer(TEMPLATE_BATTLE_STORY, interval=interval)
+        if not interval.reached():
+            return False
+        button = self.get_event_20250814_button()
         if button:
             self.device.click(button)
             interval.reset()
@@ -132,6 +170,11 @@ class EventStory(CampaignUI, Combat, LoginHandler):
                 self.popup_interval_clear()
                 self.device.click_record_clear()
                 continue
+            if self.handle_event_20250814():
+                self.story_skip_interval_clear()
+                self.popup_interval_clear()
+                self.device.click_record_clear()
+                continue
 
     def run_event_story(self):
         """
@@ -179,12 +222,12 @@ class EventStory(CampaignUI, Combat, LoginHandler):
             return 'story'
         if self.get_event_20250724_button():
             return 'story_alchemist'
-
+        if self.get_event_20250814_button():
+            return 'story_battle'
         return 'unknown'
 
     def run(self):
-        now = datetime.now()
-        if datetime.now() < datetime(2025, 8, 7, 12, 0, 0):#eventSet
+        if datetime.now() < datetime(2025, 8, 28, 12, 0, 0):#eventSet
             self.run_event_story()
         else:
             logger.info('Event story expired')
