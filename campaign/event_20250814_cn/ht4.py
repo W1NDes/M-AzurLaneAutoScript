@@ -2,29 +2,30 @@ from .campaign_base import CampaignBase
 from module.map.map_base import CampaignMap
 from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
+from .ht1 import Config as ConfigBase
 
 MAP = CampaignMap('HT4')
 MAP.shape = 'K8'
-MAP.camera_data = ['E3', 'E6', 'H3', 'H6']
+MAP.camera_data = ['E2', 'E6', 'H2', 'H6']
 MAP.camera_data_spawn_point = ['H6']
 MAP.map_data = """
-    -- ++ -- -- -- -- -- -- -- -- --
-    ++ -- ME -- ME -- -- ++ ++ ++ --
-    -- ME -- -- ++ ME -- ++ ++ ++ --
-    -- -- ++ -- ME -- -- ++ ++ ++ --
-    -- -- -- -- -- -- -- SP -- SP --
-    -- ME -- ++ -- Me -- -- __ -- --
-    ++ -- ME -- ME ++ Me -- MS -- Me
-    -- ++ -- -- -- ++ -- MS MB MS --
+    -- -- -- -- -- -- -- ++ -- ME --
+    -- -- ME ++ ++ ME ME ++ ME -- ME
+    -- ME -- ++ ++ -- -- -- -- -- --
+    -- Me -- -- -- Me -- ++ ++ ++ --
+    -- ++ ++ ++ -- -- -- MS MB MS --
+    -- -- ++ Me -- Me -- -- MS -- --
+    -- -- ME -- -- ++ ++ -- __ -- ++
+    ++ -- -- ME -- ++ ++ SP -- SP ++
 """
 MAP.weight_data = """
     50 50 50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50 50 50
-    50 50 50 50 50 20 20 50 50 50 50
-    50 50 50 50 50 20 10 10 10 10 10
-    50 50 50 50 50 20 10 10 10 10 10
-    50 50 50 50 50 50 20 20 20 20 20
+    50 50 50 50 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50 50 50
 """
 MAP.spawn_data = [
@@ -46,9 +47,9 @@ A8, B8, C8, D8, E8, F8, G8, H8, I8, J8, K8, \
     = MAP.flatten()
 
 
-class Config:
+class Config(ConfigBase):
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = []
+    MAP_SIREN_TEMPLATE = ['jiulaimu_ruanniguai', 'jiulaimu_shixianggui', 'jiulaimu_emo']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -57,36 +58,9 @@ class Config:
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-
-    MAP_CHAPTER_SWITCH_20241219 = True
-    MAP_HAS_MODE_SWITCH = True
-    STAGE_ENTRANCE = ['half', '20240725']
-    STAGE_INCREASE_AB = True
-    MAP_CLEAR_PERCENTAGE_SHORT = True
-
-    MAP_SIREN_HAS_BOSS_ICON_SMALL = True
-    MAP_ENSURE_EDGE_INSIGHT_CORNER = 'bottom'
-    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (120, 255 - 17),
-        'width': (1.5, 10),
-        'prominence': 10,
-        'distance': 35,
-    }
-    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (255 - 17, 255),
-        'prominence': 10,
-        'distance': 50,
-        'wlen': 1000
-    }
-    HOMO_EDGE_COLOR_RANGE = (0, 17)
-    HOMO_EDGE_HOUGHLINES_THRESHOLD = 210
-    MAP_HAS_MOVABLE_NORMAL_ENEMY = True
-    MAP_SIREN_MOVE_WAIT = 0.5
-    MAP_WALK_USE_CURRENT_FLEET = True
-    MAP_SWIPE_MULTIPLY = (1.126, 1.147)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.089, 1.109)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.057, 1.076)
-
+    MAP_SWIPE_MULTIPLY = (1.101, 1.122)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.065, 1.085)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.034, 1.053)
 
 class Campaign(CampaignBase):
     MAP = MAP

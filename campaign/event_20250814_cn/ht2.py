@@ -5,28 +5,32 @@ from module.logger import logger
 from .ht1 import Config as ConfigBase
 
 MAP = CampaignMap('HT2')
-MAP.shape = 'I8'
-MAP.camera_data = ['D3', 'D6', 'E3', 'E6']
-MAP.camera_data_spawn_point = ['E3', 'D3']
+MAP.shape = 'G10'
+MAP.camera_data = ['C2', 'C6', 'C8']
+MAP.camera_data_spawn_point = ['C2']
 MAP.map_data = """
-    ++ -- ++ ++ ++ -- -- -- --
-    -- -- SP -- SP -- ++ ++ --
-    -- -- -- -- -- -- Me ++ --
-    -- ++ -- __ -- -- -- Me --
-    -- ++ MS -- MS -- ME -- --
-    -- -- -- MB -- -- -- ME --
-    -- ME ++ ++ ++ ME -- ME --
-    ME -- -- ++ -- -- ME ++ --
+    -- -- SP -- SP -- --
+    -- -- -- -- -- -- --
+    ++ ++ -- MS -- ++ ++
+    -- ++ MS -- MS ++ --
+    -- Me -- __ -- Me --
+    -- -- Me -- Me -- --
+    ++ ++ ++ -- ++ ++ ++
+    -- -- ME -- ME -- --
+    -- ME -- MB -- ME --
+    -- -- ME -- ME -- --
 """
 MAP.weight_data = """
-    50 50 50 50 50 50 50 50 50
-    20 10 10 10 10 10 50 50 50
-    50 10 10 10 10 10 20 50 50
-    50 50 10 10 10 20 50 50 50
-    50 50 20 20 20 50 50 50 50
-    50 50 50 50 50 50 50 50 50
-    50 50 50 50 50 50 50 50 50
-    50 50 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
 """
 MAP.spawn_data = [
     {'battle': 0, 'enemy': 2, 'siren': 2},
@@ -35,20 +39,22 @@ MAP.spawn_data = [
     {'battle': 3, 'enemy': 1},
     {'battle': 4, 'enemy': 1, 'boss': 1},
 ]
-A1, B1, C1, D1, E1, F1, G1, H1, I1, \
-A2, B2, C2, D2, E2, F2, G2, H2, I2, \
-A3, B3, C3, D3, E3, F3, G3, H3, I3, \
-A4, B4, C4, D4, E4, F4, G4, H4, I4, \
-A5, B5, C5, D5, E5, F5, G5, H5, I5, \
-A6, B6, C6, D6, E6, F6, G6, H6, I6, \
-A7, B7, C7, D7, E7, F7, G7, H7, I7, \
-A8, B8, C8, D8, E8, F8, G8, H8, I8, \
+A1, B1, C1, D1, E1, F1, G1, \
+A2, B2, C2, D2, E2, F2, G2, \
+A3, B3, C3, D3, E3, F3, G3, \
+A4, B4, C4, D4, E4, F4, G4, \
+A5, B5, C5, D5, E5, F5, G5, \
+A6, B6, C6, D6, E6, F6, G6, \
+A7, B7, C7, D7, E7, F7, G7, \
+A8, B8, C8, D8, E8, F8, G8, \
+A9, B9, C9, D9, E9, F9, G9, \
+A10, B10, C10, D10, E10, F10, G10, \
     = MAP.flatten()
 
 
 class Config(ConfigBase):
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = []
+    MAP_SIREN_TEMPLATE = ['jiulaimu_ruanniguai', 'jiulaimu_shixianggui', 'jiulaimu_emo']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -57,10 +63,10 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-
-    MAP_SWIPE_MULTIPLY = (1.234, 1.257)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.193, 1.215)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.158, 1.179)
+    HOMO_EDGE_HOUGHLINES_THRESHOLD = 300
+    MAP_SWIPE_MULTIPLY = (1.204, 1.226)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.164, 1.185)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.130, 1.150)
 
 
 class Campaign(CampaignBase):

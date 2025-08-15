@@ -4,25 +4,23 @@ from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
 
 MAP = CampaignMap('T1')
-MAP.shape = 'I8'
-MAP.camera_data = ['D3', 'D6', 'E4', 'E6']
-MAP.camera_data_spawn_point = ['D3']
+MAP.shape = 'I7'
+MAP.camera_data = ['D2', 'D5', 'F2', 'F5']
+MAP.camera_data_spawn_point = ['F2']
 MAP.map_data = """
-    -- ++ ++ -- -- -- -- -- --
-    -- SP ++ Me -- Me -- ME --
-    SP -- -- -- -- ++ -- -- ++
-    -- -- MS -- Me ++ ME -- --
-    ++ MS -- -- -- -- -- ME --
-    ++ -- __ ++ -- ME -- ME --
-    MB -- ME -- -- ++ ++ -- ++
-    -- ME -- ME -- ++ ++ -- --
+    -- -- -- ++ ++ -- -- SP --
+    ++ ME ME ++ ++ MS -- -- SP
+    ++ -- -- -- Me -- __ -- --
+    -- -- ME -- -- -- -- MS ++
+    MB -- ++ ++ ++ Me -- -- ME
+    -- -- ME -- ME -- -- Me --
+    -- ME -- ME -- -- ++ -- --
 """
 MAP.weight_data = """
     50 50 50 50 50 50 50 50 50
-    10 10 50 50 50 50 50 50 50
-    10 10 20 25 50 50 50 50 50
-    10 20 25 50 50 50 50 50 50
-    50 25 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50 50 50
+    50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50
@@ -41,13 +39,12 @@ A4, B4, C4, D4, E4, F4, G4, H4, I4, \
 A5, B5, C5, D5, E5, F5, G5, H5, I5, \
 A6, B6, C6, D6, E6, F6, G6, H6, I6, \
 A7, B7, C7, D7, E7, F7, G7, H7, I7, \
-A8, B8, C8, D8, E8, F8, G8, H8, I8, \
     = MAP.flatten()
 
 
 class Config:
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = []
+    MAP_SIREN_TEMPLATE = ['jiulaimu_ruanniguai', 'jiulaimu_shixianggui', 'jiulaimu_emo']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -56,7 +53,6 @@ class Config:
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-
     MAP_CHAPTER_SWITCH_20241219 = True
     MAP_HAS_MODE_SWITCH = True
     STAGE_ENTRANCE = ['half', '20240725']
@@ -81,10 +77,9 @@ class Config:
     MAP_HAS_MOVABLE_NORMAL_ENEMY = True
     MAP_SIREN_MOVE_WAIT = 0.5
     MAP_WALK_USE_CURRENT_FLEET = True
-    MAP_SWIPE_MULTIPLY = (1.259, 1.283)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.218, 1.240)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.182, 1.204)
-
+    MAP_SWIPE_MULTIPLY = (1.252, 1.276)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.211, 1.233)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.176, 1.197)
 
 class Campaign(CampaignBase):
     MAP = MAP
