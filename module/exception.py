@@ -63,3 +63,7 @@ class RequestHumanTakeover(Exception):
     pass
 class OtherLogin(Exception):
     pass
+
+
+class SpLimitError(Exception):
+    ...

@@ -1,5 +1,5 @@
 from module.base.timer import Timer
-from module.exception import CampaignEnd, RequestHumanTakeover, ScriptEnd
+from module.exception import CampaignEnd, RequestHumanTakeover, ScriptEnd, SpLimitError
 from module.handler.fast_forward import FastForwardHandler
 from module.handler.mystery import MysteryHandler
 from module.logger import logger
@@ -132,13 +132,21 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
                     logger.critical(f"Failed to enter {button}, too many click on {button}")
                     logger.critical("Possible reason #1: You haven't reached the commander level to unlock this stage.")
                     raise RequestHumanTakeover
-                if fleet_click > 5:
+                if fleet_click > 4:
                     logger.critical(f"Failed to enter {button}, too many click on FLEET_PREPARATION")
                     logger.critical("Possible reason #1: "
                                     "Your fleets haven't satisfied the stat restrictions of this stage.")
                     logger.critical("Possible reason #2: "
                                     "This stage can only be farmed once a day, "
                                     "but it's the second time that you are entering")
+                    if button == 'sp':
+                        from module.ocr.ocr import Ocr
+                        self.device.sleep(0.5)
+                        self.device.screenshot()
+                        SP_LIMIT_TIP=Button(area=(464, 307, 815, 337), color=(), button=(464, 307, 815, 337))
+                        result =  Ocr(SP_LIMIT_TIP, lang= 'cnocr').ocr(self.device.image)
+                        if "关卡每日" in result or "挑战次数" in result:
+                            raise SpLimitError
                     raise RequestHumanTakeover
 
                 # Already in map
@@ -406,3 +414,4 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
             return False
 
         return self.fleet_set(index=2)
+

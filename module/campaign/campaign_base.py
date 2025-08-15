@@ -1,7 +1,7 @@
 from module.base.decorator import Config, cached_property
 from module.campaign.campaign_ui import CampaignUI
 from module.combat.auto_search_combat import AutoSearchCombat
-from module.exception import CampaignEnd, MapEnemyMoved, ScriptError
+from module.exception import CampaignEnd, MapEnemyMoved, ScriptError, SpLimitError
 from module.logger import logger
 from module.map.map import Map
 from module.map.map_base import CampaignMap
@@ -122,7 +122,11 @@ class CampaignBase(CampaignUI, Map, AutoSearchCombat):
         # Enter map
         self.emotion.check_reduce(self._map_battle)
         self.ENTRANCE.area = self.ENTRANCE.button
-        self.enter_map(self.ENTRANCE, mode=self.config.Campaign_Mode)
+        try:
+            self.enter_map(self.ENTRANCE, mode=self.config.Campaign_Mode)
+        except SpLimitError:
+            logger.warning('Sp limit error')
+            return True
 
         # Map init
         if not self.map_is_auto_search:

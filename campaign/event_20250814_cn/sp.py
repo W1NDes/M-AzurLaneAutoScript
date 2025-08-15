@@ -65,7 +65,9 @@ class Config:
     STAR_REQUIRE_2 = 0
     STAR_REQUIRE_3 = 0
     # ===== End of generated config =====
-
+    MAP_CHAPTER_SWITCH_20241219 = True
+    # MAP_HAS_MODE_SWITCH = True
+    STAGE_ENTRANCE = ['half', '20240725']
 
 class Campaign(CampaignBase):
     MAP = MAP
