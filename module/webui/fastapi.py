@@ -16,6 +16,12 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 
+# 导入API应用
+
+from module.webui.api import api_app
+API_ENABLED = True
+
+
 
 class HeaderMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -54,6 +60,13 @@ def asgi_app(
             name="pywebio_static",
         )
     )
+    
+    # 添加API路由
+    if API_ENABLED and api_app:
+        routes.append(
+            Mount("/", app=api_app, name="api")
+        )
+    
     middleware = [Middleware(HeaderMiddleware)]
     return Starlette(
         routes=routes, middleware=middleware, debug=debug, **starlette_settings
