@@ -6,8 +6,8 @@ from .ht1 import Config as ConfigBase
 
 MAP = CampaignMap('HT6')
 MAP.shape = 'I9'
-MAP.camera_data = ['D4', 'D6', 'F4', 'F6']
-MAP.camera_data_spawn_point = ['F6', 'D6']
+MAP.camera_data = ['E5', 'D6', 'F6']
+MAP.camera_data_spawn_point = ['E5']
 MAP.map_data = """
     -- -- -- ++ ++ ++ -- -- --
     -- -- -- ++ ++ ++ -- -- --
@@ -53,7 +53,7 @@ A9, B9, C9, D9, E9, F9, G9, H9, I9, \
 
 class Config(ConfigBase):
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = ['youlin_ylsb']
+    MAP_SIREN_TEMPLATE = ['Jiulaimu_Ghost']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -62,6 +62,10 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
+
+    MAP_SWIPE_MULTIPLY = (1.043, 1.063)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.009, 1.028)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (0.980, 0.997)
 
 
 class Campaign(CampaignBase):

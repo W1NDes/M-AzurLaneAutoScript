@@ -44,7 +44,7 @@ A7, B7, C7, D7, E7, F7, G7, H7, I7, \
 
 class Config:
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = ['jiulaimu_ruanniguai', 'jiulaimu_shixianggui', 'jiulaimu_emo']
+    MAP_SIREN_TEMPLATE = ['Jiulaimu_Mud', 'Jiulaimu_Statue', 'Jiulaimu_Demon']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -53,34 +53,27 @@ class Config:
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
+
     MAP_CHAPTER_SWITCH_20241219 = True
-    MAP_HAS_MODE_SWITCH = True
     STAGE_ENTRANCE = ['half', '20240725']
-    STAGE_INCREASE_CUSTOM = [
-        'HT1 > HT2 > HT3 > HT4 > HT5 > HT6',
-    ]
-    MAP_SIREN_HAS_BOSS_ICON_SMALL = True
-    MAP_ENSURE_EDGE_INSIGHT_CORNER = 'bottom'
+    MAP_HAS_MODE_SWITCH = True
+
     INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (120, 255 - 17),
-        'width': (1.5, 10),
+        'height': (80, 255 - 33),
+        'width': (0.9, 10),
         'prominence': 10,
         'distance': 35,
     }
     EDGE_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (255 - 17, 255),
+        'height': (255 - 33, 255),
         'prominence': 10,
         'distance': 50,
         'wlen': 1000
     }
-    HOMO_EDGE_COLOR_RANGE = (0, 17)
-    HOMO_EDGE_HOUGHLINES_THRESHOLD = 210
-    MAP_HAS_MOVABLE_NORMAL_ENEMY = True
-    MAP_SIREN_MOVE_WAIT = 0.5
-    MAP_WALK_USE_CURRENT_FLEET = True
-    MAP_SWIPE_MULTIPLY = (1.252, 1.276)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.211, 1.233)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.176, 1.197)
+    MAP_SWIPE_MULTIPLY = (1.267, 1.290)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.225, 1.248)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.189, 1.211)
+
 
 class Campaign(CampaignBase):
     MAP = MAP

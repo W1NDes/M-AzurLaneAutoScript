@@ -42,7 +42,7 @@ A6, B6, C6, D6, E6, F6, G6, H6, I6, J6, \
 
 class Config(ConfigBase):
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = []
+    MAP_SIREN_TEMPLATE = ['Jiulaimu_Mud', 'Jiulaimu_Statue', 'Jiulaimu_Demon']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -51,6 +51,10 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
+
+    MAP_SWIPE_MULTIPLY = (1.193, 1.216)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.154, 1.175)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.120, 1.141)
 
 
 class Campaign(CampaignBase):

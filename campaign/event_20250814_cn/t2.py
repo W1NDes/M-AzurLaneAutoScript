@@ -6,7 +6,7 @@ from .t1 import Config as ConfigBase
 
 MAP = CampaignMap('T2')
 MAP.shape = 'G10'
-MAP.camera_data = ['C2', 'C6', 'C8']
+MAP.camera_data = ['C5', 'C8']
 MAP.camera_data_spawn_point = ['C2']
 MAP.map_data = """
     -- -- SP -- SP -- --
@@ -24,8 +24,8 @@ MAP.weight_data = """
     50 50 50 50 50 50 50
     50 50 50 50 50 50 50
     50 50 50 50 50 50 50
-    50 50 99 50 99 50 50
-    50 50 99 50 99 50 50
+    50 50 50 50 50 50 50
+    50 50 50 50 50 50 50
     50 50 50 50 50 50 50
     50 50 50 50 50 50 50
     50 50 50 50 50 50 50
@@ -54,7 +54,7 @@ A10, B10, C10, D10, E10, F10, G10, \
 
 class Config(ConfigBase):
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = []
+    MAP_SIREN_TEMPLATE = ['Jiulaimu_Mud', 'Jiulaimu_Statue', 'Jiulaimu_Demon']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
@@ -63,10 +63,12 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-    HOMO_EDGE_HOUGHLINES_THRESHOLD = 300
-    MAP_SWIPE_MULTIPLY = (1.204, 1.226)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.164, 1.185)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.130, 1.150)
+
+    MAP_SWIPE_MULTIPLY = (1.222, 1.245)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.182, 1.204)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.148, 1.168)
+    MAP_WALK_USE_CURRENT_FLEET = True
+
 
 class Campaign(CampaignBase):
     MAP = MAP
