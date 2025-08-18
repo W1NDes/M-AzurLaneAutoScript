@@ -712,6 +712,20 @@ class AzurLaneAutoScript:
                         content=f"<{self.config_name}> RequestHumanTakeover",
                         )
                         exit(1)
+                    except GameNotRunningError as e:
+                        if str(e) == "Game died":
+                            logger.warning("Game died when restarting")
+                            self.is_first_task = False
+                            continue
+                        else:
+                            logger.exception(e)
+                            self.save_error_log()
+                            handle_notify(
+                                self.config.Error_OnePushConfig,
+                                title=f"Alas <{self.config_name}> crashed",
+                                content=f"<{self.config_name}> Exception occured",
+                            )
+                            exit(1)
                     except Exception as e:
                         logger.exception(e)
                         self.save_error_log()
