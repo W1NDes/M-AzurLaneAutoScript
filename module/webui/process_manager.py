@@ -3,10 +3,14 @@ import os
 import queue
 import threading
 from multiprocessing import Process
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 
 import inflection
-from rich.console import Console, ConsoleRenderable
+from rich.console import Console, ConsoleRenderable, Group
+from rich.table import Table
+from rich.traceback import Traceback
+from rich.segment import Segment
+from rich.text import Text
 
 # Since this file does not run under the same process or subprocess of app.py
 # the following code needs to be repeated
@@ -20,6 +24,7 @@ from module.submodule.submodule import load_mod
 from module.submodule.utils import get_available_func, get_available_mod, get_available_mod_func, get_config_mod, \
     get_func_mod, list_mod_instance
 from module.webui.setting import State
+from module.webui.performance_timer import critical_timer, slow_timer, measure
 
 
 class ProcessManager:
@@ -83,35 +88,75 @@ class ProcessManager:
                     )
         logger.info(f"[{self.config_name}] exited")
 
+    @slow_timer("ProcessManager.log_queue_handler")
     def _thread_log_queue_handler(self) -> None:
         while self.alive:
             try:
-                log = self._renderable_queue.get(timeout=1)
+                with measure("日志队列获取", threshold_ms=1100):
+                    log = self._renderable_queue.get(timeout=1)
             except queue.Empty:
                 continue
-            self.renderables.append(log)
-            if len(self.renderables) > self.renderables_max_length:
-                self.renderables = self.renderables[self.renderables_reduce_length :]
+            
+            with measure("日志添加和清理", threshold_ms=5):
+                self.renderables.append(log)
+                if len(self.renderables) > self.renderables_max_length:
+                    old_count = len(self.renderables)
+                    self.renderables = self.renderables[self.renderables_reduce_length :]
+                    logger.info(f"日志清理: {old_count} -> {len(self.renderables)} 条")
         logger.info("End of log queue handler loop")
 
     @property
     def alive(self) -> bool:
         if self._process is not None:
-            return self._process.is_alive()
+            with measure(f"[{self.config_name}] Process.is_alive系统调用", threshold_ms=1):
+                return self._process.is_alive()
         else:
             return False
 
     @property
     def state(self) -> int:
-        if self.alive:
+        with measure(f"[{self.config_name}] alive检查", threshold_ms=1):
+            alive_status = self.alive
+        
+        if alive_status:
             return 1
         elif len(self.renderables) == 0:
             return 2
         else:
-            console = Console(no_color=True)
-            with console.capture() as capture:
-                console.print(self.renderables[-1])
-            s = capture.get().strip()
+            with measure(f"[{self.config_name}] 获取最后一个renderable", threshold_ms=1):
+                last_renderable = self.renderables[-1]
+            
+            with measure(f"[{self.config_name}] 检查 Table 对象", threshold_ms=1):
+                # 检查是否是 Table 对象，并遍历其列结构
+                if hasattr(last_renderable, 'columns') and hasattr(last_renderable, 'rows'):
+                    for column in last_renderable.columns:
+                        if hasattr(column, '_cells') and column._cells:
+                            cell_content = column._cells[0]  # 第一行（当前日志）
+                            
+                            # 检查 Renderables 容器中的 Traceback 对象
+                            if hasattr(cell_content, '_renderables'):
+                                for renderable_item in cell_content._renderables:
+                                    # 直接检查类型名称是否包含 Traceback
+                                    if 'Traceback' in type(renderable_item).__name__:
+                                        return 3
+                            
+                            # 检查直接的 Traceback 对象
+                            elif 'Traceback' in str(type(cell_content)):
+                                return 3
+            
+            # 只有在快速检测都失败时，才使用渲染方式
+            with measure(f"[{self.config_name}] Console创建和渲染", threshold_ms=5):
+                with measure(f"[{self.config_name}] Console对象创建", threshold_ms=5):
+                    console = Console(no_color=True)
+                
+                with measure(f"[{self.config_name}] Console.capture上下文", threshold_ms=5):
+                    with console.capture() as capture:
+                        with measure(f"[{self.config_name}] Console.print执行", threshold_ms=5):
+                            console.print(last_renderable)
+                
+                with measure(f"[{self.config_name}] 获取渲染结果", threshold_ms=5):
+                    s = capture.get().strip()
+            
             if s.endswith("Reason: Manual stop"):
                 return 2
             elif s.endswith("Reason: Finish"):
@@ -122,12 +167,15 @@ class ProcessManager:
                 return 3
 
     @classmethod
+    @slow_timer("ProcessManager.get_manager")
     def get_manager(cls, config_name: str) -> "ProcessManager":
         """
         Create a new alas if not exists.
         """
         if config_name not in cls._processes:
-            cls._processes[config_name] = ProcessManager(config_name)
+            with measure(f"创建新ProcessManager({config_name})", threshold_ms=5):
+                cls._processes[config_name] = ProcessManager(config_name)
+            # logger.info(f"创建新ProcessManager: {config_name}")
         return cls._processes[config_name]
 
     @staticmethod
@@ -231,3 +279,4 @@ class ProcessManager:
         except:
             pass
         logger.info("Start alas complete")
+

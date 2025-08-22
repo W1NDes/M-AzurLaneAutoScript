@@ -77,7 +77,7 @@ def read_file(file):
     Returns:
         dict, list:
     """
-    print(f'read: {file}')
+    # print(f'read: {file}')
     if file.endswith('.json'):
         content = atomic_read_bytes(file)
         if not content:

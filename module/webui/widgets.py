@@ -22,6 +22,7 @@ from module.webui.utils import (
     LOG_CODE_FORMAT,
     Switch,
 )
+from module.webui.performance_timer import critical_timer, slow_timer, measure
 
 if TYPE_CHECKING:
     from module.webui.app import AlasGUI
@@ -105,16 +106,19 @@ class RichLog:
         else:
             self.terminal_theme = LIGHT_TERMINAL_THEME
 
+    @slow_timer("RichLog.render")
     def render(self, renderable: ConsoleRenderable) -> str:
-        with self.console.capture():
-            self.console.print(renderable)
+        with measure("console.capture",threshold_ms=3):
+            with self.console.capture():
+                self.console.print(renderable)
 
-        html = self.console.export_html(
-            theme=self.terminal_theme,
-            clear=True,
-            code_format=LOG_CODE_FORMAT,
-            inline_styles=True,
-        )
+        with measure("console.export_html",threshold_ms=3):
+            html = self.console.export_html(
+                theme=self.terminal_theme,
+                clear=True,
+                code_format=LOG_CODE_FORMAT,
+                inline_styles=True,
+            )
         # print(html)
         return html
 
@@ -198,14 +202,17 @@ class RichLog:
     #     self._callback_thread = None
     #     self.console.width = int(_width)
 
+    @critical_timer("RichLog.put_log")
     def put_log(self, pm: ProcessManager) -> Generator:
         yield
         try:
             while True:
                 last_idx = len(pm.renderables)
-                html = "".join(map(self.render, pm.renderables[:]))
-                self.reset()
-                self.extend(html)
+                with measure(f"渲染全量日志({last_idx}条)", threshold_ms=10):
+                    html = "".join(map(self.render, pm.renderables[:]))
+                with measure("DOM重置和更新", threshold_ms=5):
+                    self.reset()
+                    self.extend(html)
                 counter = last_idx
                 while counter < pm.renderables_max_length * 2:
                     yield
@@ -213,9 +220,12 @@ class RichLog:
                     if idx < last_idx:
                         last_idx -= pm.renderables_reduce_length
                     if idx != last_idx:
-                        html = "".join(map(self.render, pm.renderables[last_idx:idx]))
-                        self.extend(html)
-                        counter += idx - last_idx
+                        new_count = idx - last_idx
+                        with measure(f"渲染增量日志({new_count}条)", threshold_ms=5):
+                            html = "".join(map(self.render, pm.renderables[last_idx:idx]))
+                        with measure("DOM增量更新", threshold_ms=5):
+                            self.extend(html)
+                        counter += new_count
                         last_idx = idx
         except SessionException:
             pass

@@ -18,6 +18,7 @@ from rich.terminal_theme import TerminalTheme
 from module.config.deep import deep_iter
 from module.logger import logger
 from module.webui.setting import State
+from module.webui.performance_timer import critical_timer, slow_timer, measure
 
 RE_DATETIME = (
     r"\d{4}\-(0\d|1[0-2])\-([0-2]\d|[3][0-1]) "
@@ -194,6 +195,7 @@ class TaskHandler:
                     return task
             return None
 
+    @slow_timer("TaskHandler.loop")
     def loop(self) -> None:
         """
         Start task loop.
@@ -202,26 +204,30 @@ class TaskHandler:
         self._alive = True
         while self._alive:
             if self.tasks:
-                with self._lock:
-                    self.tasks.sort(key=operator.attrgetter("next_run"))
-                    task = self.tasks[0]
+                with measure("任务调度检查", threshold_ms=10):
+                    with self._lock:
+                        self.tasks.sort(key=operator.attrgetter("next_run"))
+                        task = self.tasks[0]
+                
                 if task.next_run < time.time():
                     start_time = time.time()
                     try:
                         self._task = task
-                        # logger.debug(f'Start task {task.g.__name__}')
-                        task.send(self)
-                        # logger.debug(f'End task {task.g.__name__}')
+                        task_name = getattr(task.g, '__name__', 'unknown_task')
+                        with measure(f"执行任务({task_name})", threshold_ms=50):
+                            task.send(self)
                     except Exception as e:
                         logger.exception(e)
                         self.remove_task(task, nowait=True)
                     finally:
                         self._task = None
                     end_time = time.time()
-                    task.next_run += task.delay
-                    with self._lock:
-                        for task in self.tasks:
-                            task.next_run += end_time - start_time
+                    
+                    with measure("任务时间调整", threshold_ms=5):
+                        task.next_run += task.delay
+                        with self._lock:
+                            for task in self.tasks:
+                                task.next_run += end_time - start_time
                 else:
                     time.sleep(0.05)
             else:
@@ -460,7 +466,8 @@ def set_localstorage(key, value):
 
 
 def get_localstorage(key):
-    return eval_js("localStorage.getItem(key)", key=key)
+    with measure(f"get_localstorage({key})", threshold_ms=1):
+        return eval_js("localStorage.getItem(key)", key=key)
 
 
 def re_fullmatch(pattern, string):

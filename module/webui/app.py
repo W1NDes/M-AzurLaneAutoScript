@@ -93,6 +93,7 @@ from module.webui.widgets import (
     put_none,
     put_output,
 )
+from module.webui.performance_timer import critical_timer, slow_timer, measure
 
 patch_executor()
 patch_mimetype()
@@ -210,45 +211,64 @@ class AlasGUI(Frame):
             self.af_flag = True
 
     @use_scope("aside_instance")
+    @slow_timer("AlasGUI.set_aside_status")
     def set_aside_status(self) -> None:
         flag = True       
         def update(name, seq):
-            with use_scope(f"alas-instance-{name}", clear=True):
-                icon_html = Icon.RUN
-                rendered_state = ProcessManager.get_manager(inst).state
-                if rendered_state == 4: rendered_state = 2
-                if rendered_state == 1 and self.af_flag:
-                    icon_html = icon_html[:31] + ' anim-rotate' + icon_html[31:]
-                put_icon_buttons(
-                    icon_html,
-                    buttons=[{"label": name, "value": name, "color": f"aside-{rendered_state}"}],
-                    onclick=self.ui_alas,
-                )
+            with measure(f"更新实例状态UI({name})", threshold_ms=10):
+                with measure(f"创建scope({name})", threshold_ms=2):
+                    with use_scope(f"alas-instance-{name}", clear=True):
+                        with measure(f"准备图标HTML({name})", threshold_ms=1):
+                            icon_html = Icon.RUN
+                        with measure(f"获取实例状态({name})", threshold_ms=5):
+                            rendered_state = ProcessManager.get_manager(inst).state
+                        with measure(f"处理状态和动画({name})", threshold_ms=1):
+                            if rendered_state == 4: rendered_state = 2
+                            if rendered_state == 1 and self.af_flag:
+                                icon_html = icon_html[:31] + ' anim-rotate' + icon_html[31:]
+                        with measure(f"渲染按钮UI({name})", threshold_ms=5):
+                            put_icon_buttons(
+                                icon_html,
+                                buttons=[{"label": name, "value": name, "color": f"aside-{rendered_state}"}],
+                                onclick=self.ui_alas,
+                            )
             return rendered_state
         
-        if not len(self.rendered_cache) or self.load_home:
+        with measure("判断是否需要重建缓存", threshold_ms=1):
+            need_rebuild = not len(self.rendered_cache) or self.load_home
+        
+        if need_rebuild:
             # Reload when add/delete new instance | first start app.py | go to HomePage (HomePage load call force reload)
             flag = False
-            self.inst_cache.clear()
-            for name in alas_instance():
-                match = re.search(r'\d+$', name)
-                if match:
-                    num_val = int(match.group())
-                    self.inst_cache.append((num_val, name))
-            self.inst_cache.sort(key=lambda x: x[0])
+            with measure("重建实例缓存", threshold_ms=10):
+                self.inst_cache.clear()
+                for name in alas_instance():
+                    match = re.search(r'\d+$', name)
+                    if match:
+                        num_val = int(match.group())
+                        self.inst_cache.append((num_val, name))
+                self.inst_cache.sort(key=lambda x: x[0])
+        
         if flag:
-            for index, inst in self.inst_cache:
-                # Check for state change
-                state = ProcessManager.get_manager(inst).state
-                if state != self.rendered_cache[inst]:
-                    self.rendered_cache[inst] = update(inst, index)
-                    flag = False
+            with measure("检查状态变化", threshold_ms=20):
+                for index, inst in self.inst_cache:
+                    # Check for state change
+                    state = ProcessManager.get_manager(inst).state
+                    if state != self.rendered_cache[inst]:
+                        self.rendered_cache[inst] = update(inst, index)
+                        flag = False
         else:
-            self.rendered_cache.clear()
-            clear("aside_instance")
-            for index, inst in self.inst_cache:
-                self.rendered_cache[inst] = update(inst, index)
-            self.load_home = False
+            with measure("全量重建状态UI", threshold_ms=50):
+                with measure("清空渲染缓存", threshold_ms=2):
+                    self.rendered_cache.clear()
+                with measure("清空aside_instance scope", threshold_ms=3):
+                    clear("aside_instance")
+                with measure("批量重建所有实例UI", threshold_ms=40):
+                    for index, inst in self.inst_cache:
+                        with measure(f"重建{inst}实例UI", threshold_ms=8):
+                            self.rendered_cache[inst] = update(inst, index)
+                with measure("重置load_home标志", threshold_ms=1):
+                    self.load_home = False
         if not flag:
             # Redraw lost focus, now focus on aside button
             aside_name = get_localstorage("aside")

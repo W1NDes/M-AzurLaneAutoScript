@@ -103,15 +103,17 @@ class Frame(Base):
 
     @staticmethod
     def active_button(position, value) -> None:
-        run_js(
-            f"""
-            $("button.btn-{position}").removeClass("btn-{position}-active");
-            $("button.btn-{position}-1").removeClass("btn-{position}-active");
-            $("button.btn-{position}-2").removeClass("btn-{position}-active");
-            $("button.btn-{position}-3").removeClass("btn-{position}-active");
-            $("div[style*='--{position}-{value}--']>button").addClass("btn-{position}-active");
-        """
-        )
+        from module.webui.utils import measure
+        with measure(f"active_button({position}, {value})", threshold_ms=2):
+            run_js(
+                f"""
+                $("button.btn-{position}").removeClass("btn-{position}-active");
+                $("button.btn-{position}-1").removeClass("btn-{position}-active");
+                $("button.btn-{position}-2").removeClass("btn-{position}-active");
+                $("button.btn-{position}-3").removeClass("btn-{position}-active");
+                $("div[style*='--{position}-{value}--']>button").addClass("btn-{position}-active");
+            """
+            )
 
     @staticmethod
     def pin_set_invalid_mark(keys) -> None:
