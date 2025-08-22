@@ -108,9 +108,25 @@ class ProcessManager:
         elif len(self.renderables) == 0:
             return 2
         else:
+            last_renderable = self.renderables[-1]        
+
+            # 检查是否是 Table 对象，并遍历其列结构
+            if hasattr(last_renderable, 'columns') and hasattr(last_renderable, 'rows'):
+                for column in last_renderable.columns:
+                    if hasattr(column, '_cells') and column._cells:
+                        cell_content = column._cells[0]  # 第一行（当前日志）
+                        if hasattr(cell_content, '_renderables'):# 检查 Renderables 容器中的 Traceback 对象
+                            for renderable_item in cell_content._renderables:
+                                # 直接检查类型名称是否包含 Traceback
+                                if 'Traceback' in type(renderable_item).__name__:
+                                    return 3
+                        elif 'Traceback' in str(type(cell_content)):# 检查直接的 Traceback 对象
+                            return 3
+            
+            # 只有在快速检测都失败时，才使用渲染方式
             console = Console(no_color=True)
             with console.capture() as capture:
-                console.print(self.renderables[-1])
+                console.print(last_renderable)
             s = capture.get().strip()
             if s.endswith("Reason: Manual stop"):
                 return 2
