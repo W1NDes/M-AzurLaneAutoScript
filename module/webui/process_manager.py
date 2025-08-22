@@ -107,7 +107,7 @@ class ProcessManager:
     @property
     def alive(self) -> bool:
         if self._process is not None:
-            with measure(f"[{self.config_name}] Process.is_alive系统调用", threshold_ms=1):
+            with measure(f"[{self.config_name}] Process.is_alive系统调用", threshold_ms=3):
                 return self._process.is_alive()
         else:
             return False
