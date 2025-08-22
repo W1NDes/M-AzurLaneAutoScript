@@ -102,7 +102,7 @@ class ProcessManager:
                 if len(self.renderables) > self.renderables_max_length:
                     old_count = len(self.renderables)
                     self.renderables = self.renderables[self.renderables_reduce_length :]
-                    logger.info(f"日志清理: {old_count} -> {len(self.renderables)} 条")
+                    # logger.info(f"日志清理: {old_count} -> {len(self.renderables)} 条")
         logger.info("End of log queue handler loop")
 
     @property
