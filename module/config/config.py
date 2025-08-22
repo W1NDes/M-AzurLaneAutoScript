@@ -74,7 +74,7 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
             super().__setattr__(key, value)
 
     def __init__(self, config_name, task=None):
-        logger.attr("Server", self.SERVER)
+        # logger.attr("Server", self.SERVER)
         # This will read ./config/<config_name>.json
         self.config_name = config_name
         # Raw json data in yaml file.
@@ -159,7 +159,7 @@ class AzurLaneConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher
             func_list.insert(0, "Alas")
         if "General" not in func_list:
             func_list.insert(0, "General")
-        logger.info(f"Bind task {func_list}")
+        # logger.info(f"Bind task {func_list}")
 
         # Bind arguments
         visited = set()
