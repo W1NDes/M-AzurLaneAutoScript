@@ -84,7 +84,7 @@ def critical_timer(name: Optional[str] = None):
     return timer(name=name, log_level="info", threshold_ms=0)
 
 def slow_timer(name: Optional[str] = None):
-    """慢操作计时器 - 只记录超过50ms的操作"""
+    """慢操作计时器 - 只记录超过100ms的操作"""
     return timer(name=name, log_level="info", threshold_ms=100)
 
 def debug_timer(name: Optional[str] = None):

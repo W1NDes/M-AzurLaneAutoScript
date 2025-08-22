@@ -216,7 +216,7 @@ class AlasGUI(Frame):
         flag = True       
         def update(name, seq):
             with measure(f"更新实例状态UI({name})", threshold_ms=10):
-                with measure(f"创建scope({name})", threshold_ms=2):
+                with measure(f"创建scope({name})", threshold_ms=5):
                     with use_scope(f"alas-instance-{name}", clear=True):
                         with measure(f"准备图标HTML({name})", threshold_ms=1):
                             icon_html = Icon.RUN
@@ -226,7 +226,7 @@ class AlasGUI(Frame):
                             if rendered_state == 4: rendered_state = 2
                             if rendered_state == 1 and self.af_flag:
                                 icon_html = icon_html[:31] + ' anim-rotate' + icon_html[31:]
-                        with measure(f"渲染按钮UI({name})", threshold_ms=5):
+                        with measure(f"渲染按钮UI({name})", threshold_ms=8):
                             put_icon_buttons(
                                 icon_html,
                                 buttons=[{"label": name, "value": name, "color": f"aside-{rendered_state}"}],
@@ -250,7 +250,7 @@ class AlasGUI(Frame):
                 self.inst_cache.sort(key=lambda x: x[0])
         
         if flag:
-            with measure("检查状态变化", threshold_ms=20):
+            with measure("检查状态变化", threshold_ms=40):
                 for index, inst in self.inst_cache:
                     # Check for state change
                     state = ProcessManager.get_manager(inst).state

@@ -214,7 +214,7 @@ class TaskHandler:
                     try:
                         self._task = task
                         task_name = getattr(task.g, '__name__', 'unknown_task')
-                        with measure(f"执行任务({task_name})", threshold_ms=50):
+                        with measure(f"执行任务({task_name})", threshold_ms=100):
                             task.send(self)
                     except Exception as e:
                         logger.exception(e)
@@ -466,7 +466,7 @@ def set_localstorage(key, value):
 
 
 def get_localstorage(key):
-    with measure(f"get_localstorage({key})", threshold_ms=1):
+    with measure(f"get_localstorage({key})", threshold_ms=30):
         return eval_js("localStorage.getItem(key)", key=key)
 
 

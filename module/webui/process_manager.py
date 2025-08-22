@@ -88,11 +88,10 @@ class ProcessManager:
                     )
         logger.info(f"[{self.config_name}] exited")
 
-    @slow_timer("ProcessManager.log_queue_handler")
     def _thread_log_queue_handler(self) -> None:
         while self.alive:
             try:
-                with measure("日志队列获取", threshold_ms=1100):
+                with measure("日志队列获取", threshold_ms=1500):
                     log = self._renderable_queue.get(timeout=1)
             except queue.Empty:
                 continue
