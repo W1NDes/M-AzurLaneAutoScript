@@ -195,7 +195,7 @@ class TaskHandler:
                     return task
             return None
 
-    @slow_timer("TaskHandler.loop")
+    # @slow_timer("TaskHandler.loop")
     def loop(self) -> None:
         """
         Start task loop.
