@@ -13,11 +13,10 @@ from module.logger import logger
 from module.ocr.ocr import Digit, Ocr
 from module.ui.ui import UI
 from module.log_res.log_res import LogRes
-
-#if server.server != 'jp':
-#    OCR_COIN = Digit(OCR_COIN, name='OCR_COIN', letter=(239, 239, 239), threshold=128)
-#else:
-#    OCR_COIN = Digit(OCR_COIN, name='OCR_COIN', letter=(201, 201, 201), threshold=128)
+if server.server != 'jp':
+    OCR_COIN = Digit(OCR_COIN, name='OCR_COIN', letter=(239, 239, 239), threshold=128)
+else:
+    OCR_COIN = Digit(OCR_COIN, name='OCR_COIN', letter=(201, 201, 201), threshold=128)
 
 
 class PtOcr(Ocr):
@@ -82,7 +81,7 @@ class CampaignStatus(UI):
                 break
 
             _coin = {
-                'Value': self._get_num(OCR_COIN, 'OCR_COIN'),
+                'Value': OCR_COIN.ocr(self.device.image),
                 'Limit': self._get_num(OCR_COIN_LIMIT, 'OCR_COIN_LIMIT')
             }
             if _coin['Value'] >= 100:
