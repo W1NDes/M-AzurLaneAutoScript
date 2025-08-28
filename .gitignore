@@ -255,3 +255,4 @@ console.bat
 
 # Pylance configuration file
 pyrightconfig.json
+deploy/launcher/Alas-gui.bat
