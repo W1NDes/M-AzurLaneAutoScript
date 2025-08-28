@@ -214,6 +214,13 @@ class SmallEvent(UI):
             progress_number = re.sub(r'[^0-9]', '', progress_number)#正则匹配掉非数字
             LogRes(self.config).SevenDayStatus = int(progress_number)
             logger.info(f"更新七天小任务进度：{progress_number}")
+        elif "/7" in text:
+            progress_text = text.split("/7")[0]
+            progress_number = re.sub(r'[^0-9]', '', progress_text)#正则匹配掉非数字
+            LogRes(self.config).SevenDayStatus = int(progress_number[-1])
+            logger.info(f"更新七天小任务进度：{progress_number[-1]}")
+        else:
+            logger.warning("未发现七天小任务进度")
         #统计text中有几个领取，几个前往
         
         go_count = text.count("前往")
@@ -386,7 +393,7 @@ class SmallEvent(UI):
         #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
         #     )
         # else:LogRes(self.config).SevenDayStatus = 0
-        if datetime.now() < datetime(2025, 8, 28, 12, 0, 0):#eventSet
+        if datetime.now() < datetime(2025, 9, 25, 12, 0, 0):#eventSet
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 page_area = (281, 79, 1254, 560)
