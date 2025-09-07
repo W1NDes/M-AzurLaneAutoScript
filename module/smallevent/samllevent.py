@@ -275,9 +275,8 @@ class SmallEvent(UI):
             if self.appear_then_click(GET_ITEMS_1,offset=(10, 10), interval=1):
                 continue 
 
-    def goto_sevenD_page(self,page_area,orc_api):
+    def goto_sevenD_page(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):
         self.ui_ensure(page_main)
-        skip_first_screenshot = True
         CLICK_COUNT = 0
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
@@ -354,6 +353,54 @@ class SmallEvent(UI):
                     break
         return False,None
 
+    def goto_sevenD_page_v2(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):#for the event prepare page
+        self.ui_ensure(page_main)
+        NOCLICK_COUNT = 0
+        NOCLICK_TIMER =Timer(3,count=10)
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+            if self.appear_then_click(EVENT_PREPARE_ENTRY, offset=(5, 5), interval=3):
+                continue
+
+            if self.appear(EVENT_PREPARE_PAGE, offset=(5,5)):
+                all_words = self.recognize_activity_page(self.device.image,page_area,orc_api)
+                # all_words = None
+                if not all_words:
+                    event_pre_button_location = self.locate_button_by_text(self.device.image, button_text, exclude_text, page_area,interval=5,orc_api=orc_api)
+                    if isinstance(event_pre_button_location, dict):
+                        event_pre_button = self.location_2_button(event_pre_button_location, button_text, base_loc=page_area)
+                        self.device.click(event_pre_button)
+                        self.device.sleep(0.3)
+                        continue
+                    elif event_pre_button_location == "cooldowning":
+                        # 冷却中，等待
+                        continue
+                    else:
+                        # 未找到按钮，跳出循环或进行其他处理
+                        logger.warning(f"未找到{button_text}按钮")
+                        break
+                else:
+                    go_count = self.recognize_activiy_status(all_words)
+                    if go_count >= 2:
+                        logger.warning("七天小任务当前没有可领取项")
+                        return "no_get",all_words
+                    return True,all_words
+
+            if self.story_skip(): #the prepare page may appear story 
+                continue   
+
+            NOCLICK_TIMER.start()
+            if NOCLICK_TIMER.reached():
+                NOCLICK_COUNT += 1
+                NOCLICK_TIMER.reset()
+                if NOCLICK_COUNT >= 5:
+                    logger.info("GOTO_SEVEND_TASK No click TIMER REACHED")
+                    break
+        return False,None
+
     def ocr_api_init(self):
         if self.config.Smallevent_OcrModel == "baidu":
             if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
@@ -372,48 +419,34 @@ class SmallEvent(UI):
         else:
             logger.warning("未配置OcrModel")
             return False
-            
+
+    def sevenD_harvest(self, page_area, ORC_API, goto_sevenD_page_func, button_text=None,exclude_text=None):
+        goPage_result = goto_sevenD_page_func(page_area, ORC_API, button_text,exclude_text)
+        if goPage_result[0] == "no_get":
+            self.resolve_task(goPage_result[1])
+        elif goPage_result[0] is True:
+            self.get_reward(page_area, ORC_API)
+            if self.resolve_task(goPage_result[1]):
+                logger.info("resolved the task, skip the update immediately")
+                # return True 
+            if self.config.Smallevent_UpdateInfoImmediately == True:
+                self.device.sleep(1)
+                self.device.screenshot()
+                update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
+                if update_words:
+                    self.recognize_activiy_status(update_words)
+        else:
+            logger.warning("未成功进入七天小任务页面")         
+             
     def run(self):
-        # # LogRes(self.config).SevenDayStatus += 11
-        # # logger.hr(LogRes(self.config).SevenDayStatus)
-        # # logger.hr(self.config.cross_get('Dashboard.SevenDayStatus.Value'))
-        # if self.config.Smallevent_SevenDayTask == True:
-        #     task_icon = f"SEVEND_TASK_{self.SEVEND_DATE}"
-        #     task_get1 = f"SEVEND_TASK_GET1_{self.SEVEND_DATE}"
-        #     task_get2 = f"SEVEND_TASK_GET2_{self.SEVEND_DATE}"
-        #     task_finish = f"SEVEND_TASK_FINISH_{self.SEVEND_DATE}"
-        #     # task_unget1 = f"SEVEND_TASK_UNGET1_{self.SEVEND_DATE}"
-        #     # task_unget2 = f"SEVEND_TASK_UNGET2_{self.SEVEND_DATE}"   
-        #     self.SevenDayTask(
-        #         SEVEND_TASK_ICON_MAIN=globals()[task_icon],
-        #         SEVEND_TASK_GET1=globals()[task_get1],
-        #         SEVEND_TASK_GET2=globals()[task_get2],
-        #         SEVEND_TASK_FINISH=globals()[task_finish],
-        #         # SEVEND_TASK_UNGET1=globals()[task_unget1],
-        #         # SEVEND_TASK_UNGET2=globals()[task_unget2]
-        #     )
-        # else:LogRes(self.config).SevenDayStatus = 0
         if datetime.now() < datetime(2025, 9, 25, 12, 0, 0):#eventSet
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 page_area = (281, 79, 1254, 560)
-                # page_area =(0,0,1280,720)
-                goPage_result = self.goto_sevenD_page(page_area, ORC_API)
-                if goPage_result[0] == "no_get":
-                    pass
-                elif goPage_result[0] is True:
-                    self.get_reward(page_area, ORC_API)
-                    if self.resolve_task(goPage_result[1]):
-                        logger.info("resolved the task, skip the update immediately")
-                        # return True 
-                    if self.config.Smallevent_UpdateInfoImmediately == True:
-                        self.device.sleep(1)
-                        self.device.screenshot()
-                        update_words = self.recognize_activity_page(self.device.image,page_area ,ORC_API)
-                        if update_words:
-                            self.recognize_activiy_status(update_words)
-                else:
-                    logger.warning("未成功进入七天小任务页面")
+                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page)
+                page_area = (0, 0, 1280, 720)
+                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
+                                    button_text="的邀约",exclude_text=["无"])#eventSet
             else:
                 logger.warning("Ocr API 初始化失败")
         else:
