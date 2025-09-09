@@ -2,7 +2,7 @@ import sys
 
 import re
 
-from datetime import datetime
+from datetime import datetime, timedelta
 sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 from module.base.button import ButtonGrid
 from module.ui.ui import UI
@@ -452,7 +452,10 @@ class SmallEvent(UI):
         else:
             logger.info('7day task expired')
 
-        self.config.task_delay(server_update=True)
+        # tomorrow 13pm
+        tomorrow_13pm = (datetime.now() + timedelta(days=1)).replace(hour=13, minute=0, second=0, microsecond=0)
+        self.config.task_delay(target=tomorrow_13pm)
+
 if __name__ == "__main__":
     self = SmallEvent('zTTT')
     # from adbutils import AdbClient
