@@ -364,8 +364,10 @@ class SmallEvent(UI):
                 self.device.screenshot()
             if self.appear_then_click(EVENT_PREPARE_ENTRY, offset=(5, 5), interval=3):
                 continue
+            if self.appear_then_click(EVENT_PREPARE_ENTRY_2, offset=(5, 5), interval=3):
+                continue
 
-            if self.appear(EVENT_PREPARE_PAGE, offset=(5,5)):
+            if self.appear(EVENT_PREPARE_PAGE, offset=(5,5)) or self.appear(EVENT_PREPARE_PAGE_2, offset=(5,5)):
                 all_words = self.recognize_activity_page(self.device.image,page_area,orc_api)
                 # all_words = None
                 if not all_words:
@@ -373,7 +375,7 @@ class SmallEvent(UI):
                     if isinstance(event_pre_button_location, dict):
                         event_pre_button = self.location_2_button(event_pre_button_location, button_text, base_loc=page_area)
                         self.device.click(event_pre_button)
-                        self.device.sleep(0.3)
+                        self.device.sleep(1.5)#wait for the page to load
                         continue
                     elif event_pre_button_location == "cooldowning":
                         # 冷却中，等待
@@ -452,9 +454,19 @@ class SmallEvent(UI):
         else:
             logger.info('7day task expired')
 
-        # tomorrow 13pm
+        # tomorrow 13pm - 但要避免超过24小时限制
         tomorrow_13pm = (datetime.now() + timedelta(days=1)).replace(hour=13, minute=0, second=0, microsecond=0)
-        self.config.task_delay(target=tomorrow_13pm)
+        now = datetime.now()
+        
+        # 如果目标时间超过24小时，则延迟到接近24小时的时间点
+        if tomorrow_13pm - now > timedelta(hours=24):
+            # 延迟到23小时50分钟后，避免触发24小时限制
+            delay_time = now + timedelta(hours=23, minutes=50)
+            logger.info(f'Target time {tomorrow_13pm} exceeds 24h limit, delay to {delay_time} instead')
+            self.config.task_delay(target=delay_time)
+        else:
+            self.config.task_delay(target=tomorrow_13pm)
+        
 
 if __name__ == "__main__":
     self = SmallEvent('zTTT')

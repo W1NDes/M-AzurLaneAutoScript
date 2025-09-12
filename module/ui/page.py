@@ -8,7 +8,7 @@ from module.retire.assets import DOCK_CHECK,IN_RETIREMENT_CHECK
 from module.ui.assets import *
 from module.ui_white.assets import *
 from module.ship_ir.assets import HANDBOOK_CHECK,MAIN_GOTO_COLLECTION,MAIN_GOTO_COLLECTION_WHITE,COLLECTION_CHECK,COLLECTION_GOTO_HANDBOOK
-from module.smallevent.assets import EVENT_PREPARE_PAGE,EVENT_PREPARE_ENTRY
+from module.smallevent.assets import EVENT_PREPARE_PAGE,EVENT_PREPARE_PAGE_2
 class Page:
     # Key: str, page name like "page_main"
     # Value: Page, page instance
@@ -361,3 +361,7 @@ page_campaign_menu.link(button=CAMPAIGN_MENU_GOTO_EVENT, destination=page_hospit
 #event prepare page
 page_event_prepare = Page(EVENT_PREPARE_PAGE)
 page_event_prepare.link(button=EVENTPRE_GOTO_MAIN, destination=page_main)
+
+#event prepare page_2
+page_event_prepare_2 = Page(EVENT_PREPARE_PAGE_2)
+page_event_prepare_2.link(button=EVENTPRE_GOTO_MAIN, destination=page_main)
