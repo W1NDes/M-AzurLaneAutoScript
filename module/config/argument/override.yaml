@@ -61,11 +61,11 @@ Event:
     AmbushEvade: true
   EventPt:
     Event2MapName: 
-      value: HT6
+      value: D3
       type: state
       display: display
     EventDailyAMapName:
-      value: T1>T2>T3>T4>T5>T6
+      value: A1>A2>A3>B1>B2>B3
       type: state
       display: display
     EventDailySpMapName:
