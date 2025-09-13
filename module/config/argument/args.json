@@ -2349,12 +2349,12 @@
       },
       "Event2MapName": {
         "type": "state",
-        "value": "HT6",
+        "value": "D3",
         "display": "display"
       },
       "EventDailyAMapName": {
         "type": "state",
-        "value": "T1>T2>T3>T4>T5>T6",
+        "value": "A1>A2>A3>B1>B2>B3",
         "display": "display"
       },
       "EventDailySpMapName": {
@@ -4011,12 +4011,12 @@
       },
       "Event2MapName": {
         "type": "textarea",
-        "value": "D3",
+        "value": "HT6",
         "display": "hide"
       },
       "EventDailyAMapName": {
         "type": "textarea",
-        "value": "A1>A2>A3>B1>B2>B3",
+        "value": "T1>T2>T3>T4>T5>T6",
         "display": "hide"
       },
       "EventDailySpMapName": {
@@ -4026,7 +4026,7 @@
       },
       "EventDailyCD": {
         "type": "textarea",
-        "value": "C1>C2>C3>D1>D2>D3",
+        "value": "HT1>HT2>HT3>HT4>HT5>HT6",
         "display": "hide"
       }
     },

@@ -61,11 +61,11 @@ Event:
     AmbushEvade: true
   EventPt:
     Event2MapName: 
-      value: HT6
+      value: D3
       type: state
       display: display
     EventDailyAMapName:
-      value: T1>T2>T3>T4>T5>T6
+      value: A1>A2>A3>B1>B2>B3
       type: state
       display: display
     EventDailySpMapName:
@@ -284,13 +284,13 @@ Coalition:
     ReachLevel: 0
   EventPt:
     Event2MapName: 
-      value: D3
+      value: HT6
     EventDailyAMapName:
-      value: A1>A2>A3>B1>B2>B3
+      value: T1>T2>T3>T4>T5>T6
     EventDailySpMapName:
       value: sp
     EventDailyCD:
-      value: C1>C2>C3>D1>D2>D3
+      value: HT1>HT2>HT3>HT4>HT5>HT6
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00
