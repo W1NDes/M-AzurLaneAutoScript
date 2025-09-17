@@ -159,7 +159,20 @@ class SmallEvent(UI):
         else:
             logger.warning('Failed to recognize text')
             return False
-        
+
+    def recognize_sign_page(self,image,area=(281, 79, 1254, 560),orc_api=None,model="general_basic"):
+        result = self.recognize_text(image, area,orc_api,model)
+        if result:
+            all_words = "".join([word['words'] for word in result['words_result']])
+            if any(word in all_words for word in ["登录","天数"]):
+                logger.info(f"发现签到小任务：{all_words}")
+                return all_words
+            logger.info('当前页未发现签到小任务')
+            return False 
+        else:
+            logger.warning('Failed to recognize text')
+            return False
+
     def resolve_task(self,text):
         if "任意科技箱" in text:
             logger.info(f'resolve the task: 打开科技箱')
@@ -266,6 +279,32 @@ class SmallEvent(UI):
                 # logger.warning("领取按钮冷却中")
             else:
                 logger.warning("领取按钮不存在")
+                return False
+
+            if self.story_skip():
+                continue   
+            if self.appear_then_click(POPUP_CONFIRM,offset=(10, 10), interval=1):
+                continue
+            if self.appear_then_click(GET_ITEMS_1,offset=(10, 10), interval=1):
+                continue 
+
+    def get_sign(self,page_area,orc_api,skip_first_screenshot=True):
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+
+            location = self.locate_button_by_text(self.device.image, "签到", ["纪念签到"], page_area,interval=5,orc_api=orc_api)
+            if isinstance(location, dict):
+                button = self.location_2_button(location, "签到", base_loc=page_area)
+                self.device.click(button)
+                return True
+            elif location == "cooldowning":
+                pass
+                # logger.warning("领取按钮冷却中")
+            else:
+                logger.warning("签到按钮不存在")
                 return False
 
             if self.story_skip():
@@ -403,6 +442,54 @@ class SmallEvent(UI):
                     break
         return False,None
 
+    def goto_sevenD_page_v3(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):#for the event prepare page
+        self.ui_ensure(page_main)
+        NOCLICK_COUNT = 0
+        NOCLICK_TIMER =Timer(3,count=10)
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+            if self.appear_then_click(EVENT_PREPARE_ENTRY_3, offset=(5, 5), interval=3):
+                continue
+
+            if self.appear(EVENT_PREPARE_PAGE_3, offset=(5,5)):
+                all_words = self.recognize_sign_page(self.device.image,page_area,orc_api)
+                # all_words = None
+                if not all_words:
+                    event_pre_button_location = self.locate_button_by_text(self.device.image, button_text, exclude_text, page_area,interval=5,orc_api=orc_api)
+                    if isinstance(event_pre_button_location, dict):
+                        event_pre_button = self.location_2_button(event_pre_button_location, button_text, base_loc=page_area)
+                        self.device.click(event_pre_button)
+                        self.device.sleep(1.5)#wait for the page to load
+                        continue
+                    elif event_pre_button_location == "cooldowning":
+                        # 冷却中，等待
+                        continue
+                    else:
+                        # 未找到按钮，跳出循环或进行其他处理
+                        logger.warning(f"未找到{button_text}按钮")
+                        break
+                else:
+                    go_count = self.recognize_activiy_status(all_words)
+                    if go_count >= 2:
+                        logger.warning("签到小任务当前没有可领取项")
+                        return "no_get",all_words
+                    return "get_sign",all_words
+
+            if self.story_skip(): #the prepare page may appear story 
+                continue   
+
+            NOCLICK_TIMER.start()
+            if NOCLICK_TIMER.reached():
+                NOCLICK_COUNT += 1
+                NOCLICK_TIMER.reset()
+                if NOCLICK_COUNT >= 5:
+                    logger.info("GOTO_SEVEND_TASK No click TIMER REACHED")
+                    break
+        return False,None
+
     def ocr_api_init(self):
         if self.config.Smallevent_OcrModel == "baidu":
             if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
@@ -426,6 +513,8 @@ class SmallEvent(UI):
         goPage_result = goto_sevenD_page_func(page_area, ORC_API, button_text,exclude_text)
         if goPage_result[0] == "no_get":
             self.resolve_task(goPage_result[1])
+        elif goPage_result[0] == "get_sign":
+            self.get_sign(page_area, ORC_API)
         elif goPage_result[0] is True:
             self.get_reward(page_area, ORC_API)
             if self.resolve_task(goPage_result[1]):
@@ -449,6 +538,9 @@ class SmallEvent(UI):
                 page_area = (0, 0, 1280, 720)
                 self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
                                     button_text="的邀约",exclude_text=["无"])#eventSet
+                page_area = (0, 0, 1280, 720)
+                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
+                                    button_text="纪念签到",exclude_text=["无"])#eventSet
             else:
                 logger.warning("Ocr API 初始化失败")
         else:
