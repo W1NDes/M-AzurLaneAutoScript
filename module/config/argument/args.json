@@ -3068,7 +3068,6 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20250814_cn",
           "event_20250912_cn"
         ],
         "option_cn": [
@@ -3081,10 +3080,9 @@
           "event_20250912_cn"
         ],
         "option_tw": [
-          "event_20250814_cn"
+          "event_20250912_cn"
         ],
         "option_bold": [
-          "event_20250814_cn",
           "event_20250912_cn"
         ]
       },
