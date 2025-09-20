@@ -3,7 +3,6 @@ import sys
 import re
 
 from datetime import datetime, timedelta
-sys.path.append(r'C:/Users/W1NDe/Documents/GitHub/M-AzurLaneAutoScript')
 from module.base.button import ButtonGrid
 from module.ui.ui import UI
 from module.ui.page import page_main
@@ -490,6 +489,70 @@ class SmallEvent(UI):
                     break
         return False,None
 
+    def ninja_city(self,skip_first_screenshot=True):
+        self.ui_ensure(page_main)
+        NINJA_GET_REWARD = 0
+        NOCLICK_COUNT = 0
+        NOCLICK_TIMER =Timer(3,count=10)
+        while 1:
+            if skip_first_screenshot:
+                skip_first_screenshot = False
+            else:
+                self.device.screenshot()
+            if self.appear_then_click(EVENT_PREPARE_ENTRY_3, offset=(5, 5), interval=3):
+                continue
+            if self.appear_then_click(NINJA_CITY_ENTRY, offset=(5, 5), interval=3):
+                continue
+            if self.appear_then_click(NINJA_BATTLE_ENTRY, offset=(5, 5), interval=3):
+                continue
+            if NINJA_GET_REWARD >= 4:
+                break
+            if self.appear_then_click(GET_ITEMS_1,offset=(10, 10), interval=3):
+                NINJA_GET_REWARD += 1
+                continue  
+            if self.appear_then_click_nocheck(NINJA_BATTLE_PICKUP, offset=(5, 5)):
+                self.device.sleep(3)
+                continue
+            if self.story_skip():
+                continue
+            NOCLICK_TIMER.start()
+            if NOCLICK_TIMER.reached():
+                NOCLICK_COUNT += 1
+                NOCLICK_TIMER.reset()
+                if NOCLICK_COUNT >= 5:
+                    logger.warning("ninja_city loop 1 No click TIMER REACHED")
+                    return False
+        NOCLICK_COUNT = 0
+        NOCLICK_TIMER =Timer(3,count=10)
+        while 1:
+            self.device.screenshot()
+            if self.appear_then_click(NINJA_BATTLE_TASK, offset=(5, 5), interval=3):
+                continue
+            if self.appear_then_click(NINJA_TASK_REWARD, offset=(5, 5), interval=3):
+                continue
+            if self.appear_then_click(GET_ITEMS_1,offset=(10, 10), interval=3):
+                continue
+            if self.appear(NINJA_TASK_REWARD_EMPTY, offset=(5, 5), interval=3):
+                self.device.click(NINJA_BATTLE_GOHOME)
+                break
+            if self.story_skip():
+                continue
+            NOCLICK_TIMER.start()
+            if NOCLICK_TIMER.reached():
+                NOCLICK_COUNT += 1
+                NOCLICK_TIMER.reset()
+                if NOCLICK_COUNT >= 5:
+                    logger.warning("ninja_city loop 2 No click TIMER REACHED")
+                    return False
+        NOCLICK_COUNT = 0
+        NOCLICK_TIMER =Timer(3,count=10)           
+        while 1:
+            self.device.screenshot()
+            if self.appear_then_click(NINJA_BATTLE_GOHOME, offset=(5, 5), interval=3):
+                continue
+            self.ui_ensure(page_main)
+            return True
+
     def ocr_api_init(self):
         if self.config.Smallevent_OcrModel == "baidu":
             if self.config.DropRecord_BaiduAPIKey != "null" and self.config.DropRecord_BaiduAPISecret != "null":
@@ -531,6 +594,11 @@ class SmallEvent(UI):
              
     def run(self):
         if datetime.now() < datetime(2025, 9, 25, 12, 0, 0):#eventSet
+            ninja_city_result = self.ninja_city()
+            if ninja_city_result:
+                logger.info("ninja_city success")
+            else:
+                logger.warning("ninja_city failed")
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 page_area = (281, 79, 1254, 560)
