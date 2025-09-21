@@ -535,6 +535,9 @@ class SmallEvent(UI):
             if self.appear(NINJA_TASK_REWARD_EMPTY, offset=(5, 5), interval=3):
                 self.device.click(NINJA_BATTLE_GOHOME)
                 break
+            if self.appear(NINJA_TASK_REWARD_FINISH, offset=(5, 5), interval=3):
+                self.device.click(NINJA_BATTLE_GOHOME)
+                break
             if self.story_skip():
                 continue
             NOCLICK_TIMER.start()
