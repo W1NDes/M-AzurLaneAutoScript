@@ -86,6 +86,9 @@ class CampaignStatus(UI):
             }
             if _coin['Value'] >= 100:
                 break
+        if _coin['Value'] == '0':
+            logger.warning('detect coin zero caused by ui error ')
+            return LogRes(self.config).Coin['Value']
         LogRes(self.config).Coin = _coin
         if update:
             self.config.update()
@@ -159,6 +162,9 @@ class CampaignStatus(UI):
             }
             if _oil['Value'] >= 100:
                 break
+        if _oil['Value'] == '0':
+            logger.warning('detect oil zero caused by ui error ')
+            return LogRes(self.config).Oil['Value']
         LogRes(self.config).Oil = _oil
         if update:
             self.config.update()
