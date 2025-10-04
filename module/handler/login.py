@@ -32,17 +32,23 @@ class LoginHandler(UI):
         logger.hr('App login')
 
         confirm_timer = Timer(1.5, count=4).start()
-        orientation_timer = Timer(5)
+        orientation_timer = Timer(10)
         login_success = False
         self.device.stuck_record_clear()
         self.device.click_record_clear()
-
+        reset_stuck_timer = Timer(150, count=150).start()
+        reset_stuck_flag = False
         while 1:
             # Watch device rotation
             if not login_success and orientation_timer.reached():
                 # Screen may rotate after starting an app
                 self.device.get_orientation()
                 orientation_timer.reset()
+
+            if reset_stuck_timer.reached() and not reset_stuck_flag:
+                self.device.stuck_record_clear()
+                self.device.click_record_clear()
+                reset_stuck_flag = True
 
             self.device.screenshot()
 
@@ -55,7 +61,7 @@ class LoginHandler(UI):
                 confirm_timer.reset()
 
             # Login
-            if self.match_template_color(LOGIN_CHECK, offset=(30, 30), interval=5):
+            if self.match_template_color(LOGIN_CHECK, offset=(30, 30), interval=10):
                 self.device.click(LOGIN_CHECK)
                 if not login_success:
                     logger.info('Login success')
@@ -87,7 +93,7 @@ class LoginHandler(UI):
             if self.appear_then_click(LOGIN_RETURN_INFO, offset=(30, 30), interval=5):
                 continue
             # Popups
-            if self.handle_popup_confirm('LOGIN'):
+            if self.handle_popup_confirm('LOGIN',interval=8):
                 continue
             if self.handle_urgent_commission():
                 continue

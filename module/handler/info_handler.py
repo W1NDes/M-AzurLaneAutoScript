@@ -171,6 +171,9 @@ class InfoHandler(ModuleBase):
                     if "您在别" in result or "处登录" in result:
                         logger.warning('Other login in')
                         raise OtherLogin
+                    if "网络异常" in result:
+                        logger.warning('Network exception')
+                        raise OtherLogin
                     logger.info('Get urgent commission')
                     if drop:
                         self.handle_info_bar()
