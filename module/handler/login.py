@@ -32,7 +32,7 @@ class LoginHandler(UI):
         logger.hr('App login')
 
         confirm_timer = Timer(1.5, count=4).start()
-        orientation_timer = Timer(5)
+        orientation_timer = Timer(10)
         login_success = False
         self.device.stuck_record_clear()
         self.device.click_record_clear()
@@ -44,7 +44,7 @@ class LoginHandler(UI):
                 # Screen may rotate after starting an app
                 self.device.get_orientation()
                 orientation_timer.reset()
-                
+
             if reset_stuck_timer.reached() and not reset_stuck_flag:
                 self.device.stuck_record_clear()
                 self.device.click_record_clear()
