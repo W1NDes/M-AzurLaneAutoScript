@@ -80,7 +80,6 @@ class SupplyPack(CampaignStatus):
             in: Any page
             out: page_supply_pack, supply pack tab
         """
-        return
         self.ui_ensure(page_shop)
         self.goto_supply_pack()
         if self.get_oil() < 21000:

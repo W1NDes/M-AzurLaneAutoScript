@@ -29,8 +29,6 @@ class RewardShop(ShopUI):
             self.config.task_stop()
 
         # Munitions shops
-        self.config.task_delay(server_update=True)
-        return True
         self.ui_goto_shop()
         self.device.click_record_clear()
         self.shop_nav_250814.set(NAV_GENERAL, main=self)
