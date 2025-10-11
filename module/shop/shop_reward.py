@@ -11,7 +11,7 @@ from module.shop_event.ui import OCR_EVENT_SHOP_SECOND_ENSURE
 
 class RewardShop(ShopUI):
     def run_frequent(self):
-        if self.config.SERVER in ['en', 'jp', 'tw']:
+        if self.config.SERVER in ['tw']:
             self.config.task_delay(server_update=True)
             self.config.task_stop()
 
@@ -24,7 +24,7 @@ class RewardShop(ShopUI):
         self.config.task_delay(server_update=True)
 
     def run_once(self):
-        if self.config.SERVER in ['en', 'jp', 'tw']:
+        if self.config.SERVER in ['tw']:
             self.config.task_delay(server_update=True)
             self.config.task_stop()
 
@@ -52,3 +52,9 @@ class RewardShop(ShopUI):
         MedalShop2_250814(self.config, self.device).run()
 
         self.config.task_delay(server_update=True)
+
+
+if __name__ == '__main__':
+    self = RewardShop('alas')
+    self.device.screenshot()
+    self.run_once()
