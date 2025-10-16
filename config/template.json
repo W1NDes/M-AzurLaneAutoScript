@@ -494,7 +494,7 @@
       "Event2MapName": "D3",
       "EventDailyAMapName": "A1>A2>A3>B1>B2>B3",
       "EventDailySpMapName": "sp",
-      "EventDailyCD": false
+      "EventDailyCD": "C1>C2>C3>D1>D2>D3"
     },
     "Fleet": {
       "Fleet1": 1,
