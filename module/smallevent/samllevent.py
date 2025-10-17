@@ -150,7 +150,7 @@ class SmallEvent(UI):
         result = self.recognize_text(image, area,orc_api,model)
         if result:
             all_words = "".join([word['words'] for word in result['words_result']])
-            if any(word in all_words for word in ["每日0点","解锁2个任务","每天零点","完成七日活动"]):
+            if any(word in all_words for word in ["每日0点","解锁2个任务","每天零点","完成七日活动","完成活动任务"]):
                 logger.info(f"发现七天小任务：{all_words}")
                 return all_words
             logger.info('当前页未发现七天小任务')
@@ -596,22 +596,22 @@ class SmallEvent(UI):
             logger.warning("未成功进入七天小任务页面")         
              
     def run(self):
-        if datetime.now() < datetime(2025, 9, 25, 12, 0, 0):#eventSet
-            ninja_city_result = self.ninja_city()
-            if ninja_city_result:
-                logger.info("ninja_city success")
-            else:
-                logger.warning("ninja_city failed")
+        if datetime.now() < datetime(2025, 10, 24, 12, 0, 0):#eventSet
+            # ninja_city_result = self.ninja_city()
+            # if ninja_city_result:
+            #     logger.info("ninja_city success")
+            # else:
+            #     logger.warning("ninja_city failed")
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 page_area = (281, 79, 1254, 560)
                 self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page)
-                page_area = (0, 0, 1280, 720)
-                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
-                                    button_text="的邀约",exclude_text=["无"])#eventSet
-                page_area = (0, 0, 1280, 720)
-                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
-                                    button_text="纪念签到",exclude_text=["无"])#eventSet
+                # page_area = (0, 0, 1280, 720)
+                # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
+                #                     button_text="的邀约",exclude_text=["无"])#eventSet
+                # page_area = (0, 0, 1280, 720)
+                # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
+                #                     button_text="纪念签到",exclude_text=["无"])#eventSet
             else:
                 logger.warning("Ocr API 初始化失败")
         else:
