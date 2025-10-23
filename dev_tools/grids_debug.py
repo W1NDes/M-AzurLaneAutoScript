@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r'D:/M-AzurLaneAutoScript')
 import module.config.server as server
 
 server.server = 'cn'  # Don't need to edit, it's used to avoid error.
@@ -53,6 +55,20 @@ class Config:
     Step 1:
         Paste your config here.
     """
+    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
+        'height': (80, 255 - 17),
+        'width': (0.9, 10),
+        'prominence': 10,
+        'distance': 35,
+    }
+    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
+        'height': (255 - 17, 255),
+        'prominence': 10,
+        'distance': 50,
+        'wlen': 1000
+    }
+    HOMO_EDGE_COLOR_RANGE = (0, 30)
+    HOMO_EDGE_HOUGHLINES_THRESHOLD = 210
     pass
 
 
@@ -60,7 +76,7 @@ class Config:
 Step 2:
     Put your image here.
 """
-file = ''
+file = 'C:/Users/W1NDes/Documents/MuMu共享文件夹/Screenshots/test9.png'
 image = np.array(Image.open(file).convert('RGB'))
 
 

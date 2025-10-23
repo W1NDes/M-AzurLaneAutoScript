@@ -71,7 +71,7 @@ class Config:
         'distance': 50,
         'wlen': 1000
     }
-    HOMO_EDGE_COLOR_RANGE = (0, 17)
+    HOMO_EDGE_COLOR_RANGE = (0, 30)
     HOMO_EDGE_HOUGHLINES_THRESHOLD = 210
     MAP_SIREN_HAS_BOSS_ICON_SMALL = True
     MAP_SWIPE_MULTIPLY = (1.084, 1.104)

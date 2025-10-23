@@ -56,7 +56,7 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-
+    HOMO_EDGE_COLOR_RANGE = (0, 17)
     # Big boss at the middle
     MAP_SWIPE_PREDICT_WITH_CURRENT_FLEET = True
     MAP_SWIPE_MULTIPLY = (1.171, 1.193)

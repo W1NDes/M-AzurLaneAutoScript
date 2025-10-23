@@ -58,7 +58,7 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-
+    HOMO_EDGE_COLOR_RANGE = (0, 17)
     # swipe multiply same as T1
 
 
