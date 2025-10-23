@@ -250,7 +250,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         return 'unknown'
 
     def run(self):
-        if datetime.now() < datetime(2025, 10, 3, 0, 0, 0):#eventSet
+        if datetime.now() < datetime(2025, 11, 6, 12, 0, 0):#eventSet
             self.run_event_story()
         else:
             logger.info('Event story expired')

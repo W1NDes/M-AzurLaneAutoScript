@@ -2349,12 +2349,12 @@
       },
       "Event2MapName": {
         "type": "state",
-        "value": "D3",
+        "value": "T6",
         "display": "display"
       },
       "EventDailyAMapName": {
         "type": "state",
-        "value": "A1>A2>A3>B1>B2>B3",
+        "value": false,
         "display": "display"
       },
       "EventDailySpMapName": {
@@ -2364,7 +2364,7 @@
       },
       "EventDailyCD": {
         "type": "state",
-        "value": "C1>C2>C3>D1>D2>D3",
+        "value": false,
         "display": "display"
       }
     },
@@ -3074,24 +3074,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20230817_cn",
-          "event_20250912_cn"
+          "event_20250912_cn",
+          "event_20251023_cn"
         ],
         "option_cn": [
-          "event_20230817_cn"
+          "event_20251023_cn"
         ],
         "option_en": [
-          "event_20230817_cn"
+          "event_20251023_cn"
         ],
         "option_jp": [
-          "event_20230817_cn"
+          "event_20251023_cn"
         ],
         "option_tw": [
           "event_20250912_cn"
         ],
         "option_bold": [
-          "event_20230817_cn",
-          "event_20250912_cn"
+          "event_20250912_cn",
+          "event_20251023_cn"
         ]
       },
       "Mode": {
