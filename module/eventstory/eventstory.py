@@ -6,7 +6,7 @@ from module.eventstory.assets import *
 from module.exception import GameStuckError
 from module.handler.login import LoginHandler
 from module.logger import logger
-from module.ui.page import page_event
+from module.ui.page import page_event, page_sp
 from datetime import datetime
 import random
 
@@ -16,7 +16,15 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         Returns:
             str: 'finish', 'story', 'unknown'
         """
-        self.ui_ensure(page_event)
+        event = self.config.cross_get('Event.Campaign.Event', '')
+        if event in [
+            'event_20251023_cn',
+        ]:
+            # SP event
+            self.ui_ensure(page_sp)
+        else:
+            # most events show as page_event
+            self.ui_ensure(page_event)
         self.campaign_ensure_mode_20241219('story')
 
         state = 'unknown'
@@ -242,7 +250,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         return 'unknown'
 
     def run(self):
-        if datetime.now() < datetime(2025, 10, 3, 0, 0, 0):#eventSet
+        if datetime.now() < datetime(2025, 11, 6, 12, 0, 0):#eventSet
             self.run_event_story()
         else:
             logger.info('Event story expired')

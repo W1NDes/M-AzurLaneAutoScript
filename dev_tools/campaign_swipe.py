@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r'D:/M-AzurLaneAutoScript')
 from campaign.campaign_main.campaign_7_2 import MAP
 from module.campaign.campaign_base import CampaignBase
 from module.config.config import AzurLaneConfig

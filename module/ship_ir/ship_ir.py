@@ -11,8 +11,8 @@ HANDBOOK_SCROLL = Scroll(HANDBOOK_SCROLL_AREA, color=(244, 208, 66))
 SHIP_NAME_BUTTON = ButtonGrid(origin=(200, 448), delta=(164 + 1 / 3, 226), button_shape=(135,21), grid_shape=(6, 2), name='SHIP_NAME')
 SHIP_NAME_BUTTON_2 = ButtonGrid(origin=(200, 511), delta=(164 + 1 / 3, 226), button_shape=(135,21), grid_shape=(6, 1), name='SHIP_NAME_2')
 
-CHECK_FILTER1 = ["全部","自由鸢尾","超稀有","无限制"]
-CHECK_FILTER2 = ["全部","自由鸢尾","精锐","无限制"]
+CHECK_FILTER1 = ["全部","飓风","超稀有","无限制"]
+CHECK_FILTER2 = ["全部","飓风","精锐","无限制"]
 CHECK_FILTER3 = ["","重樱","全部","无限制"]
 CHECK_FILTER4 = ["","白鹰","金色","无限制"]
 CHECK_FILTER5 = ["","皇家","全部","无限制"]
