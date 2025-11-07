@@ -61,15 +61,15 @@ Event:
     AmbushEvade: true
   EventPt:
     Event2MapName: 
-      value: T6
+      value: SP3
       type: state
       display: display
     EventDailyAMapName:
-      value: false
+      value: sp1 > sp2 > sp3
       type: state
       display: display
     EventDailySpMapName:
-      value: sp
+      value: false
       type: state
       display: display
     EventDailyCD:
