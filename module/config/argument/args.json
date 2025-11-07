@@ -2349,17 +2349,17 @@
       },
       "Event2MapName": {
         "type": "state",
-        "value": "T6",
+        "value": "SP3",
         "display": "display"
       },
       "EventDailyAMapName": {
         "type": "state",
-        "value": false,
+        "value": "sp1 > sp2 > sp3",
         "display": "display"
       },
       "EventDailySpMapName": {
         "type": "state",
-        "value": "sp",
+        "value": false,
         "display": "display"
       },
       "EventDailyCD": {
