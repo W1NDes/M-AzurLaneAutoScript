@@ -4,6 +4,7 @@ import re
 
 from datetime import datetime, timedelta
 from module.base.button import ButtonGrid
+from module.ocr.ocr import Ocr
 from module.ui.ui import UI
 from module.ui.page import page_main
 from module.smallevent.assets import * 
@@ -314,6 +315,7 @@ class SmallEvent(UI):
                 continue 
 
     def goto_sevenD_page(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):
+        #活动汇总
         self.ui_ensure(page_main)
         CLICK_COUNT = 0
         NOCLICK_COUNT = 0
@@ -391,10 +393,13 @@ class SmallEvent(UI):
                     break
         return False,None
 
-    def goto_sevenD_page_v2(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):#for the event prepare page
+    def goto_sevenD_page_v2(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):
+        #for the event prepare page 从左到右第二个入口
         self.ui_ensure(page_main)
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
+        entry_ocr = Ocr(EVENT_PREPARE_ENTRY_2, lang='cnocr', name='OCR_ENTRY_2', letter=(255, 255, 255), threshold=128)
+        entried = False
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -403,6 +408,11 @@ class SmallEvent(UI):
             if self.appear_then_click(EVENT_PREPARE_ENTRY, offset=(5, 5), interval=3):
                 continue
             if self.appear_then_click(EVENT_PREPARE_ENTRY_2, offset=(5, 5), interval=3):
+                continue
+            if not entried and "限时活动" in entry_ocr.ocr(self.device.image):
+                logger.info("发现限时活动入口")
+                self.device.click(EVENT_PREPARE_ENTRY_2)
+                entried = True
                 continue
 
             if self.appear(EVENT_PREPARE_PAGE, offset=(5,5)) or self.appear(EVENT_PREPARE_PAGE_2, offset=(5,5)):
@@ -441,7 +451,8 @@ class SmallEvent(UI):
                     break
         return False,None
 
-    def goto_sevenD_page_v3(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):#for the event prepare page
+    def goto_sevenD_page_v3(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):
+        #从右到左第三个入口
         self.ui_ensure(page_main)
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
@@ -596,7 +607,7 @@ class SmallEvent(UI):
             logger.warning("未成功进入七天小任务页面")         
              
     def run(self):
-        if datetime.now() < datetime(2025, 10, 24, 12, 0, 0):#eventSet
+        if datetime.now() < datetime(2025, 12, 4, 12, 0, 0):#eventSet
             # ninja_city_result = self.ninja_city()
             # if ninja_city_result:
             #     logger.info("ninja_city success")
@@ -606,9 +617,9 @@ class SmallEvent(UI):
             if ORC_API:
                 page_area = (281, 79, 1254, 560)
                 self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page)
-                # page_area = (0, 0, 1280, 720)
-                # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
-                #                     button_text="的邀约",exclude_text=["无"])#eventSet
+                page_area = (0, 0, 1280, 720)
+                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
+                                    button_text="赛道上的等候",exclude_text=["无"])#eventSet
                 # page_area = (0, 0, 1280, 720)
                 # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
                 #                     button_text="纪念签到",exclude_text=["无"])#eventSet
