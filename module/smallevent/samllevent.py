@@ -398,8 +398,9 @@ class SmallEvent(UI):
         self.ui_ensure(page_main)
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
-        entry_ocr = Ocr(EVENT_PREPARE_ENTRY_2, lang='cnocr', name='OCR_ENTRY_2', letter=(255, 255, 255), threshold=128)
+        entry_ocr = Ocr(EVENT_PREPARE_ENTRY_2, lang='cnocr', name='OCR_ENTRY', letter=(255, 255, 255), threshold=128)
         entried = False
+        title_correct = 0
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -414,8 +415,28 @@ class SmallEvent(UI):
                 self.device.click(EVENT_PREPARE_ENTRY_2)
                 entried = True
                 continue
+            
+            if not self.appear(EVENT_PREPARE_PAGE, offset=(5,5)):
+                if title_correct >= -3:
+                    title_ocr_result = orc_api.request_ocr(image=crop(self.device.image, EVENT_PREPARE_PAGE_2.area), model="general_basic")
+                    if 'words_result' in title_ocr_result and len(title_ocr_result['words_result']) > 0:
+                        all_titles = "".join([word['words'] for word in title_ocr_result['words_result']])
+                        if any(word in all_titles for word in ["活动汇总"]):
+                            title_correct = 1
+                            logger.info(f"发现活动汇总,ocr结果:{all_titles}")
+                        else:
+                            logger.info(f"未发现活动汇总,ocr结果:{all_titles}")
+                            title_correct -= 1
+                    else:
+                        logger.info(f"未发现任何标题文字")
+                        title_correct -= 1
+                else:
+                    logger.info(f"标题识别错误次数过多，停止识别")
+            else:
+                title_correct = 1
 
-            if self.appear(EVENT_PREPARE_PAGE, offset=(5,5)) or self.appear(EVENT_PREPARE_PAGE_2, offset=(5,5)):
+            if title_correct >= 1:
+                title_correct = 0
                 all_words = self.recognize_activity_page(self.device.image,page_area,orc_api)
                 # all_words = None
                 if not all_words:
