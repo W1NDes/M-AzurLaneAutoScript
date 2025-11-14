@@ -58,6 +58,7 @@ class Config:
     # ===== End of generated config =====
 
     MAP_SIREN_HAS_BOSS_ICON = True
+    MAP_SIREN_HAS_BOSS_ICON_SMALL = True
     MAP_SWIPE_MULTIPLY = (1.074, 1.095)
     MAP_SWIPE_MULTIPLY_MINITOUCH = (1.039, 1.058)
     MAP_SWIPE_MULTIPLY_MAATOUCH = (1.009, 1.027)
