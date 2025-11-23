@@ -299,7 +299,8 @@ class CoalitionUI(Combat):
             # Stage sequence for coalition_20230323 event
             'coalition_20230323': ['tc1', 'tc2', 'tc3'],
             # Stage sequence for coalition_20240627 event
-            'coalition_20240627': ['easy', 'normal', 'hard']
+            'coalition_20240627': ['easy', 'normal', 'hard'],
+            'coalition_20251120': ['area1-normal', 'area2-normal', 'area3-normal', 'area4-normal', 'area5-normal', 'area6-normal','area6-hard']
         }
         
         # Find which list contains the current stage
