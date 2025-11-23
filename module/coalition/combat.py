@@ -43,6 +43,8 @@ class CoalitionCombat(CoalitionUI, CampaignBase):
                 status_clicked = True
                 click_last.reset()
                 continue
+            if self.handle_story_skip():
+                continue
             # Keep clicking BATTLE_STATUS to skip animations
             if status_clicked:
                 if click_timer.reached() and not click_last.reached():
