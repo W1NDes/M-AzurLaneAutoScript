@@ -3,7 +3,7 @@ import re
 from module.campaign.campaign_event import CampaignEvent
 from module.coalition.assets import *
 from module.coalition.combat import CoalitionCombat
-from module.exception import ScriptError, ScriptEnd, GameTooManyClickError
+from module.exception import ScriptEnd, ScriptError, GameTooManyClickError
 from module.logger import logger
 from module.ocr.ocr import Digit
 from module.log_res.log_res import LogRes
@@ -66,7 +66,15 @@ class Coalition(CoalitionCombat, CampaignEvent):
             logger.error(f'ocr object is not defined in event {event}')
             raise ScriptError
 
-        pt = ocr.ocr(self.device.image)
+        pt = 0
+        for _ in self.loop(timeout=1.5):
+            pt = ocr.ocr(self.device.image)
+            # 999999 seems to be a default value, wait
+            if pt not in [999999]:
+                break
+        else:
+            logger.warning('Wait PT timeout, assume it is')
+
         LogRes(self.config).Pt = pt
         self.config.update()
         return pt
@@ -214,10 +222,10 @@ class Coalition(CoalitionCombat, CampaignEvent):
                 logger.info(f'Count: {self.run_count}')
 
             # UI switches
-            if self.config.SERVER in ['tw']:
-                self.ui_goto(page_campaign_menu)
-                if self.triggered_stop_condition(oil_check=True):
-                    break
+            # if self.config.SERVER in ['tw']:
+            #     self.ui_goto(page_campaign_menu)
+            #     if self.triggered_stop_condition(oil_check=True):
+            #         break
             self.device.stuck_record_clear()
             self.device.click_record_clear()
             self.ui_goto_coalition()
