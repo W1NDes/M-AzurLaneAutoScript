@@ -73,13 +73,6 @@ Event:
     EventGeneral:
       - EventGeneral
       - TaskBalancer
-    Coalition:
-      - Scheduler
-      - Campaign
-      - Coalition
-      - StopCondition
-      - EventPt
-      - Emotion
     Event:
       - Scheduler
       - Campaign
@@ -119,7 +112,13 @@ Event:
       - Hospital
       - StopCondition
       - Emotion
-
+    Coalition:
+      - Scheduler
+      - Campaign
+      - Coalition
+      - StopCondition
+      - EventPt
+      - Emotion
     MaritimeEscort:
       - Scheduler
       - MaritimeEscort
