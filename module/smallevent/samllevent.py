@@ -151,7 +151,7 @@ class SmallEvent(UI):
         result = self.recognize_text(image, area,orc_api,model)
         if result:
             all_words = "".join([word['words'] for word in result['words_result']])
-            if any(word in all_words for word in ["每日0点","解锁2个任务","每天零点","完成七日活动","完成活动任务"]):
+            if any(word in all_words for word in ["每日0点","解锁2个任务","每日零点","每天零点","完成七日活动","完成活动任务"]):
                 logger.info(f"发现七天小任务：{all_words}")
                 return all_words
             logger.info('当前页未发现七天小任务')
@@ -314,7 +314,7 @@ class SmallEvent(UI):
             if self.appear_then_click(GET_ITEMS_1,offset=(10, 10), interval=1):
                 continue 
 
-    def goto_sevenD_page(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):
+    def goto_sevenD_page(self,page_area,orc_api,skip_first_screenshot=True):
         #活动汇总
         self.ui_ensure(page_main)
         CLICK_COUNT = 0
@@ -393,12 +393,17 @@ class SmallEvent(UI):
                     break
         return False,None
 
-    def goto_sevenD_page_v2(self,page_area,orc_api,button_text,exclude_text,skip_first_screenshot=True):
-        #for the event prepare page 从左到右第二个入口
+    def goto_sevenD_page_general(self,page_area,orc_api,button_text,exclude_text,entry_index=2,entry_text=None,page_text=None,skip_first_screenshot=True):
+        #for the event prepare page 从左到右第二个入口/通用入口
         self.ui_ensure(page_main)
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
-        entry_ocr = Ocr(EVENT_PREPARE_ENTRY_2, lang='cnocr', name='OCR_ENTRY', letter=(255, 255, 255), threshold=128)
+
+        # 动态获取按钮对象
+        entry_button_name = f"EVENT_PREPARE_ENTRY_{entry_index}" if entry_index > 1 else "EVENT_PREPARE_ENTRY"
+        entry_button = globals()[entry_button_name]
+        
+        entry_ocr = Ocr(entry_button, lang='cnocr', name='OCR_ENTRY_V2', letter=(255, 255, 255), threshold=128)
         entried = False
         title_correct = 0
         while 1:
@@ -406,59 +411,59 @@ class SmallEvent(UI):
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
-            if self.appear_then_click(EVENT_PREPARE_ENTRY, offset=(5, 5), interval=3):
-                continue
-            if self.appear_then_click(EVENT_PREPARE_ENTRY_2, offset=(5, 5), interval=3):
-                continue
-            if not entried and "限时活动" in entry_ocr.ocr(self.device.image):
-                logger.info("发现限时活动入口")
-                self.device.click(EVENT_PREPARE_ENTRY_2)
+            if not entried and entry_text in entry_ocr.ocr(self.device.image):
+                logger.info(f"发现{entry_text}入口")
+                self.device.click(entry_button)
                 entried = True
                 continue
             
-            if not self.appear(EVENT_PREPARE_PAGE, offset=(5,5)):
-                if title_correct >= -3:
+            if entried:
+                if title_correct >= -4:
                     title_ocr_result = orc_api.request_ocr(image=crop(self.device.image, EVENT_PREPARE_PAGE_2.area), model="general_basic")
                     if 'words_result' in title_ocr_result and len(title_ocr_result['words_result']) > 0:
                         all_titles = "".join([word['words'] for word in title_ocr_result['words_result']])
-                        if any(word in all_titles for word in ["活动汇总"]):
+                        if any(word in all_titles for word in [page_text]):
                             title_correct = 1
-                            logger.info(f"发现活动汇总,ocr结果:{all_titles}")
+                            logger.info(f"发现{page_text},ocr结果:{all_titles}")
                         else:
-                            logger.info(f"未发现活动汇总,ocr结果:{all_titles}")
+                            logger.info(f"未发现{page_text},ocr结果:{all_titles}")
+                            self.device.sleep(1)
                             title_correct -= 1
                     else:
                         logger.info(f"未发现任何标题文字")
+                        self.device.sleep(1)
                         title_correct -= 1
-                else:
-                    logger.info(f"标题识别错误次数过多，停止识别")
-            else:
-                title_correct = 1
+                elif title_correct == -5:
+                    logger.info(f"标题识别错误次数过多，停止识别{page_text}")
+                    self.device.sleep(1)
+                    title_correct -= 1
+                else:   
+                    pass
 
-            if title_correct >= 1:
-                title_correct = 0
-                all_words = self.recognize_activity_page(self.device.image,page_area,orc_api)
-                # all_words = None
-                if not all_words:
-                    event_pre_button_location = self.locate_button_by_text(self.device.image, button_text, exclude_text, page_area,interval=5,orc_api=orc_api)
-                    if isinstance(event_pre_button_location, dict):
-                        event_pre_button = self.location_2_button(event_pre_button_location, button_text, base_loc=page_area)
-                        self.device.click(event_pre_button)
-                        self.device.sleep(1.5)#wait for the page to load
-                        continue
-                    elif event_pre_button_location == "cooldowning":
-                        # 冷却中，等待
-                        continue
+                if title_correct >= 1:
+                    title_correct = 0
+                    all_words = self.recognize_activity_page(self.device.image,page_area,orc_api)
+                    # all_words = None
+                    if not all_words:
+                        event_pre_button_location = self.locate_button_by_text(self.device.image, button_text, exclude_text, page_area,interval=5,orc_api=orc_api)
+                        if isinstance(event_pre_button_location, dict):
+                            event_pre_button = self.location_2_button(event_pre_button_location, button_text, base_loc=page_area)
+                            self.device.click(event_pre_button)
+                            self.device.sleep(1.5)#wait for the page to load
+                            continue
+                        elif event_pre_button_location == "cooldowning":
+                            # 冷却中，等待
+                            continue
+                        else:
+                            # 未找到按钮，跳出循环或进行其他处理
+                            logger.warning(f"未找到{button_text}按钮")
+                            break
                     else:
-                        # 未找到按钮，跳出循环或进行其他处理
-                        logger.warning(f"未找到{button_text}按钮")
-                        break
-                else:
-                    go_count = self.recognize_activiy_status(all_words)
-                    if go_count >= 2:
-                        logger.warning("七天小任务当前没有可领取项")
-                        return "no_get",all_words
-                    return True,all_words
+                        go_count = self.recognize_activiy_status(all_words)
+                        if go_count >= 2:
+                            logger.warning("七天小任务当前没有可领取项")
+                            return "no_get",all_words
+                        return True,all_words
 
             if self.story_skip(): #the prepare page may appear story 
                 continue   
@@ -607,8 +612,7 @@ class SmallEvent(UI):
             logger.warning("未配置OcrModel")
             return False
 
-    def sevenD_harvest(self, page_area, ORC_API, goto_sevenD_page_func, button_text=None,exclude_text=None):
-        goPage_result = goto_sevenD_page_func(page_area, ORC_API, button_text,exclude_text)
+    def sevenD_harvest(self, page_area, ORC_API,goPage_result):
         if goPage_result[0] == "no_get":
             self.resolve_task(goPage_result[1])
         elif goPage_result[0] == "get_sign":
@@ -628,7 +632,7 @@ class SmallEvent(UI):
             logger.warning("未成功进入七天小任务页面")         
              
     def run(self):
-        if datetime.now() < datetime(2025, 12, 4, 12, 0, 0):#eventSet
+        if datetime.now() < datetime(2026, 1, 9, 8, 0, 0):#eventSet
             # ninja_city_result = self.ninja_city()
             # if ninja_city_result:
             #     logger.info("ninja_city success")
@@ -636,11 +640,15 @@ class SmallEvent(UI):
             #     logger.warning("ninja_city failed")
             ORC_API = self.ocr_api_init()
             if ORC_API:
-                page_area = (281, 79, 1254, 560)
-                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page)
+                #第一栏
+                # page_area = (281, 79, 1254, 560)
+                # goPage_result = self.goto_sevenD_page(page_area,ORC_API)
+                # self.sevenD_harvest(page_area,ORC_API,goPage_result)
+                #第二栏
                 page_area = (0, 0, 1280, 720)
-                self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v2, 
-                                    button_text="赛道上的等候",exclude_text=["无"])#eventSet
+                goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
+                        button_text="致美好世界",exclude_text=["无"],entry_index=3,entry_text="作战准备",page_text="活动汇总")
+                self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 # page_area = (0, 0, 1280, 720)
                 # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
                 #                     button_text="纪念签到",exclude_text=["无"])#eventSet
