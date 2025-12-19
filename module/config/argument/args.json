@@ -2355,7 +2355,7 @@
       },
       "EventDailyCD": {
         "type": "state",
-        "value": "c1 > c2 > c3 > d1 > d2 > d3",
+        "value": false,
         "display": "display"
       }
     },
@@ -3065,24 +3065,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20220428_cn",
-          "event_20230914_cn"
+          "event_20251023_cn",
+          "event_20251218_cn"
         ],
         "option_cn": [
-          "event_20230914_cn"
+          "event_20251218_cn"
         ],
         "option_en": [
-          "event_20230914_cn"
+          "event_20251218_cn"
         ],
         "option_jp": [
-          "event_20230914_cn"
+          "event_20251218_cn"
         ],
         "option_tw": [
-          "event_20220428_cn"
+          "event_20251023_cn"
         ],
         "option_bold": [
-          "event_20220428_cn",
-          "event_20230914_cn"
+          "event_20251023_cn",
+          "event_20251218_cn"
         ]
       },
       "Mode": {
