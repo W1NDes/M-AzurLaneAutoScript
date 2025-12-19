@@ -2357,6 +2357,21 @@
         "type": "state",
         "value": false,
         "display": "display"
+      },
+      "EventResetStageAfterHours": {
+        "type": "state",
+        "value": 72,
+        "display": "display"
+      },
+      "EventResetStageName": {
+        "type": "state",
+        "value": "A1",
+        "display": "display"
+      },
+      "EventResetStageRecord": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
       }
     },
     "Fleet": {
@@ -4025,6 +4040,19 @@
         "type": "textarea",
         "value": "HT1>HT2>HT3>HT4>HT5>HT6",
         "display": "hide"
+      },
+      "EventResetStageAfterHours": {
+        "type": "input",
+        "value": 72
+      },
+      "EventResetStageName": {
+        "type": "input",
+        "value": "A1"
+      },
+      "EventResetStageRecord": {
+        "type": "datetime",
+        "value": "2020-01-01 00:00:00",
+        "validate": "datetime"
       }
     },
     "Emotion": {

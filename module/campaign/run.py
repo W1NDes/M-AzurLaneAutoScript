@@ -2,6 +2,7 @@ import copy
 import importlib
 import os
 import random
+from datetime import datetime
 
 from module.campaign.campaign_base import CampaignBase
 from module.campaign.campaign_event import CampaignEvent
@@ -436,6 +437,23 @@ class CampaignRun(CampaignEvent, ShopStatus):
             mode (str): `normal` or `hard`
             total (int):
         """
+        # Check if need to reset stage due to long time no run (for Event task)
+        if self.config.task.command == 'Event':
+            reset_hours = self.config.EventPt_EventResetStageAfterHours
+            if reset_hours > 0:
+                last_record = self.config.cross_get(keys=['Event', 'EventPt', 'EventResetStageRecord'], default=None)
+                if isinstance(last_record, datetime):
+                    hours_since_last = (datetime.now() - last_record).total_seconds() / 3600
+                    if hours_since_last > reset_hours:
+                        reset_name = self.config.EventPt_EventResetStageName
+                        logger.info(f'Event task has not run for {hours_since_last:.1f} hours (> {reset_hours}h), '
+                                    f'resetting stage from {name} to {reset_name}')
+                        name = reset_name
+                        # Save the reset stage name to config
+                        self.config.cross_set(keys='Event.Campaign.Name', value=reset_name)
+                # Update the record time
+                self.config.cross_set(keys='Event.EventPt.EventResetStageRecord', value=datetime.now().replace(microsecond=0))
+
         name, folder = self.handle_stage_name(name, folder, mode=mode)
         self.config.override(Campaign_Name=name, Campaign_Event=folder)
         self.load_campaign(name, folder=folder)

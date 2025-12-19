@@ -76,6 +76,14 @@ Event:
       value: false
       type: state
       display: display
+    EventResetStageAfterHours:
+      value: 72
+      type: state
+      display: display
+    EventResetStageName:
+      value: A1
+      type: state
+      display: display
 
 Event2:
   Campaign:

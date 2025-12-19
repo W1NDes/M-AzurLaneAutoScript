@@ -1263,6 +1263,18 @@
     "EventDailyCD": {
       "name": "是否开启每日活动CD",
       "help": "复刻活动会开启每日活动CD刷取3倍pt,如果为false则不开启"
+    },
+    "EventResetStageAfterHours": {
+      "name": "长时间未运行后重置关卡",
+      "help": "如果活动图-1上次运行时间距离现在超过指定小时数，则自动将关卡名称重置。设置为0则禁用此功能"
+    },
+    "EventResetStageName": {
+      "name": "重置后的关卡名称",
+      "help": "长时间未运行后重置到的关卡名称，如 A1、T1 等"
+    },
+    "EventResetStageRecord": {
+      "name": "上次重置检测时间",
+      "help": "内部使用，记录上次检测重置的时间"
     }
   },
   "Fleet": {

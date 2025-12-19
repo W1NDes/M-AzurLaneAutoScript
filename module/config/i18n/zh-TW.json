@@ -1263,6 +1263,18 @@
     "EventDailyCD": {
       "name": "EventPt.EventDailyCD.name",
       "help": "EventPt.EventDailyCD.help"
+    },
+    "EventResetStageAfterHours": {
+      "name": "EventPt.EventResetStageAfterHours.name",
+      "help": "EventPt.EventResetStageAfterHours.help"
+    },
+    "EventResetStageName": {
+      "name": "EventPt.EventResetStageName.name",
+      "help": "EventPt.EventResetStageName.help"
+    },
+    "EventResetStageRecord": {
+      "name": "EventPt.EventResetStageRecord.name",
+      "help": "EventPt.EventResetStageRecord.help"
     }
   },
   "Fleet": {
