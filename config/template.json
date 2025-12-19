@@ -493,7 +493,10 @@
       "Event2MapName": "d3",
       "EventDailyAMapName": "a1 > a2 > a3 > b1 > b2 > b3",
       "EventDailySpMapName": "sp",
-      "EventDailyCD": "c1 > c2 > c3 > d1 > d2 > d3"
+      "EventDailyCD": false,
+      "EventResetStageAfterHours": 72,
+      "EventResetStageName": "A1",
+      "EventResetStageRecord": "2020-01-01 00:00:00"
     },
     "Fleet": {
       "Fleet1": 1,
@@ -813,7 +816,10 @@
       "Event2MapName": "HT6",
       "EventDailyAMapName": "T1>T2>T3>T4>T5>T6",
       "EventDailySpMapName": "sp",
-      "EventDailyCD": "HT1>HT2>HT3>HT4>HT5>HT6"
+      "EventDailyCD": "HT1>HT2>HT3>HT4>HT5>HT6",
+      "EventResetStageAfterHours": 72,
+      "EventResetStageName": "A1",
+      "EventResetStageRecord": "2020-01-01 00:00:00"
     },
     "Emotion": {
       "Mode": "calculate",
