@@ -5,7 +5,7 @@ from module.logger import logger
 
 MAP = CampaignMap('D1')
 MAP.shape = 'J8'
-MAP.camera_data = ['D2', 'D6', 'G2', 'G6']
+MAP.camera_data = ['D3', 'D6', 'G3', 'G6']
 MAP.camera_data_spawn_point = ['G2']
 MAP.map_data = """
     ++ -- -- -- -- -- ++ -- SP --
@@ -76,12 +76,12 @@ class Config:
     }
     HOMO_EDGE_COLOR_RANGE = (0, 17)
     MAP_WALK_USE_CURRENT_FLEET = True
-    MAP_SWIPE_MULTIPLY = (1.232, 1.255)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.191, 1.213)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.156, 1.177)
     STAGE_INCREASE_CUSTOM = [
         'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
     ]
+    MAP_SWIPE_MULTIPLY = (1.217, 1.240)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.177, 1.199)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.143, 1.163)
 
 
 class Campaign(CampaignBase):
