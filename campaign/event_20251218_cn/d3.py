@@ -56,7 +56,7 @@ A10, B10, C10, D10, E10, F10, G10, H10, I10, J10, K10, \
 
 class Config(ConfigBase):
     # ===== Start of generated config =====
-    MAP_SIREN_TEMPLATE = ['Vboss_Star', 'Vboss_Chariot']
+    MAP_SIREN_TEMPLATE = ['Vboss_Lovers', 'Vboss_Chariot']
     MOVABLE_ENEMY_TURN = (2,)
     MAP_HAS_SIREN = True
     MAP_HAS_MOVABLE_ENEMY = True
