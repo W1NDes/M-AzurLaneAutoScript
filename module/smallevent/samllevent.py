@@ -393,7 +393,7 @@ class SmallEvent(UI):
                     break
         return False,None
 
-    def goto_sevenD_page_general(self,page_area,orc_api,button_text,exclude_text,entry_index=2,entry_text=None,page_text=None,skip_first_screenshot=True):
+    def goto_sevenD_page_general(self,page_area,orc_api,button_text,exclude_text,entry_index=2,page_text=None,skip_first_screenshot=True):
         #for the event prepare page 从左到右第二个入口/通用入口
         self.ui_ensure(page_main)
         NOCLICK_COUNT = 0
@@ -411,8 +411,13 @@ class SmallEvent(UI):
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
-            if not entried and entry_text in entry_ocr.ocr(self.device.image):
-                logger.info(f"发现{entry_text}入口")
+            # if not entried and entry_text in entry_ocr.ocr(self.device.image):
+            #     logger.info(f"发现{entry_text}入口")
+            #     self.device.click(entry_button)
+            #     entried = True
+            #     continue
+            if self.appear(entry_button, offset=(5, 5), interval=3):
+                logger.info(f"发现{entry_button_name}入口")
                 self.device.click(entry_button)
                 entried = True
                 continue
@@ -647,7 +652,7 @@ class SmallEvent(UI):
                 #第二栏
                 page_area = (0, 0, 1280, 720)
                 goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
-                        button_text="致美好世界",exclude_text=["无"],entry_index=3,entry_text="作战准备",page_text="活动汇总")
+                        button_text="致美好世界",exclude_text=["无"],entry_index=3,page_text="活动汇总")
                 self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 # page_area = (0, 0, 1280, 720)
                 # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
