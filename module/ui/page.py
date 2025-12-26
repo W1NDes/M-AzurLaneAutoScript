@@ -226,11 +226,17 @@ page_main_memory = Page(MAIN_GOTO_MEMORIES_WHITE)
 page_main.link(button=MAIN_TAB_SWITCH_WHITE, destination=page_main_memory)
 page_main_white.link(button=MAIN_TAB_SWITCH_WHITE, destination=page_main_memory)
 
+# Main_memory_2 
+page_main_memory_2 = Page(MAIN_GOTO_MEMORIES_WHITE_2)
+page_main.link(button=MAIN_TAB_SWITCH_WHITE, destination=page_main_memory_2)
+page_main_white.link(button=MAIN_TAB_SWITCH_WHITE, destination=page_main_memory_2)
+
 #Collection
 page_collection = Page(COLLECTION_CHECK)
 page_collection.link(button=GOTO_MAIN, destination=page_main)
 page_main.link(button=MAIN_GOTO_COLLECTION, destination=page_collection)
 page_main_memory.link(button=MAIN_GOTO_COLLECTION_WHITE, destination=page_collection)
+page_main_memory_2.link(button=MAIN_GOTO_COLLECTION_WHITE, destination=page_collection)
 
 #Handbook
 page_handbook = Page(HANDBOOK_CHECK)
