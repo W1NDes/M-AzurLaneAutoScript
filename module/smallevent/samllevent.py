@@ -646,9 +646,9 @@ class SmallEvent(UI):
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 #第一栏
-                # page_area = (281, 79, 1254, 560)
-                # goPage_result = self.goto_sevenD_page(page_area,ORC_API)
-                # self.sevenD_harvest(page_area,ORC_API,goPage_result)
+                page_area = (281, 79, 1254, 560)
+                goPage_result = self.goto_sevenD_page(page_area,ORC_API)
+                self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 #第二栏
                 page_area = (0, 0, 1280, 720)
                 goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,

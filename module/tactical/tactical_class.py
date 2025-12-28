@@ -18,13 +18,14 @@ from module.tactical.assets import *
 from module.ui.assets import (BACK_ARROW, REWARD_CHECK, REWARD_GOTO_TACTICAL, TACTICAL_CHECK)
 from module.ui.page import page_reward
 from module.ui_white.assets import REWARD_2_WHITE, REWARD_GOTO_TACTICAL_WHITE
+from module.ui.scroll import Scroll
 
 SKILL_GRIDS = ButtonGrid(origin=(315, 140), delta=(621, 132), button_shape=(621, 119), grid_shape=(1, 3), name='SKILL')
 if server.server != 'jp':
     SKILL_LEVEL_GRIDS = SKILL_GRIDS.crop(area=(406, 98, 618, 116), name='EXP')
 else:
     SKILL_LEVEL_GRIDS = SKILL_GRIDS.crop(area=(406, 98, 621, 118), name='EXP')
-
+SKILL_LEVEL_SCROLL = Scroll(SKILL_LEVEL_SCROLL_AREA, color=(244, 208, 66))
 
 class ExpOnBookSelect(DigitCounter):
     def pre_process(self, image):
@@ -700,9 +701,40 @@ class RewardTacticalClass(Dock):
 
         return True
 
+    def _check_skill_level(self, skill_button, skill_level):
+        """
+        Check if a skill level indicates it's not max level.
+        
+        Args:
+            skill_button: Button of the skill
+            skill_level: OCR result of skill level
+            
+        Returns:
+            Button if skill is not max level, None otherwise
+        """
+        level = skill_level.upper().replace(' ', '')
+        # Empty skill slot
+        # Probably because all favourite ships have their skill leveled max.
+        # '———l', '—l'
+        if not level:
+            return None
+        if re.search(r'[—\-一]{2,}', level):
+            return None
+        if re.search(r'[—一]+', level):
+            return None
+        # Use 'MA' as a part of `MAX`.
+        # SKILL_LEVEL_GRIDS may move a little lower for unknown reason, OCR results are like:
+        # ['NEXT:MA', 'NEXT:/1D]', 'NEXT:MA'] (Actually: `NEXT:MAX, NEXT:0/100, NEXT:MAX`)
+        # ['NEXT:MA', 'NEX T:/ 14[]]', 'NEXT:MA']  (Actually: `NEXT:MAX, NEXT:150/1400, NEXT:MAX`)
+        if 'MA' not in level:
+            logger.attr('LEVEL', 'EMPTY' if len(level) == 0 else level)
+            return skill_button
+        return None
+
     def find_not_full_level_skill(self, skip_first_screenshot=True):
         """
-        Check up to three skills in the list, find a skill whose level is not max
+        Check up to four skills in the list, find a skill whose level is not max.
+        Supports ships with 4 skills by scrolling to bottom if needed.
 
         Returns:
             Selected skill's button
@@ -715,27 +747,48 @@ class RewardTacticalClass(Dock):
         if not skip_first_screenshot:
             self.device.screenshot()
 
+        # Check if there's scrollable space (4 skills)
+        # When there are only 1-3 skills, scroll bar is full-length (length == total), no scrollable space
+        has_4th_skill = SKILL_LEVEL_SCROLL.appear(self) \
+            and SKILL_LEVEL_SCROLL.length < SKILL_LEVEL_SCROLL.total * 0.95
+        
+        # If 4 skills exist, ensure scroll is at top first to get correct OCR position
+        if has_4th_skill and not SKILL_LEVEL_SCROLL.at_top(self):
+            logger.info('4 skills detected, scrolling to top first')
+            SKILL_LEVEL_SCROLL.set_top(self, skip_first_screenshot=True)
+            self.device.screenshot()
+
+        # Check first 3 skills
         skill_level_ocr = ExpOnSkillSelect(buttons=SKILL_LEVEL_GRIDS.buttons, lang='cnocr', name='SKILL_LEVEL')
         skill_level_list = skill_level_ocr.ocr(self.device.image)
         for skill_button, skill_level in list(zip(SKILL_GRIDS.buttons, skill_level_list)):
-            level = skill_level.upper().replace(' ', '')
-            # Empty skill slot
-            # Probably because all favourite ships have their skill leveled max.
-            # '———l', '—l'
-            if not level:
-                continue
-            if re.search(r'[—\-一]{2,}', level):
-                continue
-            if re.search(r'[—一]+', level):
-                continue
-            # Use 'MA' as a part of `MAX`.
-            # SKILL_LEVEL_GRIDS may move a little lower for unknown reason, OCR results are like:
-            # ['NEXT:MA', 'NEXT:/1D]', 'NEXT:MA'] (Actually: `NEXT:MAX, NEXT:0/100, NEXT:MAX`)
-            # ['NEXT:MA', 'NEX T:/ 14[]]', 'NEXT:MA']  (Actually: `NEXT:MAX, NEXT:150/1400, NEXT:MAX`)
-            if 'MA' not in level:
-                logger.attr('LEVEL', 'EMPTY' if len(level) == 0 else level)
-                return skill_button
-
+            result = self._check_skill_level(skill_button, skill_level)
+            if result is not None:
+                return result
+        
+        # Only scroll to bottom if first 3 skills are all max level
+        if has_4th_skill and not SKILL_LEVEL_SCROLL.at_bottom(self):
+            logger.info('First 3 skills all max, scrolling to check 4th skill')
+            SKILL_LEVEL_SCROLL.set_bottom(self, skip_first_screenshot=True)
+            self.device.screenshot()
+            
+            # 4th skill button and level grid position after scrolling to bottom
+            # TODO: Replace with actual coordinates after testing
+            skill_4_button = Button(
+                area=(731,513,934,530),color=(0,0,0),button=(731,513,934,530),
+            )
+            skill_4_level_area = Button(
+                area=(315, 413, 936, 532),color=(0,0,0),button=(315, 413, 936, 532),
+            )     
+            skill_4_level_ocr = ExpOnSkillSelect(buttons=[skill_4_button], lang='cnocr', name='skill_4_button')
+            skill_4_level_result = skill_4_level_ocr.ocr(self.device.image)
+            if isinstance(skill_4_level_result, list):
+                skill_4_level_result = skill_4_level_result[0] if skill_4_level_result else ''
+            
+            result = self._check_skill_level(skill_4_button, skill_4_level_result)
+            if result is not None:
+                return result
+        
         return None
 
     def run(self):
