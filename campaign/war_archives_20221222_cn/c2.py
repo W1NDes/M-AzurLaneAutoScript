@@ -1,24 +1,23 @@
-from .campaign_base import CampaignBase
+from ..campaign_war_archives.campaign_base import CampaignBase
 from module.map.map_base import CampaignMap
 from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
+from .c1 import Config as ConfigBase
 
-MAP = CampaignMap('C1')
-MAP.shape = 'I8'
-MAP.camera_data = ['D3', 'D6', 'E6']
-MAP.camera_data_spawn_point = ['F2']
+MAP = CampaignMap('C2')
+MAP.shape = 'I7'
+MAP.camera_data = ['D2', 'D5', 'F2', 'F5']
+MAP.camera_data_spawn_point = ['D5']
 MAP.map_data = """
-    ++ ++ ++ -- -- -- -- SP --
-    -- Me -- MS MS -- -- -- SP
-    -- ME -- ++ ME -- -- -- --
-    ME -- ME -- -- __ MS Me --
-    Me -- ME -- ++ ME ++ ++ ME
-    ++ -- -- -- -- -- ++ ++ --
-    -- MB -- ++ Me -- -- ME --
-    -- -- -- ++ -- ME ++ ++ ++
+    ME -- -- ME ++ Me -- ++ ++
+    -- -- Me -- MS -- -- -- Me
+    -- ++ -- -- -- __ MS -- --
+    SP -- -- ++ ME ++ ++ MB --
+    SP -- ME -- MS ++ ++ MB Me
+    -- ME -- -- ME -- ME -- --
+    ++ ++ ++ ME -- -- ME -- --
 """
 MAP.weight_data = """
-    50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50
     50 50 50 50 50 50 50 50 50
@@ -41,11 +40,10 @@ A4, B4, C4, D4, E4, F4, G4, H4, I4, \
 A5, B5, C5, D5, E5, F5, G5, H5, I5, \
 A6, B6, C6, D6, E6, F6, G6, H6, I6, \
 A7, B7, C7, D7, E7, F7, G7, H7, I7, \
-A8, B8, C8, D8, E8, F8, G8, H8, I8, \
     = MAP.flatten()
 
 
-class Config:
+class Config(ConfigBase):
     # ===== Start of generated config =====
     MAP_SIREN_TEMPLATE = []
     MOVABLE_ENEMY_TURN = (2,)
@@ -57,32 +55,10 @@ class Config:
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
 
-    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (80, 255 - 17),
-        'width': (0.9, 10),
-        'prominence': 10,
-        'distance': 35,
-    }
-    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (255 - 17, 255),
-        'prominence': 10,
-        'distance': 50,
-        'wlen': 1000
-    }
-    HOMO_EDGE_COLOR_RANGE = (0, 17)
-    MAP_ENEMY_GENRE_DETECTION_SCALING = {
-        'DD': 1.111,
-        'CL': 1.111,
-        'CAred': 1.111,
-        'CV': 1.111,
-        'BBred': 1.111,
-    }
-    MAP_SWIPE_MULTIPLY = (1.116, 1.137)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.079, 1.099)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.048, 1.066)
-    STAGE_INCREASE_CUSTOM = [
-        'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
-    ]
+    MAP_SWIPE_MULTIPLY = (1.074, 1.095)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.039, 1.058)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.009, 1.027)
+
 
 class Campaign(CampaignBase):
     MAP = MAP

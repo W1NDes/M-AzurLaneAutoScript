@@ -2,20 +2,21 @@ from .campaign_base import CampaignBase
 from module.map.map_base import CampaignMap
 from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
+from .a1 import Config as ConfigBase
 
-MAP = CampaignMap('C1')
+MAP = CampaignMap('A3')
 MAP.shape = 'I8'
-MAP.camera_data = ['D3', 'D6', 'E6']
+MAP.camera_data = ['D2', 'D6', 'F2', 'F6']
 MAP.camera_data_spawn_point = ['F2']
 MAP.map_data = """
-    ++ ++ ++ -- -- -- -- SP --
-    -- Me -- MS MS -- -- -- SP
-    -- ME -- ++ ME -- -- -- --
-    ME -- ME -- -- __ MS Me --
-    Me -- ME -- ++ ME ++ ++ ME
-    ++ -- -- -- -- -- ++ ++ --
-    -- MB -- ++ Me -- -- ME --
-    -- -- -- ++ -- ME ++ ++ ++
+    ++ ++ ++ -- -- ME -- SP --
+    -- Me -- MS ME -- -- -- SP
+    -- ME -- ++ -- -- -- -- --
+    ME -- ME -- -- ME ME Me --
+    Me -- MS -- ++ -- ++ ++ ME
+    ++ -- __ -- -- MS ++ ++ --
+    -- -- -- ++ Me -- -- ME --
+    MB MB -- ++ -- ME ++ ++ ++
 """
 MAP.weight_data = """
     50 50 50 50 50 50 50 50 50
@@ -28,9 +29,9 @@ MAP.weight_data = """
     50 50 50 50 50 50 50 50 50
 """
 MAP.spawn_data = [
-    {'battle': 0, 'enemy': 2, 'siren': 2},
+    {'battle': 0, 'enemy': 2, 'siren': 1},
     {'battle': 1, 'enemy': 1},
-    {'battle': 2, 'enemy': 2},
+    {'battle': 2, 'enemy': 1},
     {'battle': 3, 'enemy': 1},
     {'battle': 4, 'enemy': 1, 'boss': 1},
 ]
@@ -45,7 +46,7 @@ A8, B8, C8, D8, E8, F8, G8, H8, I8, \
     = MAP.flatten()
 
 
-class Config:
+class Config(ConfigBase):
     # ===== Start of generated config =====
     MAP_SIREN_TEMPLATE = []
     MOVABLE_ENEMY_TURN = (2,)
@@ -57,36 +58,14 @@ class Config:
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
 
-    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (80, 255 - 17),
-        'width': (0.9, 10),
-        'prominence': 10,
-        'distance': 35,
-    }
-    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (255 - 17, 255),
-        'prominence': 10,
-        'distance': 50,
-        'wlen': 1000
-    }
-    HOMO_EDGE_COLOR_RANGE = (0, 17)
-    MAP_ENEMY_GENRE_DETECTION_SCALING = {
-        'DD': 1.111,
-        'CL': 1.111,
-        'CAred': 1.111,
-        'CV': 1.111,
-        'BBred': 1.111,
-    }
-    MAP_SWIPE_MULTIPLY = (1.116, 1.137)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.079, 1.099)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.048, 1.066)
-    STAGE_INCREASE_CUSTOM = [
-        'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
-    ]
+    MAP_SWIPE_MULTIPLY = (1.095, 1.116)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.059, 1.079)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.028, 1.047)
+
 
 class Campaign(CampaignBase):
     MAP = MAP
-    ENEMY_FILTER = '1L > 1M > 1E > 1C > 2L > 2M > 2E > 2C > 3L > 3M > 3E > 3C'
+    ENEMY_FILTER = '1L > 1M > 2L > 2M > 3L > 3M > 1E > 2E > 3E > 1C > 2C > 3C'
 
     def battle_0(self):
         if self.clear_siren():
