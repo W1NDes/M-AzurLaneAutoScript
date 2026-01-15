@@ -493,7 +493,7 @@
       "Event2MapName": "d3",
       "EventDailyAMapName": "a1 > a2 > a3 > b1 > b2 > b3",
       "EventDailySpMapName": "sp",
-      "EventDailyCD": false,
+      "EventDailyCD": "c1 > c2 > c3 > d1 > d2 > d3",
       "EventResetStageAfterHours": 72,
       "EventResetStageName": "A1",
       "EventResetStageRecord": "2020-01-01 00:00:00"

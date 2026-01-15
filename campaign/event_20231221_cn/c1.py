@@ -80,7 +80,9 @@ class Config:
     MAP_SWIPE_MULTIPLY = (1.116, 1.137)
     MAP_SWIPE_MULTIPLY_MINITOUCH = (1.079, 1.099)
     MAP_SWIPE_MULTIPLY_MAATOUCH = (1.048, 1.066)
-
+    STAGE_INCREASE_CUSTOM = [
+        'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
+    ]
 
 class Campaign(CampaignBase):
     MAP = MAP
