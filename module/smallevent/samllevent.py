@@ -637,7 +637,7 @@ class SmallEvent(UI):
             logger.warning("未成功进入七天小任务页面")         
              
     def run(self):
-        if datetime.now() < datetime(2026, 1, 9, 8, 0, 0):#eventSet
+        if datetime.now() < datetime(2026, 1, 22, 18, 0, 0):#eventSet
             # ninja_city_result = self.ninja_city()
             # if ninja_city_result:
             #     logger.info("ninja_city success")
@@ -650,10 +650,10 @@ class SmallEvent(UI):
                 goPage_result = self.goto_sevenD_page(page_area,ORC_API)
                 self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 #第二栏
-                page_area = (0, 0, 1280, 720)
-                goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
-                        button_text="致美好世界",exclude_text=["无"],entry_index=3,page_text="活动汇总")
-                self.sevenD_harvest(page_area,ORC_API,goPage_result)
+                # page_area = (0, 0, 1280, 720)
+                # goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
+                #         button_text="致美好世界",exclude_text=["无"],entry_index=3,page_text="活动汇总")
+                # self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 # page_area = (0, 0, 1280, 720)
                 # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
                 #                     button_text="纪念签到",exclude_text=["无"])#eventSet
@@ -662,18 +662,20 @@ class SmallEvent(UI):
         else:
             logger.info('7day task expired')
 
-        # tomorrow 13pm - 但要避免超过24小时限制
-        tomorrow_13pm = (datetime.now() + timedelta(days=1)).replace(hour=13, minute=0, second=0, microsecond=0)
-        now = datetime.now()
+        self.config.task_delay(target=datetime.now() + timedelta(hours=6, minutes=0))
+
+        # # tomorrow 13pm - 但要避免超过24小时限制
+        # tomorrow_13pm = (datetime.now() + timedelta(days=1)).replace(hour=13, minute=0, second=0, microsecond=0)
+        # now = datetime.now()
         
-        # 如果目标时间超过24小时，则延迟到接近24小时的时间点
-        if tomorrow_13pm - now > timedelta(hours=24):
-            # 延迟到23小时50分钟后，避免触发24小时限制
-            delay_time = now + timedelta(hours=23, minutes=50)
-            logger.info(f'Target time {tomorrow_13pm} exceeds 24h limit, delay to {delay_time} instead')
-            self.config.task_delay(target=delay_time)
-        else:
-            self.config.task_delay(target=tomorrow_13pm)
+        # # 如果目标时间超过24小时，则延迟到接近24小时的时间点
+        # if tomorrow_13pm - now > timedelta(hours=24):
+        #     # 延迟到23小时50分钟后，避免触发24小时限制
+        #     delay_time = now + timedelta(hours=23, minutes=50)
+        #     logger.info(f'Target time {tomorrow_13pm} exceeds 24h limit, delay to {delay_time} instead')
+        #     self.config.task_delay(target=delay_time)
+        # else:
+        #     self.config.task_delay(target=tomorrow_13pm)
         
 
 if __name__ == "__main__":
