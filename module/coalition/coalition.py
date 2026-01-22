@@ -62,6 +62,8 @@ class Coalition(CoalitionCombat, CampaignEvent):
             ocr = Digit(NEONCITY_PT_OCR, name='OCR_PT', lang='cnocr', letter=(208, 208, 208), threshold=128)
         elif event == 'coalition_20251120':
             ocr = DALPtOcr(DAL_PT_OCR, name='OCR_PT' ,letter=(255, 213, 69), threshold=128)
+        elif event == 'coalition_20260122':
+            ocr = Digit(FASHION_PT_OCR, name='OCR_PT', letter=(41, 41, 42), threshold=128)
         else:
             logger.error(f'ocr object is not defined in event {event}')
             raise ScriptError
@@ -151,9 +153,9 @@ class Coalition(CoalitionCombat, CampaignEvent):
             self.coalition_map_exit(event)
             raise
 
-        if self.triggered_stop_condition(oil_check=True):
-            self.coalition_map_exit(event)
-            raise ScriptEnd
+        # if self.triggered_stop_condition(oil_check=True):
+        #     self.coalition_map_exit(event)
+        #     raise ScriptEnd
 
         self.enter_map(event=event, stage=stage, mode=fleet)
         self.coalition_combat()
@@ -222,10 +224,10 @@ class Coalition(CoalitionCombat, CampaignEvent):
                 logger.info(f'Count: {self.run_count}')
 
             # UI switches
-            # if self.config.SERVER in ['tw']:
-            #     self.ui_goto(page_campaign_menu)
-            #     if self.triggered_stop_condition(oil_check=True):
-            #         break
+            self.ui_goto(page_campaign_menu)
+            if self.triggered_stop_condition(oil_check=True):
+                break
+
             self.device.stuck_record_clear()
             self.device.click_record_clear()
             self.ui_goto_coalition()
