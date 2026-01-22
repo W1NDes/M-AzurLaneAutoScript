@@ -12,8 +12,8 @@ from module.base.utils import  get_color
 import module.config.server as server
 from module.notify import handle_notify
 from module.ui.page import page_campaign_menu
-
-
+from module.ui.assets import BACK_ARROW
+from module.base.timer import Timer
 class AcademyPtOcr(Digit):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -81,16 +81,34 @@ class Coalition(CoalitionCombat, CampaignEvent):
         self.config.update()
         return pt
 
-    def _get_oil(self):
-        logger.info("using coalition_get_num")
-        # Update offset
-        _ = self.appear(OCR_OIL_CHECK)
+    # def _get_oil(self):
+    #     logger.info("using coalition_get_num")
+    #     # Update offset
+    #     _ = self.appear(OCR_OIL_CHECK)
 
-        color = get_color(self.device.image, OCR_OIL_CHECK.button)
-        ocr = Digit(OCR_OIL, name='OCR_OIL', letter=(165, 165, 165), threshold=152)
+    #     color = get_color(self.device.image, OCR_OIL_CHECK.button)
+    #     ocr = Digit(OCR_OIL, name='OCR_OIL', letter=(165, 165, 165), threshold=152)
 
-        return ocr.ocr(self.device.image)
-    
+    #     return ocr.ocr(self.device.image)
+
+    def check_oil(self):
+        limit = max(500, self.config.StopCondition_OilLimit)
+        if not (self.get_oil() < limit):
+            return False
+
+        timeout = Timer(1, count=2).start()
+        while True:
+            self.device.screenshot()
+            if self.appear(BACK_ARROW, offset=(5, 2)):
+                break
+            if timeout.reached():
+                logger.warning('Assumes that OCR_OIL is stable')
+                break
+        if self.get_oil() < limit:
+            return True
+        else:
+            return False
+
     def triggered_stop_condition(self, oil_check=False, pt_check=False):
         """
         Returns:
@@ -104,7 +122,7 @@ class Coalition(CoalitionCombat, CampaignEvent):
             return True
         # Oil limit
         if oil_check:
-            if self.get_oil() < max(500, self.config.StopCondition_OilLimit):
+            if self.check_oil():
                 logger.hr('Triggered stop condition: Oil limit')
                 self.config.task_delay(minute=(120, 240))
                 return True
