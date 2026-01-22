@@ -800,7 +800,7 @@
     },
     "Coalition": {
       "UseRecommendFleet": true,
-      "Mode": "area1-normal",
+      "Mode": "hard",
       "Fleet": "single"
     },
     "StopCondition": {
@@ -1404,7 +1404,7 @@
     },
     "Coalition": {
       "UseRecommendFleet": true,
-      "Mode": "area1-normal",
+      "Mode": "sp",
       "Fleet": "multi"
     },
     "StopCondition": {

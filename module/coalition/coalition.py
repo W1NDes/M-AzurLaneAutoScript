@@ -12,8 +12,8 @@ from module.base.utils import  get_color
 import module.config.server as server
 from module.notify import handle_notify
 from module.ui.page import page_campaign_menu
-
-
+from module.ui.assets import BACK_ARROW
+from module.base.timer import Timer
 class AcademyPtOcr(Digit):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -62,6 +62,8 @@ class Coalition(CoalitionCombat, CampaignEvent):
             ocr = Digit(NEONCITY_PT_OCR, name='OCR_PT', lang='cnocr', letter=(208, 208, 208), threshold=128)
         elif event == 'coalition_20251120':
             ocr = DALPtOcr(DAL_PT_OCR, name='OCR_PT' ,letter=(255, 213, 69), threshold=128)
+        elif event == 'coalition_20260122':
+            ocr = Digit(FASHION_PT_OCR, name='OCR_PT', letter=(41, 41, 42), threshold=128)
         else:
             logger.error(f'ocr object is not defined in event {event}')
             raise ScriptError
@@ -79,16 +81,34 @@ class Coalition(CoalitionCombat, CampaignEvent):
         self.config.update()
         return pt
 
-    def _get_oil(self):
-        logger.info("using coalition_get_num")
-        # Update offset
-        _ = self.appear(OCR_OIL_CHECK)
+    # def _get_oil(self):
+    #     logger.info("using coalition_get_num")
+    #     # Update offset
+    #     _ = self.appear(OCR_OIL_CHECK)
 
-        color = get_color(self.device.image, OCR_OIL_CHECK.button)
-        ocr = Digit(OCR_OIL, name='OCR_OIL', letter=(165, 165, 165), threshold=152)
+    #     color = get_color(self.device.image, OCR_OIL_CHECK.button)
+    #     ocr = Digit(OCR_OIL, name='OCR_OIL', letter=(165, 165, 165), threshold=152)
 
-        return ocr.ocr(self.device.image)
-    
+    #     return ocr.ocr(self.device.image)
+
+    def check_oil(self):
+        limit = max(500, self.config.StopCondition_OilLimit)
+        if not (self.get_oil() < limit):
+            return False
+
+        timeout = Timer(1, count=2).start()
+        while True:
+            self.device.screenshot()
+            if self.appear(BACK_ARROW, offset=(5, 2)):
+                break
+            if timeout.reached():
+                logger.warning('Assumes that OCR_OIL is stable')
+                break
+        if self.get_oil() < limit:
+            return True
+        else:
+            return False
+
     def triggered_stop_condition(self, oil_check=False, pt_check=False):
         """
         Returns:
@@ -102,7 +122,7 @@ class Coalition(CoalitionCombat, CampaignEvent):
             return True
         # Oil limit
         if oil_check:
-            if self.get_oil() < max(500, self.config.StopCondition_OilLimit):
+            if self.check_oil():
                 logger.hr('Triggered stop condition: Oil limit')
                 self.config.task_delay(minute=(120, 240))
                 return True
@@ -151,9 +171,9 @@ class Coalition(CoalitionCombat, CampaignEvent):
             self.coalition_map_exit(event)
             raise
 
-        if self.triggered_stop_condition(oil_check=True):
-            self.coalition_map_exit(event)
-            raise ScriptEnd
+        # if self.triggered_stop_condition(oil_check=True):
+        #     self.coalition_map_exit(event)
+        #     raise ScriptEnd
 
         self.enter_map(event=event, stage=stage, mode=fleet)
         self.coalition_combat()
@@ -222,10 +242,10 @@ class Coalition(CoalitionCombat, CampaignEvent):
                 logger.info(f'Count: {self.run_count}')
 
             # UI switches
-            # if self.config.SERVER in ['tw']:
-            #     self.ui_goto(page_campaign_menu)
-            #     if self.triggered_stop_condition(oil_check=True):
-            #         break
+            self.ui_goto(page_campaign_menu)
+            if self.triggered_stop_condition(oil_check=True):
+                break
+
             self.device.stuck_record_clear()
             self.device.click_record_clear()
             self.ui_goto_coalition()
