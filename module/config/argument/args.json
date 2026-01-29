@@ -1968,7 +1968,6 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "display": "hide",
@@ -1982,10 +1981,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -2249,7 +2247,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -2262,10 +2259,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -2685,7 +2681,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -2695,9 +2690,6 @@
           "event_20231221_cn"
         ],
         "option_jp": [
-          "event_20231221_cn"
-        ],
-        "option_tw": [
           "event_20251218_cn"
         ],
         "option_bold": [
@@ -3093,10 +3085,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -3959,10 +3950,18 @@
         "type": "select",
         "value": "hard",
         "option": [
-          "easy",
-          "normal",
-          "hard",
-          "ex"
+          "area1-normal",
+          "area1-hard",
+          "area2-normal",
+          "area2-hard",
+          "area3-normal",
+          "area3-hard",
+          "area4-normal",
+          "area4-hard",
+          "area5-normal",
+          "area5-hard",
+          "area6-normal",
+          "area6-hard"
         ]
       },
       "Fleet": {
@@ -4850,7 +4849,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -4863,10 +4861,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -5266,7 +5263,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -5279,10 +5275,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -5682,7 +5677,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -5695,10 +5689,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -6098,7 +6091,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -6111,10 +6103,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -6514,7 +6505,6 @@
         "type": "state",
         "value": "campaign_main",
         "option": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ],
         "option_cn": [
@@ -6527,10 +6517,9 @@
           "event_20231221_cn"
         ],
         "option_tw": [
-          "event_20251218_cn"
+          "event_20220526_cn"
         ],
         "option_bold": [
-          "event_20231221_cn",
           "event_20251218_cn"
         ]
       },
@@ -7259,13 +7248,19 @@
         "type": "select",
         "value": "sp",
         "option": [
-          "easy",
-          "normal",
-          "hard",
-          "sp",
-          "ex"
-        ],
-        "display": "hide"
+          "area1-normal",
+          "area1-hard",
+          "area2-normal",
+          "area2-hard",
+          "area3-normal",
+          "area3-hard",
+          "area4-normal",
+          "area4-hard",
+          "area5-normal",
+          "area5-hard",
+          "area6-normal",
+          "area6-hard"
+        ]
       },
       "Fleet": {
         "type": "state",
@@ -9378,7 +9373,8 @@
           "noshiro",
           "sirius",
           "new_jersey",
-          "taihou"
+          "taihou",
+          "aegir"
         ]
       }
     },

@@ -66,6 +66,10 @@
       "name": "活動通用",
       "help": ""
     },
+    "Coalition": {
+      "name": "光影風尚-拍攝進行時",
+      "help": ""
+    },
     "Event": {
       "name": "活動圖",
       "help": ""
@@ -86,10 +90,6 @@
       "name": "深谷来信",
       "help": ""
     },
-    "Coalition": {
-      "name": "極地風暴",
-      "help": ""
-    },
     "MaritimeEscort": {
       "name": "商船護航",
       "help": ""
@@ -97,6 +97,10 @@
     "WarArchives": {
       "name": "作戰檔案",
       "help": "由於作戰檔案缺少維護，開荒功能不一定能正常使用，如果發現Alas運行異常，請手動完成開荒後使用自律尋敵功能"
+    },
+    "CoalitionSp": {
+      "name": "光影風尚-拍攝進行時SP",
+      "help": ""
     },
     "EventA": {
       "name": "活動每日A圖",
@@ -125,10 +129,6 @@
     "EventStory": {
       "name": "Task.EventStory.name",
       "help": "Task.EventStory.help"
-    },
-    "CoalitionSp": {
-      "name": "極地風暴每日SP",
-      "help": ""
     },
     "Commission": {
       "name": "委託",
@@ -1730,8 +1730,7 @@
       "easy": "easy",
       "normal": "normal",
       "hard": "hard",
-      "sp": "sp",
-      "ex": "ex"
+      "sp": "sp"
     },
     "Fleet": {
       "name": "出擊隊伍",
@@ -2570,7 +2569,8 @@
       "noshiro": "能代",
       "sirius": "天狼星",
       "new_jersey": "紐澤西",
-      "taihou": "大鳳"
+      "taihou": "大鳳",
+      "aegir": "埃吉爾"
     }
   },
   "Daily": {

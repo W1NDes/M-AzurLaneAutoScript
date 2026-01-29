@@ -433,7 +433,7 @@ Coalition:
   UseRecommendFleet: true
   Mode:
     value: hard
-    option: [ easy, normal, hard, sp, ex ]
+    option: [ easy, normal, hard, sp ]
   Fleet:
     value: single
     option: [ single, multi ]
@@ -749,7 +749,7 @@ PrivateQuarters:
     TargetInteract: true
     TargetShip:
       value: anchorage
-      option: [ anchorage, noshiro, sirius, new_jersey, taihou ]
+      option: [ anchorage, noshiro, sirius, new_jersey, taihou, aegir ]
 # ==================== Daily ====================
 
 Daily:
