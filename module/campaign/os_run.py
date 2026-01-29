@@ -24,8 +24,8 @@ class OSCampaignRun(OSMapOperation):
     def opsi_shop(self):
         if self.config.OpsiShop_BuySpecialRadar:
             if Oilkeep(self.config, self.device).update_oil() > 6000:
-                self.load_campaign()
-                self.campaign.os_voucher_buy_loggerUnlock()
+                campaign = self.load_campaign()
+                campaign.os_voucher_buy_loggerUnlock()
             else:
                 logger.warning('oil < 6000, skip buying loggerUnlock')
         try:

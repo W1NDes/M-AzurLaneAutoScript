@@ -26,3 +26,9 @@ class OpsiVoucher(OSMap):
         logger.info('OS voucher finished, delay to next reset')
         logger.attr('OpsiNextReset', next_reset)
         self.config.task_delay(target=next_reset)
+
+    def os_voucher_buy_loggerUnlock(self):
+        logger.hr('OS voucher buy loggerUnlock', level=1)
+        self._os_voucher_enter()
+        VoucherShop(self.config, self.device).run_loggerUnlock()
+        self._os_voucher_exit()

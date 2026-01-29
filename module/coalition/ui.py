@@ -197,12 +197,6 @@ class CoalitionUI(Combat):
             ('coalition_20260122', 'hard'): FASHION_HARD,
             ('coalition_20260122', 'sp'): FASHION_SP,
             ('coalition_20260122', 'ex'): FASHION_EX,
-
-            ('coalition_20260122', 'easy'): FASHION_EASY,
-            ('coalition_20260122', 'normal'): FASHION_NORMAL,
-            ('coalition_20260122', 'hard'): FASHION_HARD,
-            ('coalition_20260122', 'sp'): FASHION_SP,
-            ('coalition_20260122', 'ex'): FASHION_EX,
         }
         stage = stage.lower()
         try:
@@ -286,12 +280,6 @@ class CoalitionUI(Combat):
             ('coalition_20251120', 'area5-hard'): 3,
             ('coalition_20251120', 'area6-hard'): 4,
             # FASHION
-            ('coalition_20260122', 'easy'): 1,
-            ('coalition_20260122', 'normal'): 2,
-            ('coalition_20260122', 'hard'): 3,
-            ('coalition_20260122', 'sp'): 4,
-            ('coalition_20260122', 'ex'): 5,
-
             ('coalition_20260122', 'easy'): 1,
             ('coalition_20260122', 'normal'): 2,
             ('coalition_20260122', 'hard'): 3,
@@ -389,32 +377,7 @@ class CoalitionUI(Combat):
             if stage in ['easy', 'sp', 'ex']:
                 return False
 
-
         clicked = self.coalition_set_fleet(event, mode)
-
-        if self.appear(FLEET_NOT_PREPARED, offset=(20, 20)):
-            result = handle_fleet_recommend(stage)
-            if result == 'continue':
-                continue
-            elif result == False:
-                logger.critical('FLEET_NOT_PREPARED')
-                logger.critical('Please prepare you fleets before running coalition battles')
-                raise RequestHumanTakeover
-        if self.appear(EMPTY_FLAGSHIP, offset=(20, 20)):
-            result = handle_fleet_recommend(stage)
-            if result == 'continue':
-                continue
-            elif result == False:
-                logger.critical('EMPTY_FLAGSHIP, Please prepare you fleets before running coalition battles')
-                raise RequestHumanTakeover
-        if self.appear(EMPTY_VANGUARD, offset=(20, 20)):
-            result = handle_fleet_recommend(stage)
-            if result == 'continue':
-                continue
-            elif result == False:
-                logger.critical('EMPTY_VANGUARD, Please prepare you fleets before running coalition battles')
-                raise RequestHumanTakeover
-
         return clicked
 
     def coalition_map_exit(self, event):
@@ -537,6 +500,30 @@ class CoalitionUI(Combat):
                 fleet_timer.reset()
                 campaign_timer.reset()
                 continue
+
+            # Fleet not prepared check - use recommend fleet if enabled
+            if self.appear(FLEET_NOT_PREPARED, offset=(20, 20)):
+                result = handle_fleet_recommend(stage)
+                if result == 'continue':
+                    continue
+                elif result == False:
+                    logger.critical('FLEET_NOT_PREPARED')
+                    logger.critical('Please prepare you fleets before running coalition battles')
+                    raise RequestHumanTakeover
+            if self.appear(EMPTY_FLAGSHIP, offset=(20, 20)):
+                result = handle_fleet_recommend(stage)
+                if result == 'continue':
+                    continue
+                elif result == False:
+                    logger.critical('EMPTY_FLAGSHIP, Please prepare you fleets before running coalition battles')
+                    raise RequestHumanTakeover
+            if self.appear(EMPTY_VANGUARD, offset=(20, 20)):
+                result = handle_fleet_recommend(stage)
+                if result == 'continue':
+                    continue
+                elif result == False:
+                    logger.critical('EMPTY_VANGUARD, Please prepare you fleets before running coalition battles')
+                    raise RequestHumanTakeover
 
             # Auto search continue
             if self.handle_auto_search_continue():
