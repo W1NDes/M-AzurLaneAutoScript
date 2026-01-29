@@ -36,6 +36,12 @@ class OpsiShop(OSMap):
         self.config.task_delay(target=next_reset)
         self.config.task_stop()
 
+    def os_voucher_buy_loggerUnlock(self):
+        logger.hr('OS voucher buy loggerUnlock', level=1)
+        self._os_voucher_enter()
+        VoucherShop(self.config, self.device).run_loggerUnlock()
+        self._os_voucher_exit()
+
     def _os_shop_delay(self, not_empty) -> datetime:
         """
         Calculate the delay of OpsiShop.
