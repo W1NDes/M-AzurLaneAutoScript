@@ -3819,8 +3819,7 @@
       },
       "StageIncrease": {
         "type": "checkbox",
-        "value": false,
-        "display": "hide"
+        "value": false
       },
       "GetNewShip": {
         "type": "checkbox",

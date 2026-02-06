@@ -208,7 +208,6 @@ Raid:
     AmbushEvade: true
   StopCondition:
     MapAchievement: non_stop
-    StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
 

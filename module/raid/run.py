@@ -135,6 +135,15 @@ class RaidRun(Raid, CampaignEvent):
             if self.config.StopCondition_RunCount:
                 self.config.StopCondition_RunCount -= 1
             # End
+
+            if self.config.StopCondition_StageIncrease:
+                prev_mode = mode
+                next_mode = self.raid_name_increase(prev_mode)
+                if next_mode != prev_mode:
+                    logger.info(f'Stage {prev_mode} increases to {next_mode}')
+                    self.config.Raid_Mode = next_mode
+                    mode = next_mode
+                    continue
             if self.triggered_stop_condition():
                 break
             # Scheduler

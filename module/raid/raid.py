@@ -389,6 +389,30 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
             logger.info(f'Raid {self.config.Campaign_Event} does not support PT ocr, skip')
             return 0
 
+    @staticmethod
+    def raid_name_increase(mode):
+        """
+        Args:
+            mode (str): Raid mode such as 'easy', 'normal', 'hard'.
+
+        Returns:
+            str: Next mode name, if already at highest mode, return current mode.
+        """
+        mode = mode.lower()
+
+
+        stages = ['easy', 'normal', 'hard']
+
+        if mode in stages:
+            index = stages.index(mode)
+            if index < len(stages) - 1:
+                return stages[index + 1]
+            else:
+                return mode
+
+        logger.warning(f'Unknown raid mode: {mode}')
+        return mode
+
     def is_raid_rpg(self):
         return self.config.Campaign_Event == 'raid_20240328'
 
