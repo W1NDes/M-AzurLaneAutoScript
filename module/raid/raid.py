@@ -7,6 +7,9 @@ from module.campaign.campaign_event import CampaignEvent
 from module.combat.assets import *
 from module.exception import ScriptError
 from module.logger import logger
+from module.map.assets import (FLEET_1_CHOOSE, FLEET_1_ADVICE, FLEET_1_BAR,
+                               FLEET_1_CLEAR, FLEET_1_IN_USE, FLEET_1_HARD_SATIESFIED)
+from module.map.map_fleet_preparation import FleetOperator
 from module.map.map_operation import MapOperation
 from module.ocr.ocr import Digit, DigitCounter
 from module.raid.assets import *
@@ -282,6 +285,29 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
 
         return False
 
+    def handle_raid_fleet_recommend(self):
+        """
+        If fleet is empty on raid fleet preparation page, click recommend to auto-fill.
+        Uses the same fleet preparation assets as main campaign hard mode.
+
+        Returns:
+            bool: If fleet was recommended.
+        """
+        if not self.appear(FLEET_1_CLEAR, offset=FleetOperator.OFFSET):
+            logger.info('Fleet preparation assets not found on raid page, skip recommend')
+            return False
+
+        fleet_1 = FleetOperator(
+            choose=FLEET_1_CHOOSE, advice=FLEET_1_ADVICE, bar=FLEET_1_BAR, clear=FLEET_1_CLEAR,
+            in_use=FLEET_1_IN_USE, hard_satisfied=FLEET_1_HARD_SATIESFIED, main=self)
+
+        if not fleet_1.in_use():
+            logger.info('Fleet 1 is empty on raid fleet preparation, recommending')
+            fleet_1.recommend()
+            return True
+
+        return False
+
     def raid_enter(self, mode, raid, skip_first_screenshot=True):
         """
         Args:
@@ -294,6 +320,7 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
             out: BATTLE_PREPARATION
         """
         entrance = raid_entrance(raid=raid, mode=mode)
+        fleet_checked = False
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -307,6 +334,12 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
                     self.config.task_stop()
                 self.device.click(entrance)
                 continue
+
+            # Recommend fleet if empty
+            if not fleet_checked and self.appear(RAID_FLEET_PREPARATION, offset=(20, 20)):
+                self.handle_raid_fleet_recommend()
+                fleet_checked = True
+
             if self.appear_then_click(RAID_FLEET_PREPARATION, offset=(20, 20), interval=5):
                 continue
 
