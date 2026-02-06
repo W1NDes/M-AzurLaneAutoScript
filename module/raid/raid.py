@@ -2,12 +2,14 @@ import cv2
 import numpy as np
 
 import module.config.server as server
-from module.base.decorator import run_once
 from module.base.timer import Timer
 from module.campaign.campaign_event import CampaignEvent
 from module.combat.assets import *
-from module.exception import OilExhausted, ScriptError
+from module.exception import ScriptError
 from module.logger import logger
+from module.map.assets import (FLEET_1_CHOOSE, FLEET_1_ADVICE, FLEET_1_BAR,
+                               FLEET_1_CLEAR, FLEET_1_IN_USE, FLEET_1_HARD_SATIESFIED)
+from module.map.map_fleet_preparation import FleetOperator
 from module.map.map_operation import MapOperation
 from module.ocr.ocr import Digit, DigitCounter
 from module.raid.assets import *
@@ -190,6 +192,41 @@ def pt_ocr(raid):
 
 
 class Raid(MapOperation, RaidCombat, CampaignEvent):
+    @property
+    def _raid_has_oil_icon(self):
+        """
+        Game devs are too asshole to drop oil display for UI design
+        https://github.com/LmeSzinc/AzurLaneAutoScript/issues/5214
+        """
+        if self.config.Campaign_Event == 'raid_20240328':
+            return False
+        return True
+
+    def triggered_stop_condition(self, oil_check=False, pt_check=False, coin_check=False):
+        """
+        Returns:
+            bool: If triggered a stop condition.
+        """
+        # Oil limit
+        if oil_check:
+            if self.get_oil() < max(500, self.config.StopCondition_OilLimit):
+                logger.hr('Triggered stop condition: Oil limit')
+                self.config.task_delay(minute=(120, 240))
+                return True
+        # Event limit
+        if pt_check:
+            if self.event_pt_limit_triggered():
+                logger.hr('Triggered stop condition: Event PT limit')
+                return True
+        # TaskBalancer
+        if coin_check:
+            if self.config.TaskBalancer_Enable and self.triggered_task_balancer():
+                logger.hr('Triggered stop condition: Coin limit')
+                self.handle_task_balancer()
+                return True
+
+        return False
+
     def combat_preparation(self, balance_hp=False, emotion_reduce=False, auto='combat_auto', fleet_index=1):
         """
         Args:
@@ -199,32 +236,20 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
             fleet_index (int):
         """
         logger.info('Combat preparation.')
-        skip_first_screenshot = True
 
         # No need, already waited in `raid_execute_once()`
         # if emotion_reduce:
         #     self.emotion.wait(fleet_index)
 
-        @run_once
-        def check_oil():
-            if self.get_oil() < max(500, self.config.StopCondition_OilLimit):
-                logger.hr('Triggered oil limit')
-                raise OilExhausted
-
-        @run_once
-        def check_coin():
-            if self.config.TaskBalancer_Enable and self.triggered_task_balancer():
-                logger.hr('Triggered stop condition: Coin limit')
-                self.handle_task_balancer()
-                return True
-
+        checked = False
         for _ in self.loop():
-
             if self.appear(BATTLE_PREPARATION, offset=(30, 20)):
                 if self.handle_combat_automation_set(auto=auto == 'combat_auto'):
                     continue
-                check_oil()
-                check_coin()
+                if not checked and self._raid_has_oil_icon:
+                    checked = True
+                    if self.triggered_stop_condition(oil_check=True, coin_check=True):
+                        self.config.task_stop()
             if self.handle_raid_ticket_use():
                 continue
             if self.handle_retirement():
@@ -260,6 +285,29 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
 
         return False
 
+    def handle_raid_fleet_recommend(self):
+        """
+        If fleet is empty on raid fleet preparation page, click recommend to auto-fill.
+        Uses the same fleet preparation assets as main campaign hard mode.
+
+        Returns:
+            bool: If fleet was recommended.
+        """
+        if not self.appear(FLEET_1_CLEAR, offset=FleetOperator.OFFSET):
+            logger.info('Fleet preparation assets not found on raid page, skip recommend')
+            return False
+
+        fleet_1 = FleetOperator(
+            choose=FLEET_1_CHOOSE, advice=FLEET_1_ADVICE, bar=FLEET_1_BAR, clear=FLEET_1_CLEAR,
+            in_use=FLEET_1_IN_USE, hard_satisfied=FLEET_1_HARD_SATIESFIED, main=self)
+
+        if not fleet_1.in_use():
+            logger.info('Fleet 1 is empty on raid fleet preparation, recommending')
+            fleet_1.recommend()
+            return True
+
+        return False
+
     def raid_enter(self, mode, raid, skip_first_screenshot=True):
         """
         Args:
@@ -272,6 +320,7 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
             out: BATTLE_PREPARATION
         """
         entrance = raid_entrance(raid=raid, mode=mode)
+        fleet_checked = False
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -281,10 +330,16 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
             if self.appear(entrance, offset=(10, 10), interval=5):
                 # Items appear from right
                 # Check PT when entrance appear
-                if self.event_pt_limit_triggered():
+                if self.triggered_stop_condition(pt_check=True):
                     self.config.task_stop()
                 self.device.click(entrance)
                 continue
+
+            # Recommend fleet if empty
+            if not fleet_checked and self.appear(RAID_FLEET_PREPARATION, offset=(20, 20)):
+                self.handle_raid_fleet_recommend()
+                fleet_checked = True
+
             if self.appear_then_click(RAID_FLEET_PREPARATION, offset=(20, 20), interval=5):
                 continue
 
@@ -366,6 +421,30 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
         else:
             logger.info(f'Raid {self.config.Campaign_Event} does not support PT ocr, skip')
             return 0
+
+    @staticmethod
+    def raid_name_increase(mode):
+        """
+        Args:
+            mode (str): Raid mode such as 'easy', 'normal', 'hard'.
+
+        Returns:
+            str: Next mode name, if already at highest mode, return current mode.
+        """
+        mode = mode.lower()
+
+
+        stages = ['easy', 'normal', 'hard']
+
+        if mode in stages:
+            index = stages.index(mode)
+            if index < len(stages) - 1:
+                return stages[index + 1]
+            else:
+                return mode
+
+        logger.warning(f'Unknown raid mode: {mode}')
+        return mode
 
     def is_raid_rpg(self):
         return self.config.Campaign_Event == 'raid_20240328'

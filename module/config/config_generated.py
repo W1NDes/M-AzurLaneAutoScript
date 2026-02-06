@@ -283,7 +283,7 @@ class GeneratedConfig:
 
     # Group `Coalition`
     Coalition_UseRecommendFleet = True
-    Coalition_Mode = 'hard'  # easy, normal, hard, sp, ex
+    Coalition_Mode = 'hard'  # easy, normal, hard, sp
     Coalition_Fleet = 'single'  # single, multi
 
     # Group `Commission`
@@ -460,7 +460,7 @@ class GeneratedConfig:
     PrivateQuarters_BuyRoses = True
     PrivateQuarters_BuyCake = False
     PrivateQuarters_TargetInteract = True
-    PrivateQuarters_TargetShip = 'anchorage'  # anchorage, noshiro, sirius, new_jersey, taihou
+    PrivateQuarters_TargetShip = 'anchorage'  # anchorage, noshiro, sirius, new_jersey, taihou, aegir
 
     # Group `Daily`
     Daily_UseDailySkip = True

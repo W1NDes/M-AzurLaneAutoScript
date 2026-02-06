@@ -66,6 +66,10 @@
       "name": "イベント共通設定",
       "help": ""
     },
+    "Coalition": {
+      "name": "特集写真-撮影進行中",
+      "help": ""
+    },
     "Event": {
       "name": "イベント海域",
       "help": ""
@@ -86,16 +90,16 @@
       "name": "病院探訪",
       "help": ""
     },
-    "Coalition": {
-      "name": "ネオンシティの探索者",
-      "help": ""
-    },
     "MaritimeEscort": {
       "name": "Maritime Escort",
       "help": ""
     },
     "WarArchives": {
       "name": "作戦履歴",
+      "help": ""
+    },
+    "CoalitionSp": {
+      "name": "特集写真-撮影進行中SP",
       "help": ""
     },
     "EventA": {
@@ -125,10 +129,6 @@
     "EventStory": {
       "name": "Task.EventStory.name",
       "help": "Task.EventStory.help"
-    },
-    "CoalitionSp": {
-      "name": "ネオンシティの探索者SP",
-      "help": ""
     },
     "Commission": {
       "name": "委託",
@@ -1003,7 +1003,7 @@
       "coalition_20240627": "リトル学園へようこそ",
       "coalition_20250626": "ネオンシティの探索者",
       "coalition_20251120": "DATE A LANE",
-      "coalition_20260122": "特集写真――撮影進行中！",
+      "coalition_20260122": "特集写真-撮影進行中",
       "event_20200227_cn": "凍絶の北海",
       "event_20200312_cn": "南洋に靡く硝煙（復刻）",
       "event_20200326_cn": "闇靄払う銀翼",
@@ -1092,7 +1092,7 @@
       "raid_20230118": "冬の案内人",
       "raid_20230629": "緑地伽話",
       "raid_20240130": "新春宴会狂騒曲",
-      "raid_20240328": "ゼロから頑張る魔王討伐",
+      "raid_20240328": "ゼロから頑張る魔王討伐（復刻）",
       "raid_20250116": "新春華裳協奏曲",
       "war_archives_20180607_cn": "檔案 墨染まりし鋼の桜",
       "war_archives_20180726_cn": "檔案 光と影のアイリス",
@@ -1136,6 +1136,7 @@
       "war_archives_20220728_cn": "檔案 鋼鷲の冒険譚",
       "war_archives_20220915_cn": "檔案 赫の涙月 菫の暁風",
       "war_archives_20221222_cn": "檔案 積重なる事象の幻界",
+      "war_archives_20230223_cn": "檔案 黙示の遺構",
       "war_archives_20231026_cn": "檔案 テンペスタと若返りの泉"
     },
     "Mode": {
@@ -1730,8 +1731,7 @@
       "easy": "easy",
       "normal": "normal",
       "hard": "hard",
-      "sp": "sp",
-      "ex": "ex"
+      "sp": "sp"
     },
     "Fleet": {
       "name": "Coalition.Fleet.name",
@@ -2570,7 +2570,8 @@
       "noshiro": "noshiro",
       "sirius": "sirius",
       "new_jersey": "new_jersey",
-      "taihou": "taihou"
+      "taihou": "taihou",
+      "aegir": "aegir"
     }
   },
   "Daily": {

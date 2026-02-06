@@ -134,7 +134,7 @@ page_campaign.link(button=CAMPAIGN_GOTO_EVENT, destination=page_sp)
 # FROSTFALL
 # page_coalition = Page(FROSTFALL_COALITION_CHECK)
 # page_coalition.link(button=GOTO_MAIN, destination=page_main)
-# page_coalition.link(button=BACK_ARROW, destination=page_campaign)
+# page_coalition.link(button=BACK_ARROW, destination=page_campaign_menu)
 # page_campaign_menu.link(button=CAMPAIGN_MENU_GOTO_EVENT, destination=page_coalition)
 # ACADEMY
 # page_coalition_menu = Page(COALITION_ACADEMY_MAIN_CHECK)
@@ -147,17 +147,17 @@ page_campaign.link(button=CAMPAIGN_GOTO_EVENT, destination=page_sp)
 # NEONCITY
 # page_coalition = Page(NEONCITY_COALITION_CHECK)
 # page_coalition.link(button=NEONCITY_UI_HOME, destination=page_main)
-# page_coalition.link(button=NEONCITY_UI_BACK, destination=page_campaign)
+# page_coalition.link(button=NEONCITY_UI_BACK, destination=page_campaign_menu)
 # page_campaign_menu.link(button=CAMPAIGN_MENU_GOTO_EVENT, destination=page_coalition)
 # DAL
 # page_coalition = Page(FROSTFALL_COALITION_CHECK)
 # page_coalition.link(button=GOTO_MAIN, destination=page_main)
-# page_coalition.link(button=BACK_ARROW, destination=page_campaign)
+# page_coalition.link(button=BACK_ARROW, destination=page_campaign_menu)
 # page_campaign_menu.link(button=CAMPAIGN_MENU_GOTO_EVENT, destination=page_coalition)
 # FASHION
 page_coalition = Page(FASHION_COALITION_CHECK)
-page_coalition.link(button=FASHION_UI_HOME, destination=page_main)
-page_coalition.link(button=FASHION_UI_BACK, destination=page_campaign)
+page_coalition.link(button=GOTO_MAIN, destination=page_main)
+page_coalition.link(button=BACK_ARROW, destination=page_campaign_menu)
 page_campaign_menu.link(button=CAMPAIGN_MENU_GOTO_EVENT, destination=page_coalition)
 
 # Operation Siren
@@ -355,8 +355,10 @@ page_rpg_stage = Page(RPG_GOTO_STORY)
 page_rpg_story = Page(RPG_GOTO_STAGE)
 page_rpg_stage.link(button=RPG_GOTO_STORY, destination=page_rpg_story)
 page_rpg_stage.link(button=RPG_HOME, destination=page_main)
+page_rpg_stage.link(button=RPG_BACK, destination=page_campaign_menu)
 page_rpg_story.link(button=RPG_GOTO_STAGE, destination=page_rpg_stage)
 page_rpg_story.link(button=RPG_HOME, destination=page_main)
+page_rpg_story.link(button=RPG_BACK, destination=page_campaign_menu)
 
 page_campaign_menu.link(button=CAMPAIGN_MENU_GOTO_EVENT, destination=page_rpg_stage)
 # page_main.link(button=MAIN_GOTO_RAID, destination=page_rpg_stage)
