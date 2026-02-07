@@ -1,6 +1,6 @@
 from module.base.timer import Timer
 from module.campaign.campaign_event import CampaignEvent
-from module.exception import ScriptEnd, ScriptError
+from module.exception import ScriptEnd, ScriptError, GameStuckError
 from module.logger import logger
 from module.raid.assets import RAID_REWARDS
 from module.raid.raid import Raid, raid_ocr
@@ -64,6 +64,55 @@ class RaidRun(Raid, CampaignEvent):
             prev = remain
 
         return remain
+
+    def detect_low_emotion(self):
+        from module.base.button import Button
+        from module.ocr.ocr import Ocr
+        from module.exception import GamePageUnknownError
+        from module.handler.assets import LOW_EMOTION_LEFT
+        EMOTION_TIP_L1 = Button(area=(352, 311, 929, 348), color=(), button=(352, 311, 929, 348))
+        EMOTION_TIP_L2 = Button(area=(352, 350, 929, 387), color=(), button=(352, 350, 929, 387))
+        EMOTION_TIP_L3 = Button(area=(352, 390, 929, 427), color=(), button=(352, 390, 929, 427))
+        result = Ocr(EMOTION_TIP_L1, lang='cnocr').ocr(self.device.image)
+        result += Ocr(EMOTION_TIP_L2, lang='cnocr').ocr(self.device.image)
+        result += Ocr(EMOTION_TIP_L3, lang='cnocr').ocr(self.device.image)
+        logger.info(result)
+        if "强制" in result or "继续出击" in result:
+            logger.warning("舰队心情低")
+        else:
+            logger.info("开始第二轮心情OCR识别")
+            EMOTION_TIP_L4 = Button(area=(352, 290, 929, 325), color=(), button=(352, 290, 929, 325))
+            EMOTION_TIP_L5 = Button(area=(352, 325, 929, 360), color=(), button=(352, 325, 929, 360))
+            EMOTION_TIP_L6 = Button(area=(352, 360, 929, 395), color=(), button=(352, 360, 929, 395))
+            result2 = Ocr(EMOTION_TIP_L4, lang='cnocr').ocr(self.device.image)
+            result2 += Ocr(EMOTION_TIP_L5, lang='cnocr').ocr(self.device.image)
+            result2 += Ocr(EMOTION_TIP_L6, lang='cnocr').ocr(self.device.image)
+            if "强制" in result2 or "继续出击" in result2:
+                logger.warning("舰队心情低")
+            else:
+                logger.warning("Game stuck, but not emotion error")
+                raise GameStuckError('Wait too long but not emotion error')
+        logger.warning(f"Raid emotion recorded is: {self.emotion.fleet_1.current}")
+        if self.emotion.fleet_1.current > 75:
+            from module.notify import handle_notify
+            handle_notify(
+                self.config.Error_OnePushConfig,
+                title=f"Alas <{self.config.config_name}> Raid Emotion calculate error ",
+                content=f"<{self.config.config_name}> fleet_1 recorded is {self.emotion.fleet_1.current},Emotion calculate error"
+            )
+        self.emotion.fleet_1.current = 0
+        self.emotion.record()
+        self.emotion.show()
+        try:
+            self.emotion.check_reduce(battle=1)
+        except ScriptEnd as e:
+            logger.hr('Script end')
+            logger.info(str(e))
+            if self.appear_then_click(LOW_EMOTION_LEFT, offset=(30, 30), interval=3):
+                return True
+            else:
+                raise GamePageUnknownError('LOW EMOTION TIP FOUND, BUT NO LEFT button')
+        return False
 
     def run(self, name='', mode='', total=0):
         """
@@ -129,6 +178,9 @@ class RaidRun(Raid, CampaignEvent):
                 logger.hr('Script end')
                 logger.info(str(e))
                 break
+            except GameStuckError as e:
+                if self.detect_low_emotion():
+                    break
 
             # After run
             self.run_count += 1
