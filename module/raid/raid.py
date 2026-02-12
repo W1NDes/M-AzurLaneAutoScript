@@ -168,7 +168,7 @@ def raid_ocr(raid, mode):
         if mode == 'ex':
             return Digit(button, letter=(255, 239, 215), threshold=128)
         else:
-            return DigitCounter(button, letter=(154, 148, 133), threshold=128)
+            return DigitCounter(button, lang='cnocr', letter=(154, 148, 133), threshold=128)
 
 
 def pt_ocr(raid):
