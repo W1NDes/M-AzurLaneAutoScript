@@ -40,6 +40,7 @@ class RaidRun(Raid, CampaignEvent):
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
+                self.device.sleep(0.5)
                 self.device.screenshot()
 
             ocr = raid_ocr(raid=self.config.Campaign_Event, mode=mode)
