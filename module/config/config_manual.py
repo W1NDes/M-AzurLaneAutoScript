@@ -16,7 +16,7 @@ class ManualConfig:
     > Dorm > Meowfficer > Guild > Gacha
     > Reward
     > ShopFrequent > ShopOnce > Shipyard > Freebies > Daily > Hard 
-    > Oilkeep > Event 
+    > Oilkeep > Event > RaidDaily
     > PrivateQuarters
     > OpsiExplore
     > EventStory > Smallevent > Minigame > Awaken
@@ -25,7 +25,7 @@ class ManualConfig:
     > OpsiAbyssal > OpsiStronghold > OpsiObscure > OpsiArchive
     > OpsiAshBeacon > OpsiAshAssist > OpsiMonthBoss
     > Sos > EventSp > EventA > EventB > EventC > EventD
-    > RaidDaily > CoalitionSp > WarArchives > MaritimeEscort
+    > CoalitionSp > WarArchives > MaritimeEscort
     > Event2 > Event3 > Raid > Hospital > Coalition > Main3 > Main > Main2
     > ShipIr
     > OpsiMeowfficerFarming
