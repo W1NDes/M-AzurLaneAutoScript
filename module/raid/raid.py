@@ -85,8 +85,6 @@ def raid_name_shorten(name):
         return "RPG"
     elif name == 'raid_20250116':
         return 'CHIENWU'
-    elif name == 'raid_20250327':
-        return 'HOSPITAL'
     elif name == 'raid_20260212':
         return 'CHANGWU'
     else:
@@ -209,12 +207,7 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
         Game devs are too asshole to drop oil display for UI design
         https://github.com/LmeSzinc/AzurLaneAutoScript/issues/5214
         """
-        if self.config.Campaign_Event in [
-            'raid_20240328',
-            'raid_20260212',
-        ]:
-            return False
-        return True
+        return False
 
     def triggered_stop_condition(self, oil_check=False, pt_check=False, coin_check=False):
         """
