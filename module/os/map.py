@@ -484,9 +484,17 @@ class OSMap(OSFleet, Map, GlobeCamera, StrategicSearchHandler):
         success = True
         finished_combat = 0
         died_timer = Timer(1.5, count=3)
+        if self.is_in_special_zone():
+            auto_search_timeout = 1800
+        else:
+            auto_search_timeout = 720
+        auto_search_timer = Timer(auto_search_timeout, count=auto_search_timeout).start()
         self.hp_reset()
         for _ in self.loop():
             # End
+            if auto_search_timer.reached():
+                logger.warning(f'Stuck OS auto search progress for {auto_search_timeout}s')
+                raise ScriptError('OS auto search stuck, probably a game bug that requires human takeover')
             if not unlock_checked and unlock_check_timer.reached():
                 logger.critical('Unable to use auto search in current zone')
                 logger.critical('Please finish the story mode of OpSi to unlock auto search '
@@ -520,13 +528,16 @@ class OSMap(OSFleet, Map, GlobeCamera, StrategicSearchHandler):
                     enable=success
             ):
                 unlock_checked = True
+                auto_search_timer.reset()
                 continue
             if self.handle_retirement():
                 # Retire will interrupt auto search, need a retry
                 self.ash_popup_canceled = True
+                auto_search_timer.reset()
                 continue
             if self.combat_appear():
                 self.on_auto_search_battle_count_add()
+                auto_search_timer.reset()
                 if strategic and self.config.task_switched():
                     self.interrupt_auto_search()
                 result = self.auto_search_combat(drop=drop)
@@ -540,6 +551,7 @@ class OSMap(OSFleet, Map, GlobeCamera, StrategicSearchHandler):
                         continue
             if self.handle_map_event():
                 # Auto search can not handle siren searching device.
+                auto_search_timer.reset()
                 continue
 
         return finished_combat
