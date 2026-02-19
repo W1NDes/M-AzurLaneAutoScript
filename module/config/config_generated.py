@@ -409,13 +409,13 @@ class GeneratedConfig:
     EventShop_CustomFilter = 'EquipUR > EquipSSR > GachaTicket\n> DR > PR > Array > Chip > CatT3\n> Meta > SkinBox\n> Oil > Coin > FoodT1\n> AugmentCore > AugmentEnhanceT2 > AugmentChangeT2 > AugmentChangeT1\n> Cube > Medal > ExpBookT1\n> CatT2 > CatT1 > PlateGeneralT3 > PlateT3 > BoxT4\n> ShipSSR'
 
     # Group `ShipyardDr`
-    ShipyardDr_ResearchSeries = 2  # 2, 3, 4
+    ShipyardDr_ResearchSeries = 2  # 2, 3, 4, 5
     ShipyardDr_ShipIndex = 0  # 0, 1, 2, 3, 4, 5, 6
     ShipyardDr_BuyAmount = 2
     ShipyardDr_LastRun = datetime.datetime(2020, 1, 1, 0, 0)
 
     # Group `Shipyard`
-    Shipyard_ResearchSeries = 1  # 1, 2, 3, 4, 5
+    Shipyard_ResearchSeries = 1  # 1, 2, 3, 4, 5, 6
     Shipyard_ShipIndex = 0  # 0, 1, 2, 3, 4, 5, 6
     Shipyard_BuyAmount = 2
     Shipyard_LastRun = datetime.datetime(2020, 1, 1, 0, 0)
