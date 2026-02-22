@@ -398,11 +398,12 @@ class SmallEvent(UI):
         self.ui_ensure(page_main)
         NOCLICK_COUNT = 0
         NOCLICK_TIMER =Timer(3,count=10)
+        sevenD_entry_click_count = 2  # 点击七天任务入口按钮的剩余次数
 
         # 动态获取按钮对象
         entry_button_name = f"EVENT_PREPARE_ENTRY_{entry_index}" if entry_index > 1 else "EVENT_PREPARE_ENTRY"
         entry_button = globals()[entry_button_name]
-        
+
         entry_ocr = Ocr(entry_button, lang='cnocr', name='OCR_ENTRY_V2', letter=(255, 255, 255), threshold=128)
         entried = False
         title_correct = 0
@@ -452,6 +453,10 @@ class SmallEvent(UI):
                     if not all_words:
                         event_pre_button_location = self.locate_button_by_text(self.device.image, button_text, exclude_text, page_area,interval=5,orc_api=orc_api)
                         if isinstance(event_pre_button_location, dict):
+                            sevenD_entry_click_count -= 1
+                            if sevenD_entry_click_count < 0:
+                                logger.warning(f"点击{button_text}按钮超过上限仍未发现七天任务，退出")
+                                break
                             event_pre_button = self.location_2_button(event_pre_button_location, button_text, base_loc=page_area)
                             self.device.click(event_pre_button)
                             self.device.sleep(1.5)#wait for the page to load
@@ -637,7 +642,7 @@ class SmallEvent(UI):
             logger.warning("未成功进入七天小任务页面")         
              
     def run(self):
-        if datetime.now() < datetime(2026, 1, 22, 18, 0, 0):#eventSet
+        if datetime.now() < datetime(2026, 2, 26, 18, 0, 0):#eventSet
             # ninja_city_result = self.ninja_city()
             # if ninja_city_result:
             #     logger.info("ninja_city success")
@@ -646,14 +651,14 @@ class SmallEvent(UI):
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 #第一栏
-                page_area = (281, 79, 1254, 560)
-                goPage_result = self.goto_sevenD_page(page_area,ORC_API)
-                self.sevenD_harvest(page_area,ORC_API,goPage_result)
-                #第二栏
-                # page_area = (0, 0, 1280, 720)
-                # goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
-                #         button_text="致美好世界",exclude_text=["无"],entry_index=3,page_text="活动汇总")
+                # page_area = (281, 79, 1254, 560)
+                # goPage_result = self.goto_sevenD_page(page_area,ORC_API)
                 # self.sevenD_harvest(page_area,ORC_API,goPage_result)
+                #第二栏
+                page_area = (0, 0, 1280, 720)
+                goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
+                        button_text="伏波的完美计划",exclude_text=["无"],entry_index=2,page_text="活动汇总")
+                self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 # page_area = (0, 0, 1280, 720)
                 # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
                 #                     button_text="纪念签到",exclude_text=["无"])#eventSet

@@ -40,8 +40,17 @@ class FleetSelector:
         area = self._bar.area
         area = (area[0] + 3, area[1], area[0] + 13, area[3])
         # Should have at least 2 gray option and 1 blue option.
-        return self.main.image_color_count(area, color=(239, 243, 247), threshold=221, count=400) \
-               and self.main.image_color_count(area, color=(66, 125, 231), threshold=221, count=150)
+        # Normal UI colors
+        if self.main.image_color_count(area, color=(239, 243, 247), threshold=221, count=400) \
+                and self.main.image_color_count(area, color=(66, 125, 231), threshold=221, count=150):
+            return True
+        # Debuff discolored UI colors 
+        if self.main.image_color_count(area, color=(166, 169, 172), threshold=221, count=400):
+            # Blue varies by location
+            if self.main.image_color_count(area, color=(59, 97, 168), threshold=221, count=150) \
+                    or self.main.image_color_count(area, color=(35, 55, 100), threshold=221, count=150):
+                return True
+        return False
 
     def parse_fleet_bar(self, image):
         """

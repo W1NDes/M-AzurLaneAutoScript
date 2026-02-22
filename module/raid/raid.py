@@ -18,6 +18,15 @@ from module.ui.assets import RAID_CHECK
 from module.ui.page import page_rpg_stage
 
 
+class RaidCounterPostMixin(DigitCounter):
+    def after_process(self, result):
+        # fix result like "915/", "1515"
+        result = result.strip('/')
+        if result.isdigit() and len(result) > 2 and result.endswith('15'):
+            result = f'{result[:-2]}/15'
+        return result
+
+
 class RaidCounter(DigitCounter):
     def pre_process(self, image):
         image = super().pre_process(image)
@@ -85,8 +94,6 @@ def raid_name_shorten(name):
         return "RPG"
     elif name == 'raid_20250116':
         return 'CHIENWU'
-    elif name == 'raid_20250327':
-        return 'HOSPITAL'
     elif name == 'raid_20260212':
         return 'CHANGWU'
     else:
@@ -168,7 +175,7 @@ def raid_ocr(raid, mode):
         if mode == 'ex':
             return Digit(button, letter=(255, 239, 215), threshold=128)
         else:
-            return DigitCounter(button, lang='cnocr', letter=(154, 148, 133), threshold=128)
+            return RaidCounterPostMixin(button, lang='cnocr', letter=(154, 148, 133), threshold=128)
 
 
 def pt_ocr(raid):
@@ -209,12 +216,7 @@ class Raid(MapOperation, RaidCombat, CampaignEvent):
         Game devs are too asshole to drop oil display for UI design
         https://github.com/LmeSzinc/AzurLaneAutoScript/issues/5214
         """
-        if self.config.Campaign_Event in [
-            'raid_20240328',
-            'raid_20260212',
-        ]:
-            return False
-        return True
+        return False
 
     def triggered_stop_condition(self, oil_check=False, pt_check=False, coin_check=False):
         """
