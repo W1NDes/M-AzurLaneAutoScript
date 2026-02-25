@@ -9,9 +9,12 @@ const file = fs.readFileSync(path.join(alasPath, './config/deploy.yaml'), 'utf8'
 const config = yaml.parse(file);
 const PythonExecutable = config.Deploy.Python.PythonExecutable;
 const WebuiPort = config.Deploy.Webui.WebuiPort.toString();
+const WebuiSSLKey = config.Deploy.Webui.WebuiSSLKey;
+const WebuiSSLCert = config.Deploy.Webui.WebuiSSLCert;
+const sslEnabled = WebuiSSLKey && WebuiSSLCert;
 
 export const pythonPath = (path.isAbsolute(PythonExecutable) ? PythonExecutable : path.join(alasPath, PythonExecutable));
-export const webuiUrl = `http://127.0.0.1:${WebuiPort}`;
+export const webuiUrl = `${sslEnabled ? 'https' : 'http'}://127.0.0.1:${WebuiPort}`;
 export const webuiPath = 'gui.py';
 export const webuiArgs = ['--port', WebuiPort, '--electron'];
 export const dpiScaling = Boolean(config.Deploy.Webui.DpiScaling) || (config.Deploy.Webui.DpiScaling === undefined) ;
