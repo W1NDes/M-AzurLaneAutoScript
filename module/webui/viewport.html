@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Viewport</title>
+    <style>
+        :root {
+            /* Dark theme (default) */
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #eee;
+            --text-secondary: #aaa;
+            --text-muted: #666;
+            --accent: #e94560;
+            --accent-hover: #ff6b6b;
+            --success: #00d9a0;
+            --border: #0f3460;
+            --canvas-bg: #000;
+            --overlay-bg: rgba(26, 26, 46, 0.9);
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e0e0e0;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --accent: #e94560;
+            --accent-hover: #d13652;
+            --success: #00b386;
+            --border: #ddd;
+            --canvas-bg: #222;
+            --overlay-bg: rgba(245, 245, 245, 0.95);
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Hide scrollbar only when embedded in iframe */
+        body.in-iframe {
+            overflow: hidden;
+        }
+
+        .status-bar {
+            background: var(--bg-secondary);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .status-dot.connected {
+            background: var(--success);
+        }
+
+        .instance-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-container label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .slider-container input[type="range"] {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            min-width: 24px;
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .viewport-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            position: relative;
+        }
+
+        #gameCanvas {
+            background: var(--canvas-bg);
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--overlay-bg);
+            gap: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .overlay.hidden {
+            display: none;
+        }
+
+        .overlay-icon {
+            font-size: 48px;
+        }
+
+        .overlay-text {
+            font-size: 18px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .overlay-subtext {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-home {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+
+        .btn-home:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-theme {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding: 6px 10px;
+            min-width: 32px;
+        }
+
+        .btn-theme:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .auth-input {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 200px;
+            outline: none;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .auth-input:focus {
+            border-color: var(--accent);
+        }
+
+        .auth-error {
+            color: var(--accent);
+            font-size: 13px;
+        }
+
+        .script-banner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(233, 69, 96, 0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+        }
+
+        .script-banner.visible {
+            display: block;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+            max-width: 1280px;
+        }
+
+        .script-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: none;
+            pointer-events: none;
+        }
+
+        .script-overlay.visible {
+            display: block;
+        }
+
+        /* Control button styles */
+        .control-btn {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: none;
+            border-radius: 2px;
+            padding: 2px 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .control-select {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 2px;
+            padding: 2px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <button class="btn btn-home" onclick="window.open('./', '_blank')">Home</button>
+        <button class="btn btn-theme" id="themeToggle" title="Toggle light/dark mode">🌙</button>
+        <div class="status-item">
+            <div class="status-dot" id="statusDot"></div>
+            <span class="instance-name" id="instanceName">--</span>
+        </div>
+        <div class="status-item">
+            <span id="connectionStatus">Connecting...</span>
+        </div>
+        <div class="status-item">
+            <span id="methodInfo">--</span>
+        </div>
+        <div class="status-item">
+            <span id="resolutionInfo">--</span>
+        </div>
+        <div class="status-item">
+            <span id="fpsInfo">-- FPS</span>
+        </div>
+        <div class="status-item">
+            <span id="latencyInfo">--ms</span>
+        </div>
+        <div class="status-item">
+            <span id="bandwidthInfo">--kbps</span>
+        </div>
+        <div class="status-item">
+            <span id="clientCountInfo" title="Connected clients">👥 --</span>
+        </div>
+        <div class="slider-container">
+            <label>Quality:</label>
+            <input type="range" id="qualitySlider" min="10" max="95" value="60">
+            <span class="slider-value" id="qualityValue">60</span>
+        </div>
+        <div class="slider-container">
+            <label>FPS:</label>
+            <input type="range" id="fpsSlider" min="1" max="60" value="30">
+            <span class="slider-value" id="fpsValue">30</span>
+        </div>
+        <div class="slider-container">
+            <label>Res:</label>
+            <select id="scaleSelect" class="control-select">
+                <option value="1.0">720p</option>
+                <option value="0.75">540p</option>
+                <option value="0.5" selected>360p</option>
+                <option value="0.375">270p</option>
+                <option value="0.25">180p</option>
+            </select>
+        </div>
+        <div class="slider-container">
+            <label>Zoom:</label>
+            <button id="zoomOutBtn" class="control-btn">−</button>
+            <span class="slider-value" id="zoomValue" style="min-width: 40px; text-align: center;">100%</span>
+            <button id="zoomInBtn" class="control-btn">+</button>
+        </div>
+    </div>
+
+    <div class="viewport-container">
+        <div class="overlay hidden" id="authOverlay">
+            <div class="overlay-icon">🔒</div>
+            <div class="overlay-text">Password Required</div>
+            <div class="auth-container">
+                <input type="password" class="auth-input" id="authInput" placeholder="Enter password">
+                <button class="btn btn-primary" id="authBtn">Login</button>
+                <div class="auth-error hidden" id="authError">Invalid password</div>
+            </div>
+        </div>
+
+        <div class="overlay" id="connectingOverlay">
+            <div class="overlay-icon">...</div>
+            <div class="overlay-text">Connecting to emulator...</div>
+        </div>
+
+        <div class="overlay hidden" id="errorOverlay">
+            <div class="overlay-icon" id="errorIcon">!</div>
+            <div class="overlay-text" id="errorMessage">Cannot connect to emulator</div>
+            <div class="overlay-subtext" id="errorSubtext">Please ensure the emulator is running</div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="btn btn-primary" id="startEmulatorBtn">Start Emulator</button>
+                <button class="btn btn-primary" id="retryBtn">Retry</button>
+            </div>
+            <div class="overlay-subtext" id="startStatus" style="margin-top: 10px; display: none;"></div>
+        </div>
+
+        <div class="canvas-wrapper" id="canvasWrapper" style="display: none;">
+            <canvas id="gameCanvas" width="1280" height="720"></canvas>
+            <div class="script-overlay" id="scriptOverlay"></div>
+            <div class="script-banner" id="scriptBanner">Script Running - Touch Disabled</div>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        const themeToggle = document.getElementById('themeToggle');
+
+        function getStoredTheme() {
+            return localStorage.getItem('viewport_theme') || 'dark';
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '☀️';
+                themeToggle.title = 'Switch to dark mode';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                themeToggle.title = 'Switch to light mode';
+            }
+            localStorage.setItem('viewport_theme', theme);
+        }
+
+        // Initialize theme
+        setTheme(getStoredTheme());
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = getStoredTheme();
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const instanceName = params.get('instance') || 'alas';
+        const urlToken = params.get('token') || '';
+
+        document.getElementById('instanceName').textContent = instanceName;
+        document.title = `Viewport - ${instanceName}`;
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvasWrapper = document.getElementById('canvasWrapper');
+        const authOverlay = document.getElementById('authOverlay');
+        const connectingOverlay = document.getElementById('connectingOverlay');
+        const errorOverlay = document.getElementById('errorOverlay');
+        const errorMessage = document.getElementById('errorMessage');
+        const statusDot = document.getElementById('statusDot');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const methodInfo = document.getElementById('methodInfo');
+        const resolutionInfo = document.getElementById('resolutionInfo');
+        const fpsInfo = document.getElementById('fpsInfo');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const fpsSlider = document.getElementById('fpsSlider');
+        const fpsValue = document.getElementById('fpsValue');
+        const scaleSelect = document.getElementById('scaleSelect');
+        const latencyInfo = document.getElementById('latencyInfo');
+        const bandwidthInfo = document.getElementById('bandwidthInfo');
+        const clientCountInfo = document.getElementById('clientCountInfo');
+        const retryBtn = document.getElementById('retryBtn');
+        const scriptBanner = document.getElementById('scriptBanner');
+        const scriptOverlay = document.getElementById('scriptOverlay');
+        const authInput = document.getElementById('authInput');
+        const authBtn = document.getElementById('authBtn');
+        const authError = document.getElementById('authError');
+
+        let ws = null;
+        let deviceResolution = [1280, 720];
+        let scriptRunning = false;
+        let frameCount = 0;
+        let lastFpsUpdate = Date.now();
+        let currentFps = 0;
+        let authToken = '';
+        let isPaused = false;  // Pause state for visibility
+        let clientCount = 0;   // Number of connected clients
+        let zoomLevel = 100;   // Zoom percentage (50-150)
+
+        // Cached image object for frame rendering (prevents flickering)
+        const frameImage = new Image();
+        let pendingFrame = null;
+
+        // Frame image onload handler - set once globally, reused for all frames
+        frameImage.onload = () => {
+            ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+            if (pendingFrame) {
+                URL.revokeObjectURL(pendingFrame);
+                pendingFrame = null;
+            }
+
+            frameCount++;
+            const now = Date.now();
+            if (now - lastFpsUpdate >= 1000) {
+                currentFps = frameCount;
+                frameCount = 0;
+                lastFpsUpdate = now;
+                fpsInfo.textContent = `${currentFps} FPS`;
+            }
+        };
+
+        // Mouse/touch state for swipe detection
+        let isMouseDown = false;
+        let startX = 0, startY = 0;
+        let lastX = 0, lastY = 0;
+
+        // Page visibility handling
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Page is hidden, pause streaming
+                isPaused = true;
+                sendAction({ action: 'pause', paused: true });
+                console.log('Page hidden, streaming paused');
+            } else {
+                // Page is visible, resume streaming
+                isPaused = false;
+                sendAction({ action: 'pause', paused: false });
+                console.log('Page visible, streaming resumed');
+            }
+        });
+
+        // Properly close WebSocket when page is unloaded (refresh/close)
+        window.addEventListener('beforeunload', () => {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close(1000, 'Page unload');
+            }
+        });
+
+        // Get auth token: URL param > localStorage
+        function getAuthToken() {
+            if (urlToken) {
+                // URL has token, save to localStorage for future use
+                localStorage.setItem('viewport_token', urlToken);
+                return urlToken;
+            }
+            return localStorage.getItem('viewport_token') || '';
+        }
+
+        function showAuthOverlay() {
+            authOverlay.classList.remove('hidden');
+            connectingOverlay.classList.add('hidden');
+            errorOverlay.classList.add('hidden');
+            canvasWrapper.style.display = 'none';
+            authInput.focus();
+        }
+
+        function hideAuthOverlay() {
+            authOverlay.classList.add('hidden');
+        }
+
+        function handleAuth() {
+            const password = authInput.value.trim();
+            if (!password) return;
+
+            // Save to localStorage
+            localStorage.setItem('viewport_token', password);
+            authToken = password;
+            authError.classList.add('hidden');
+            hideAuthOverlay();
+            connect();
+        }
+
+        // Auth button click
+        authBtn.addEventListener('click', handleAuth);
+
+        // Enter key in password input
+        authInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleAuth();
+        });
+
+        function mapCoordinates(canvasX, canvasY) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = deviceResolution[0] / rect.width;
+            const scaleY = deviceResolution[1] / rect.height;
+            return {
+                x: Math.round(canvasX * scaleX),
+                y: Math.round(canvasY * scaleY)
+            };
+        }
+
+        function connect() {
+            // Get token first
+            authToken = getAuthToken();
+
+            connectingOverlay.classList.remove('hidden');
+            authOverlay.classList.add('hidden');
+            errorOverlay.classList.add('hidden');
+            canvasWrapper.style.display = 'none';
+
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/${instanceName}?token=${encodeURIComponent(authToken)}`;
+
+            ws = new WebSocket(wsUrl);
+            ws.binaryType = 'arraybuffer';
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+            };
+
+            ws.onmessage = (event) => {
+                if (event.data instanceof ArrayBuffer) {
+                    // Binary frame data (JPEG)
+                    // Use cached image object to prevent flickering
+                    if (pendingFrame) {
+                        URL.revokeObjectURL(pendingFrame);
+                    }
+                    pendingFrame = URL.createObjectURL(new Blob([event.data], { type: 'image/jpeg' }));
+                    frameImage.src = pendingFrame;
+                } else {
+                    // JSON message
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleMessage(data);
+                    } catch (e) {
+                        console.error('Failed to parse message:', e);
+                    }
+                }
+            };
+
+            ws.onclose = (event) => {
+                console.log('WebSocket closed:', event.code, event.reason);
+                if (event.code === 4001) {
+                    // Authentication failed
+                    localStorage.removeItem('viewport_token');
+                    authError.classList.remove('hidden');
+                    showAuthOverlay();
+                } else {
+                    showError('Connection closed', 'connection_closed');
+                }
+            };
+
+            ws.onerror = (err) => {
+                console.error('WebSocket error:', err);
+                showError('Connection error', 'connection_error');
+            };
+        }
+
+        function handleMessage(data) {
+            if (data.type === 'status') {
+                if (data.connected) {
+                    connectingOverlay.classList.add('hidden');
+                    errorOverlay.classList.add('hidden');
+                    canvasWrapper.style.display = 'inline-block';
+
+                    statusDot.classList.add('connected');
+                    connectionStatus.textContent = 'Connected';
+
+                    if (data.resolution) {
+                        // Only update canvas size if resolution actually changed
+                        // Setting canvas.width/height clears the canvas, causing flicker
+                        if (deviceResolution[0] !== data.resolution[0] || deviceResolution[1] !== data.resolution[1]) {
+                            deviceResolution = data.resolution;
+                            canvas.width = deviceResolution[0];
+                            canvas.height = deviceResolution[1];
+                            resolutionInfo.textContent = `${deviceResolution[0]}x${deviceResolution[1]}`;
+                        }
+                    }
+
+                    if (data.screenshot_method) {
+                        methodInfo.textContent = data.screenshot_method;
+                    }
+                }
+
+                // Update stats
+                if (data.latency_ms !== undefined) {
+                    latencyInfo.textContent = `${data.latency_ms}ms`;
+                }
+                if (data.bandwidth_kbps !== undefined) {
+                    if (data.bandwidth_kbps >= 1000) {
+                        bandwidthInfo.textContent = `${(data.bandwidth_kbps / 1000).toFixed(1)}Mbps`;
+                    } else {
+                        bandwidthInfo.textContent = `${Math.round(data.bandwidth_kbps)}kbps`;
+                    }
+                }
+                if (data.client_count !== undefined) {
+                    clientCount = data.client_count;
+                    clientCountInfo.textContent = `👥 ${clientCount}`;
+                }
+
+                scriptRunning = data.script_running;
+                if (scriptRunning) {
+                    scriptBanner.classList.add('visible');
+                    scriptOverlay.classList.add('visible');
+                } else {
+                    scriptBanner.classList.remove('visible');
+                    scriptOverlay.classList.remove('visible');
+                }
+            } else if (data.type === 'error') {
+                showError(data.message, data.code);
+            }
+        }
+
+        // Error code to icon and subtext mapping
+        const ERROR_INFO = {
+            'emulator_not_running': { icon: '📴', subtext: 'Start the emulator and try again' },
+            'device_not_found': { icon: '🔍', subtext: 'Check if the emulator is running' },
+            'connection_failed': { icon: '🔌', subtext: 'Check serial configuration in ALAS settings' },
+            'adb_error': { icon: '⚠️', subtext: 'Restart ADB server or ALAS' },
+            'config_not_found': { icon: '📄', subtext: 'Instance configuration file is missing' },
+            'screenshot_failed': { icon: '📷', subtext: 'Ensure the game is running in emulator' },
+            'unknown_error': { icon: '❓', subtext: 'Check logs for more details' },
+            'connection_closed': { icon: '🔗', subtext: 'WebSocket connection was closed' },
+            'connection_error': { icon: '⚡', subtext: 'Network error occurred' },
+        };
+
+        const errorIcon = document.getElementById('errorIcon');
+        const errorSubtext = document.getElementById('errorSubtext');
+
+        function showError(message, code) {
+            connectingOverlay.classList.add('hidden');
+            errorOverlay.classList.remove('hidden');
+            canvasWrapper.style.display = 'none';
+            errorMessage.textContent = message;
+
+            // Update icon and subtext based on error code
+            const info = ERROR_INFO[code] || { icon: '!', subtext: 'Please check your setup' };
+            errorIcon.textContent = info.icon;
+            errorSubtext.textContent = info.subtext;
+
+            statusDot.classList.remove('connected');
+            connectionStatus.textContent = 'Disconnected';
+        }
+
+        function sendAction(action) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify(action));
+            }
+        }
+
+        // Event handlers
+        canvas.addEventListener('mousedown', (e) => {
+            if (scriptRunning) return;
+            const rect = canvas.getBoundingClientRect();
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+            lastX = startX;
+            lastY = startY;
+            isMouseDown = true;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isMouseDown || scriptRunning) return;
+            const rect = canvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            if (!isMouseDown || scriptRunning) return;
+            isMouseDown = false;
+
+            const rect = canvas.getBoundingClientRect();
+            const endX = e.clientX - rect.left;
+            const endY = e.clientY - rect.top;
+
+            const dx = endX - startX;
+            const dy = endY - startY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 10) {
+                // Tap
+                const coords = mapCoordinates(endX, endY);
+                sendAction({ action: 'tap', x: coords.x, y: coords.y });
+            } else {
+                // Swipe
+                const start = mapCoordinates(startX, startY);
+                const end = mapCoordinates(endX, endY);
+                sendAction({
+                    action: 'swipe',
+                    x1: start.x, y1: start.y,
+                    x2: end.x, y2: end.y,
+                    duration: 300
+                });
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            isMouseDown = false;
+        });
+
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            if (scriptRunning) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            startX = touch.clientX - rect.left;
+            startY = touch.clientY - rect.top;
+            lastX = startX;
+            lastY = startY;
+            isMouseDown = true;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isMouseDown || scriptRunning) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            lastX = touch.clientX - rect.left;
+            lastY = touch.clientY - rect.top;
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            if (!isMouseDown || scriptRunning) return;
+            e.preventDefault();
+            isMouseDown = false;
+
+            const dx = lastX - startX;
+            const dy = lastY - startY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 10) {
+                const coords = mapCoordinates(lastX, lastY);
+                sendAction({ action: 'tap', x: coords.x, y: coords.y });
+            } else {
+                const start = mapCoordinates(startX, startY);
+                const end = mapCoordinates(lastX, lastY);
+                sendAction({
+                    action: 'swipe',
+                    x1: start.x, y1: start.y,
+                    x2: end.x, y2: end.y,
+                    duration: 300
+                });
+            }
+        });
+
+        // Quality slider
+        qualitySlider.addEventListener('input', () => {
+            qualityValue.textContent = qualitySlider.value;
+        });
+
+        qualitySlider.addEventListener('change', () => {
+            sendAction({ action: 'set_quality', quality: parseInt(qualitySlider.value) });
+        });
+
+        // FPS slider
+        fpsSlider.addEventListener('input', () => {
+            fpsValue.textContent = fpsSlider.value;
+        });
+
+        fpsSlider.addEventListener('change', () => {
+            sendAction({ action: 'set_fps', fps: parseInt(fpsSlider.value) });
+        });
+
+        // Resolution scale selector
+        scaleSelect.addEventListener('change', () => {
+            sendAction({ action: 'set_scale', scale: parseFloat(scaleSelect.value) });
+        });
+
+        // Retry button
+        retryBtn.addEventListener('click', () => {
+            if (ws) {
+                ws.close();
+            }
+            connect();
+        });
+
+        // Start emulator button
+        const startEmulatorBtn = document.getElementById('startEmulatorBtn');
+        const startStatus = document.getElementById('startStatus');
+
+        startEmulatorBtn.addEventListener('click', async () => {
+            startEmulatorBtn.disabled = true;
+            startEmulatorBtn.textContent = 'Starting...';
+            startStatus.style.display = 'block';
+            startStatus.textContent = 'Initiating emulator start...';
+
+            try {
+                const response = await fetch(`/start/${instanceName}`, { method: 'POST' });
+                const data = await response.json();
+
+                if (data.status === 'starting') {
+                    startStatus.textContent = 'Emulator is starting, please wait...';
+                    // Poll for status
+                    pollEmulatorStatus();
+                } else {
+                    startStatus.textContent = data.error || 'Failed to start emulator';
+                    startEmulatorBtn.disabled = false;
+                    startEmulatorBtn.textContent = 'Start Emulator';
+                }
+            } catch (e) {
+                console.error('Failed to start emulator:', e);
+                startStatus.textContent = 'Failed to send start request';
+                startEmulatorBtn.disabled = false;
+                startEmulatorBtn.textContent = 'Start Emulator';
+            }
+        });
+
+        async function pollEmulatorStatus() {
+            const maxAttempts = 60;  // 60 seconds timeout
+            let attempts = 0;
+
+            const checkStatus = async () => {
+                try {
+                    const response = await fetch(`/start/${instanceName}/status`);
+                    const data = await response.json();
+
+                    if (data.status === 'starting') {
+                        attempts++;
+                        if (attempts < maxAttempts) {
+                            startStatus.textContent = `Emulator is starting... (${attempts}s)`;
+                            setTimeout(checkStatus, 1000);
+                        } else {
+                            startStatus.textContent = 'Start timeout, please try again';
+                            startEmulatorBtn.disabled = false;
+                            startEmulatorBtn.textContent = 'Start Emulator';
+                        }
+                    } else if (data.status === 'success') {
+                        startStatus.textContent = 'Emulator started! Connecting...';
+                        startEmulatorBtn.disabled = false;
+                        startEmulatorBtn.textContent = 'Start Emulator';
+                        // Auto retry connection
+                        setTimeout(() => {
+                            if (ws) ws.close();
+                            connect();
+                        }, 2000);
+                    } else {
+                        startStatus.textContent = 'Failed to start emulator';
+                        startEmulatorBtn.disabled = false;
+                        startEmulatorBtn.textContent = 'Start Emulator';
+                    }
+                } catch (e) {
+                    console.error('Failed to check status:', e);
+                    startStatus.textContent = 'Failed to check status';
+                    startEmulatorBtn.disabled = false;
+                    startEmulatorBtn.textContent = 'Start Emulator';
+                }
+            };
+
+            checkStatus();
+        }
+
+        // Start: check auth first
+        function init() {
+            authToken = getAuthToken();
+            if (authToken) {
+                // Have token, try to connect
+                connect();
+            } else {
+                // No token, show auth overlay
+                connectingOverlay.classList.add('hidden');
+                showAuthOverlay();
+            }
+        }
+
+        // Report required size to parent iframe
+        function reportSize() {
+            if (window.parent === window) return; // Not in iframe
+
+            const statusBar = document.querySelector('.status-bar');
+            const statusBarHeight = statusBar ? statusBar.offsetHeight : 50;
+            const viewportPadding = 32; // 16px * 2
+            const maxCanvasWidth = 1280 * (zoomLevel / 100); // Scaled max canvas width
+
+            // Canvas aspect ratio is 16:9
+            // Required height = statusBarHeight + canvasHeight + padding
+            // canvasHeight should maintain 16:9 ratio based on available width
+
+            // Send size info to parent
+            window.parent.postMessage({
+                type: 'viewport-size',
+                statusBarHeight: statusBarHeight,
+                padding: viewportPadding,
+                aspectRatio: 16 / 9,
+                maxContentWidth: maxCanvasWidth + viewportPadding // Max width including padding
+            }, '*');
+        }
+
+        // Apply zoom level to canvas wrapper
+        function applyZoom() {
+            const maxCanvasWidth = 1280 * (zoomLevel / 100);
+            canvasWrapper.style.maxWidth = maxCanvasWidth + 'px';
+            document.getElementById('zoomValue').textContent = zoomLevel + '%';
+            reportSize();
+        }
+
+        // Zoom button handlers
+        document.getElementById('zoomInBtn').addEventListener('click', () => {
+            if (zoomLevel < 150) {
+                zoomLevel += 10;
+                applyZoom();
+            }
+        });
+
+        document.getElementById('zoomOutBtn').addEventListener('click', () => {
+            if (zoomLevel > 30) {
+                zoomLevel -= 10;
+                applyZoom();
+            }
+        });
+
+        // Report size on load and resize
+        window.addEventListener('load', () => {
+            reportSize();
+            // Report again after a short delay to account for dynamic content
+            setTimeout(reportSize, 500);
+        });
+        window.addEventListener('resize', reportSize);
+
+        // Also report when status bar content changes (e.g., connection status)
+        const resizeObserver = new ResizeObserver(() => {
+            reportSize();
+        });
+        resizeObserver.observe(document.querySelector('.status-bar'));
+
+        // Detect if running in iframe and add class for styling
+        if (window.parent !== window) {
+            document.body.classList.add('in-iframe');
+        }
+
+        init();
+    </script>
+</body>
+</html>
