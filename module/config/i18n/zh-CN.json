@@ -3223,7 +3223,9 @@
       "CheckUpdate": "检查更新",
       "ClickToUpdate": "进行更新",
       "RetryUpdate": "重试更新",
-      "CancelUpdate": "取消更新"
+      "CancelUpdate": "取消更新",
+      "ViewportON": "远控 开",
+      "ViewportOFF": "远控 关"
     },
     "Toast": {
       "DisableTranslateMode": "点击这里关闭翻译模式",
