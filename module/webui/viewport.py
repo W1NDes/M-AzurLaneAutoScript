@@ -179,12 +179,16 @@ class DeviceConnection:
             self._connected = False
         return None
 
-    def screenshot_jpeg(self, quality: int = 60, scale: float = 1.0) -> Optional[bytes]:
+    def screenshot_encode(self, quality: int = 30, scale: float = 1.0, skip_unchanged: bool = False) -> Optional[bytes]:
         """Get screenshot as JPEG bytes.
 
         Args:
             quality: JPEG quality (1-100)
             scale: Resolution scale (0.25-1.0), e.g. 0.5 = half resolution
+            skip_unchanged: If True, skip encoding when frame content is unchanged
+
+        Returns:
+            bytes: Encoded frame data, or None if screenshot failed or frame unchanged.
         """
         import time
         t0 = time.perf_counter()
@@ -207,15 +211,25 @@ class DeviceConnection:
                 new_h = int(h * scale)
                 img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
 
+            # Frame-skip detection: only check when idle (skip_unchanged=True)
+            if skip_unchanged:
+                if hasattr(self, '_last_frame') and self._last_frame is not None:
+                    if self._last_frame.shape == img.shape:
+                        diff = cv2.absdiff(img, self._last_frame)
+                        if np.mean(diff) < 1.0:
+                            # Frame unchanged, skip
+                            return None
+            self._last_frame = img
+
             # Convert BGR to RGB for correct colors in browser
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             t2 = time.perf_counter()
 
             # Encode to JPEG
-            _, jpeg = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, quality])
+            _, encoded = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, quality])
             t3 = time.perf_counter()
 
-            result = jpeg.tobytes()
+            result = encoded.tobytes()
             t4 = time.perf_counter()
 
             # Log timing every 100 frames
@@ -224,7 +238,7 @@ class DeviceConnection:
                 self._total_times = [0, 0, 0, 0]
             self._frame_count += 1
             self._total_times[0] += t1 - t0  # screenshot
-            self._total_times[1] += t2 - t1  # resize
+            self._total_times[1] += t2 - t1  # resize + diff
             self._total_times[2] += t3 - t2  # imencode
             self._total_times[3] += t4 - t3  # tobytes
 
@@ -243,7 +257,7 @@ class DeviceConnection:
             return result
         except Exception as e:
             if self._error_count == 0:
-                logger.info(f'[Viewport] JPEG encode error: {e}')
+                logger.info(f'[Viewport] Encode error: {e}')
             return None
 
     def touch(self, x: int, y: int):
@@ -259,7 +273,7 @@ class DeviceConnection:
             else:
                 # Fallback to adb click
                 self._device.click_adb(x, y)
-            logger.info(f'[Viewport] Touch ({x}, {y})')
+            # logger.info(f'[Viewport] Touch ({x}, {y})')
         except Exception as e:
             logger.debug(f'[Viewport] Touch error: {e}')
 
@@ -283,6 +297,82 @@ class DeviceConnection:
             logger.info(f'[Viewport] Swipe ({x1}, {y1}) -> ({x2}, {y2})')
         except Exception as e:
             logger.debug(f'[Viewport] Swipe error: {e}')
+
+    @property
+    def supports_raw_touch(self) -> bool:
+        """Whether the control method supports raw touch_down/move/up primitives."""
+        return self._control_method in ('minitouch', 'MaaTouch', 'nemu_ipc', 'scrcpy')
+
+    def _minitouch_send_no_delay(self):
+        """Send minitouch commands without the DEFAULT_DELAY sleep.
+
+        The normal builder.send() calls minitouch_send() which sleeps 50ms+ after
+        each send. For real-time touch streaming this delay is unacceptable as it
+        causes the game to register a 'down' as a press/click before the 'move' arrives.
+        """
+        builder = self._device.minitouch_builder
+        content = builder.to_minitouch()
+        byte_content = content.encode('utf-8')
+        self._device._minitouch_client.sendall(byte_content)
+        self._device._minitouch_client.recv(0)
+        builder.clear()
+
+    def swipe_start(self, x_down: int, y_down: int, x_move: int, y_move: int):
+        """Atomically send touch down + first move (starts a swipe without click gap)."""
+        if not self._connected or self._device is None:
+            return
+        try:
+            if self._control_method in ('minitouch', 'MaaTouch'):
+                builder = self._device.minitouch_builder
+                builder.down(x_down, y_down).commit()
+                builder.move(x_move, y_move).commit()
+                self._minitouch_send_no_delay()
+            elif self._control_method == 'nemu_ipc':
+                self._device.nemu_ipc.down(x_down, y_down)
+                self._device.nemu_ipc.down(x_move, y_move)
+            elif self._control_method == 'scrcpy':
+                from module.device.method.scrcpy import const
+                self._device.scrcpy_ensure_running()
+                self._device._scrcpy_control.touch(x_down, y_down, const.ACTION_DOWN)
+                self._device._scrcpy_control.touch(x_move, y_move, const.ACTION_MOVE)
+        except Exception as e:
+            logger.debug(f'[Viewport] Swipe start error: {e}')
+
+    def touch_move(self, x: int, y: int):
+        """Send touch move event (finger drag)."""
+        if not self._connected or self._device is None:
+            return
+        try:
+            if self._control_method in ('minitouch', 'MaaTouch'):
+                builder = self._device.minitouch_builder
+                builder.move(x, y).commit()
+                self._minitouch_send_no_delay()
+            elif self._control_method == 'nemu_ipc':
+                # nemu_ipc uses down() for move as well
+                self._device.nemu_ipc.down(x, y)
+            elif self._control_method == 'scrcpy':
+                from module.device.method.scrcpy import const
+                self._device._scrcpy_control.touch(x, y, const.ACTION_MOVE)
+        except Exception as e:
+            logger.debug(f'[Viewport] Touch move error: {e}')
+
+    def touch_up(self):
+        """Send touch up event (finger release)."""
+        if not self._connected or self._device is None:
+            return
+        try:
+            if self._control_method in ('minitouch', 'MaaTouch'):
+                builder = self._device.minitouch_builder
+                builder.up().commit()
+                self._minitouch_send_no_delay()
+            elif self._control_method == 'nemu_ipc':
+                self._device.nemu_ipc.up()
+            elif self._control_method == 'scrcpy':
+                from module.device.method.scrcpy import const
+                # scrcpy needs coordinates for up, use (0,0) as placeholder
+                self._device._scrcpy_control.touch(0, 0, const.ACTION_UP)
+        except Exception as e:
+            logger.debug(f'[Viewport] Touch up error: {e}')
 
     def disconnect(self):
         self._connected = False
@@ -668,7 +758,7 @@ async def websocket_endpoint(websocket: WebSocket):
     manager.add_client(instance_name)  # Track client connection
 
     try:
-        quality = 60
+        quality = 30
         scale = 0.5  # Resolution scale (1.0 = 720p, 0.5 = 360p, etc.) - default 360p for better performance
         target_fps = 30  # Default 30 FPS for smooth streaming
         is_paused = False  # Pause state for visibility-based streaming
@@ -693,10 +783,12 @@ async def websocket_endpoint(websocket: WebSocket):
             'fps': target_fps,
             'screenshot_method': conn.screenshot_method,
             'control_method': conn.control_method,
-            'client_count': manager.get_client_count(instance_name)
+            'client_count': manager.get_client_count(instance_name),
+            'supports_raw_touch': conn.supports_raw_touch
         })
 
         last_status_time = time.monotonic()
+        last_interaction_time = time.monotonic()  # Track last touch/swipe for idle frame-skip
         loop = asyncio.get_event_loop()
 
         while True:
@@ -711,6 +803,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 if action == 'tap':
                     if not manager.is_script_running(instance_name):
                         loop.run_in_executor(executor, conn.touch, int(data['x']), int(data['y']))
+                    last_interaction_time = time.monotonic()
                 elif action == 'swipe':
                     if not manager.is_script_running(instance_name):
                         loop.run_in_executor(
@@ -719,12 +812,31 @@ async def websocket_endpoint(websocket: WebSocket):
                             int(data['x2']), int(data['y2']),
                             int(data.get('duration', 300))
                         )
+                    last_interaction_time = time.monotonic()
+                elif action == 'swipe_start':
+                    if not manager.is_script_running(instance_name):
+                        loop.run_in_executor(
+                            executor, conn.swipe_start,
+                            int(data['x1']), int(data['y1']),
+                            int(data['x2']), int(data['y2'])
+                        )
+                    last_interaction_time = time.monotonic()
+                elif action == 'touch_move':
+                    if not manager.is_script_running(instance_name):
+                        loop.run_in_executor(executor, conn.touch_move, int(data['x']), int(data['y']))
+                    last_interaction_time = time.monotonic()
+                elif action == 'touch_up':
+                    if not manager.is_script_running(instance_name):
+                        loop.run_in_executor(executor, conn.touch_up)
+                    last_interaction_time = time.monotonic()
                 elif action == 'set_quality':
-                    quality = max(10, min(95, int(data['quality'])))
+                    quality = max(10, min(99, int(data['quality'])))
                 elif action == 'set_fps':
                     target_fps = max(1, min(60, int(data['fps'])))
                 elif action == 'set_scale':
                     scale = max(0.25, min(1.0, float(data['scale'])))
+                elif action == 'resume_idle':
+                    last_interaction_time = time.monotonic()
                 elif action == 'pause':
                     is_paused = data.get('paused', False)
                     logger.info(f'[Viewport] Stream {"paused" if is_paused else "resumed"} for {instance_name}')
@@ -746,7 +858,8 @@ async def websocket_endpoint(websocket: WebSocket):
                             'fps': target_fps,
                             'screenshot_method': conn.screenshot_method,
                             'control_method': conn.control_method,
-                            'client_count': manager.get_client_count(instance_name)
+                            'client_count': manager.get_client_count(instance_name),
+                            'supports_raw_touch': conn.supports_raw_touch
                         })
                     else:
                         await websocket.send_json({'type': 'error', 'message': 'Reconnect failed'})
@@ -775,7 +888,8 @@ async def websocket_endpoint(websocket: WebSocket):
                         'fps': target_fps,
                         'screenshot_method': conn.screenshot_method,
                         'control_method': conn.control_method,
-                        'client_count': manager.get_client_count(instance_name)
+                        'client_count': manager.get_client_count(instance_name),
+                        'supports_raw_touch': conn.supports_raw_touch
                     })
                 else:
                     await websocket.send_json({'type': 'error', 'message': 'Device disconnected'})
@@ -800,9 +914,17 @@ async def websocket_endpoint(websocket: WebSocket):
 
             # Capture and send frame
             t_cap_start = time.monotonic()
-            jpeg_data = await loop.run_in_executor(
-                executor, lambda: conn.screenshot_jpeg(quality, scale)
-            )
+            idle_seconds = t_cap_start - last_interaction_time
+            skip_unchanged = idle_seconds >= 5.0
+            is_idle = idle_seconds >= 300.0
+
+            # When idle for 300s, skip capturing entirely (save CPU)
+            if is_idle:
+                jpeg_data = None
+            else:
+                jpeg_data = await loop.run_in_executor(
+                    executor, lambda: conn.screenshot_encode(quality, scale, skip_unchanged)
+                )
             t_cap_end = time.monotonic()
 
             if jpeg_data:
@@ -816,17 +938,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 stats_total_latency += frame_latency
                 stats_total_bytes += len(jpeg_data)
 
-                # Calculate stats every second
-                stats_elapsed = time.monotonic() - stats_start_time
-                if stats_elapsed >= 1.0:
-                    current_latency_ms = stats_total_latency / max(1, stats_frame_count)
-                    current_bandwidth_kbps = (stats_total_bytes * 8) / stats_elapsed / 1000  # kbps
-                    # Reset stats
-                    stats_frame_count = 0
-                    stats_total_latency = 0.0
-                    stats_total_bytes = 0
-                    stats_start_time = time.monotonic()
-
                 # Track WebSocket timing
                 if not hasattr(websocket, '_ws_frame_count'):
                     websocket._ws_frame_count = 0
@@ -839,12 +950,23 @@ async def websocket_endpoint(websocket: WebSocket):
                 if websocket._ws_frame_count >= 100:
                     avg_cap = websocket._ws_cap_time / websocket._ws_frame_count * 1000
                     avg_send = websocket._ws_send_time / websocket._ws_frame_count * 1000
-                    logger.info(
-                        f'[Viewport] WS Timing (avg ms): capture={avg_cap:.1f}, send={avg_send:.1f}'
-                    )
+                    # logger.info(
+                    #     f'[Viewport] WS Timing (avg ms): capture={avg_cap:.1f}, send={avg_send:.1f}'
+                    # )
                     websocket._ws_frame_count = 0
                     websocket._ws_cap_time = 0
                     websocket._ws_send_time = 0
+
+            # Calculate stats every second (outside if jpeg_data so stats update during skips)
+            stats_elapsed = time.monotonic() - stats_start_time
+            if stats_elapsed >= 1.0:
+                current_latency_ms = stats_total_latency / max(1, stats_frame_count)
+                current_bandwidth_kbps = (stats_total_bytes * 8) / stats_elapsed / 1000  # kbps
+                # Reset stats
+                stats_frame_count = 0
+                stats_total_latency = 0.0
+                stats_total_bytes = 0
+                stats_start_time = time.monotonic()
 
             # Periodic status update
             now = time.monotonic()
@@ -860,7 +982,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     'control_method': conn.control_method,
                     'latency_ms': round(current_latency_ms, 1),
                     'bandwidth_kbps': round(current_bandwidth_kbps, 0),
-                    'client_count': manager.get_client_count(instance_name)
+                    'client_count': manager.get_client_count(instance_name),
+                    'idle': is_idle
                 })
 
             # Frame rate limiting

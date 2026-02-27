@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -292,6 +293,43 @@
             display: block;
         }
 
+        /* Idle overlay - blue version of script overlay */
+        .idle-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            cursor: pointer;
+            z-index: 15;
+        }
+
+        .idle-overlay.visible {
+            display: block;
+        }
+
+        .idle-banner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(52, 120, 246, 0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            pointer-events: none;
+            z-index: 20;
+            display: none;
+        }
+
+        .idle-banner.visible {
+            display: block;
+        }
+
         /* Control button styles */
         .control-btn {
             background: var(--bg-tertiary);
@@ -321,6 +359,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="status-bar">
         <button class="btn btn-home" onclick="window.open('./', '_blank')">Home</button>
@@ -352,8 +391,8 @@
         </div>
         <div class="slider-container">
             <label>Quality:</label>
-            <input type="range" id="qualitySlider" min="10" max="95" value="60">
-            <span class="slider-value" id="qualityValue">60</span>
+            <input type="range" id="qualitySlider" min="10" max="99" value="30">
+            <span class="slider-value" id="qualityValue">30</span>
         </div>
         <div class="slider-container">
             <label>FPS:</label>
@@ -409,6 +448,8 @@
             <canvas id="gameCanvas" width="1280" height="720"></canvas>
             <div class="script-overlay" id="scriptOverlay"></div>
             <div class="script-banner" id="scriptBanner">Script Running - Touch Disabled</div>
+            <div class="idle-overlay" id="idleOverlay"></div>
+            <div class="idle-banner" id="idleBanner">💤 Idle - Click to Resume</div>
         </div>
     </div>
 
@@ -513,6 +554,22 @@
         let isMouseDown = false;
         let startX = 0, startY = 0;
         let lastX = 0, lastY = 0;
+        let supportsRawTouch = false;  // Server tells us if raw touch is available
+        let isSwiping = false;         // True once we've sent touch_down and are swiping
+        let pendingTouch = false;      // True between mousedown and deciding tap vs swipe
+        let lastTouchMoveTime = 0;     // Throttle touch_move events
+        let isIdle = false;            // True when backend reports idle
+
+        // Idle overlay elements
+        const idleOverlay = document.getElementById('idleOverlay');
+        const idleBanner = document.getElementById('idleBanner');
+
+        // Click on idle overlay to resume
+        idleOverlay.addEventListener('click', () => {
+            if (isIdle) {
+                sendAction({ action: 'resume_idle' });
+            }
+        });
 
         // Page visibility handling
         document.addEventListener('visibilitychange', () => {
@@ -521,8 +578,8 @@
                 isPaused = true;
                 sendAction({ action: 'pause', paused: true });
                 console.log('Page hidden, streaming paused');
-            } else {
-                // Page is visible, resume streaming
+            } else if (!isIdle) {
+                // Page is visible, resume streaming (but not if idle)
                 isPaused = false;
                 sendAction({ action: 'pause', paused: false });
                 console.log('Page visible, streaming resumed');
@@ -669,6 +726,11 @@
                     if (data.screenshot_method) {
                         methodInfo.textContent = data.screenshot_method;
                     }
+
+                    // Update raw touch support from server
+                    if (data.supports_raw_touch !== undefined) {
+                        supportsRawTouch = data.supports_raw_touch;
+                    }
                 }
 
                 // Update stats
@@ -694,6 +756,19 @@
                 } else {
                     scriptBanner.classList.remove('visible');
                     scriptOverlay.classList.remove('visible');
+                }
+
+                // Idle state from backend
+                if (data.idle !== undefined) {
+                    if (data.idle && !isIdle) {
+                        isIdle = true;
+                        idleOverlay.classList.add('visible');
+                        idleBanner.classList.add('visible');
+                    } else if (!data.idle && isIdle) {
+                        isIdle = false;
+                        idleOverlay.classList.remove('visible');
+                        idleBanner.classList.remove('visible');
+                    }
                 }
             } else if (data.type === 'error') {
                 showError(data.message, data.code);
@@ -737,101 +812,142 @@
             }
         }
 
-        // Event handlers
-        canvas.addEventListener('mousedown', (e) => {
+        // Helper: reset all touch/swipe state
+        function resetTouchState() {
+            isMouseDown = false;
+            isSwiping = false;
+            pendingTouch = false;
+        }
+
+        // Helper: handle pointer start (mousedown / touchstart)
+        function handlePointerStart(canvasX, canvasY) {
             if (scriptRunning) return;
-            const rect = canvas.getBoundingClientRect();
-            startX = e.clientX - rect.left;
-            startY = e.clientY - rect.top;
-            lastX = startX;
-            lastY = startY;
+            startX = canvasX;
+            startY = canvasY;
+            lastX = canvasX;
+            lastY = canvasY;
             isMouseDown = true;
+            pendingTouch = true;
+            isSwiping = false;
+        }
+
+        // Helper: handle pointer move (mousemove / touchmove)
+        function handlePointerMove(canvasX, canvasY) {
+            if (!isMouseDown || scriptRunning) return;
+            lastX = canvasX;
+            lastY = canvasY;
+
+            if (supportsRawTouch && pendingTouch) {
+                // Check if we've moved far enough to start a swipe
+                const dx = canvasX - startX;
+                const dy = canvasY - startY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance >= 10) {
+                    // Crossed threshold — start real-time swipe
+                    pendingTouch = false;
+                    isSwiping = true;
+                    const startCoords = mapCoordinates(startX, startY);
+                    const curCoords = mapCoordinates(canvasX, canvasY);
+                    // Send combined down+move atomically to avoid click at start
+                    sendAction({
+                        action: 'swipe_start',
+                        x1: startCoords.x, y1: startCoords.y,
+                        x2: curCoords.x, y2: curCoords.y
+                    });
+                    lastTouchMoveTime = Date.now();
+                }
+            } else if (supportsRawTouch && isSwiping) {
+                // Throttle touch_move to every 16ms
+                const now = Date.now();
+                if (now - lastTouchMoveTime >= 16) {
+                    const coords = mapCoordinates(canvasX, canvasY);
+                    sendAction({ action: 'touch_move', x: coords.x, y: coords.y });
+                    lastTouchMoveTime = now;
+                }
+            }
+        }
+
+        // Helper: handle pointer end (mouseup / touchend)
+        function handlePointerEnd(canvasX, canvasY) {
+            if (!isMouseDown || scriptRunning) return;
+
+            if (supportsRawTouch) {
+                if (isSwiping) {
+                    // Send final touch_move to ensure we reach the exact release point
+                    const coords = mapCoordinates(canvasX, canvasY);
+                    sendAction({ action: 'touch_move', x: coords.x, y: coords.y });
+                    sendAction({ action: 'touch_up' });
+                } else if (pendingTouch) {
+                    // Didn't move far enough — it's a tap
+                    const coords = mapCoordinates(canvasX, canvasY);
+                    sendAction({ action: 'tap', x: coords.x, y: coords.y });
+                }
+            } else {
+                // Fallback: batch swipe (for adb)
+                const dx = canvasX - startX;
+                const dy = canvasY - startY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 10) {
+                    const coords = mapCoordinates(canvasX, canvasY);
+                    sendAction({ action: 'tap', x: coords.x, y: coords.y });
+                } else {
+                    const start = mapCoordinates(startX, startY);
+                    const end = mapCoordinates(canvasX, canvasY);
+                    sendAction({
+                        action: 'swipe',
+                        x1: start.x, y1: start.y,
+                        x2: end.x, y2: end.y,
+                        duration: 300
+                    });
+                }
+            }
+
+            resetTouchState();
+        }
+
+        // Mouse event handlers
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            handlePointerStart(e.clientX - rect.left, e.clientY - rect.top);
         });
 
         canvas.addEventListener('mousemove', (e) => {
-            if (!isMouseDown || scriptRunning) return;
             const rect = canvas.getBoundingClientRect();
-            lastX = e.clientX - rect.left;
-            lastY = e.clientY - rect.top;
+            handlePointerMove(e.clientX - rect.left, e.clientY - rect.top);
         });
 
         canvas.addEventListener('mouseup', (e) => {
-            if (!isMouseDown || scriptRunning) return;
-            isMouseDown = false;
-
             const rect = canvas.getBoundingClientRect();
-            const endX = e.clientX - rect.left;
-            const endY = e.clientY - rect.top;
-
-            const dx = endX - startX;
-            const dy = endY - startY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 10) {
-                // Tap
-                const coords = mapCoordinates(endX, endY);
-                sendAction({ action: 'tap', x: coords.x, y: coords.y });
-            } else {
-                // Swipe
-                const start = mapCoordinates(startX, startY);
-                const end = mapCoordinates(endX, endY);
-                sendAction({
-                    action: 'swipe',
-                    x1: start.x, y1: start.y,
-                    x2: end.x, y2: end.y,
-                    duration: 300
-                });
-            }
+            handlePointerEnd(e.clientX - rect.left, e.clientY - rect.top);
         });
 
         canvas.addEventListener('mouseleave', () => {
-            isMouseDown = false;
+            if (isSwiping && supportsRawTouch) {
+                // If swiping, send touch_up to avoid stuck gesture
+                sendAction({ action: 'touch_up' });
+            }
+            resetTouchState();
         });
 
         // Touch events for mobile
         canvas.addEventListener('touchstart', (e) => {
-            if (scriptRunning) return;
             e.preventDefault();
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            startX = touch.clientX - rect.left;
-            startY = touch.clientY - rect.top;
-            lastX = startX;
-            lastY = startY;
-            isMouseDown = true;
+            handlePointerStart(touch.clientX - rect.left, touch.clientY - rect.top);
         });
 
         canvas.addEventListener('touchmove', (e) => {
-            if (!isMouseDown || scriptRunning) return;
             e.preventDefault();
             const touch = e.touches[0];
             const rect = canvas.getBoundingClientRect();
-            lastX = touch.clientX - rect.left;
-            lastY = touch.clientY - rect.top;
+            handlePointerMove(touch.clientX - rect.left, touch.clientY - rect.top);
         });
 
         canvas.addEventListener('touchend', (e) => {
-            if (!isMouseDown || scriptRunning) return;
             e.preventDefault();
-            isMouseDown = false;
-
-            const dx = lastX - startX;
-            const dy = lastY - startY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 10) {
-                const coords = mapCoordinates(lastX, lastY);
-                sendAction({ action: 'tap', x: coords.x, y: coords.y });
-            } else {
-                const start = mapCoordinates(startX, startY);
-                const end = mapCoordinates(lastX, lastY);
-                sendAction({
-                    action: 'swipe',
-                    x1: start.x, y1: start.y,
-                    x2: end.x, y2: end.y,
-                    duration: 300
-                });
-            }
+            handlePointerEnd(lastX, lastY);
         });
 
         // Quality slider
@@ -1021,4 +1137,5 @@
         init();
     </script>
 </body>
+
 </html>
