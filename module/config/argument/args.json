@@ -2605,7 +2605,7 @@
       },
       "EventDailyCD": {
         "type": "state",
-        "value": "c1 > c2 > c3 > d1 > d2 > d3",
+        "value": false,
         "display": "display"
       },
       "EventResetStageAfterHours": {
