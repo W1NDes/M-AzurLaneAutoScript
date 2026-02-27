@@ -837,6 +837,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     scale = max(0.25, min(1.0, float(data['scale'])))
                 elif action == 'resume_idle':
                     last_interaction_time = time.monotonic()
+                    is_paused = False
                 elif action == 'pause':
                     is_paused = data.get('paused', False)
                     logger.info(f'[Viewport] Stream {"paused" if is_paused else "resumed"} for {instance_name}')
@@ -906,6 +907,9 @@ async def websocket_endpoint(websocket: WebSocket):
                     if action == 'pause':
                         is_paused = data.get('paused', False)
                         logger.info(f'[Viewport] Stream {"paused" if is_paused else "resumed"} for {instance_name}')
+                    elif action == 'resume_idle':
+                        last_interaction_time = time.monotonic()
+                        is_paused = False
                 except asyncio.TimeoutError:
                     pass
                 except json.JSONDecodeError:
