@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import json
 import threading
 import time
@@ -6,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Dict, Optional
 
+import av
 import cv2
 import numpy as np
 from starlette.applications import Starlette
@@ -31,6 +33,95 @@ def get_screenshot_executor() -> ThreadPoolExecutor:
     if _screenshot_executor is None:
         _screenshot_executor = ThreadPoolExecutor(max_workers=4, thread_name_prefix='ViewportScreenshot')
     return _screenshot_executor
+
+
+class H264Encoder:
+    """Per-session H.264 encoder using PyAV/libx264.
+    
+    Each WebSocket client gets its own encoder instance to avoid
+    thread-safety issues when multiple clients are connected.
+    """
+
+    def __init__(self):
+        self._encoder = None
+        self._pts = 0
+        self._resolution = None
+        self._crf = None
+
+    def _init(self, width: int, height: int, crf: int = 23):
+        if self._encoder is not None:
+            try:
+                self._encoder.encode(None)
+                self._encoder.close()
+            except Exception:
+                pass
+
+        codec = av.CodecContext.create('libx264', 'w')
+        codec.width = width
+        codec.height = height
+        codec.pix_fmt = 'yuv420p'
+        codec.time_base = '1/30'
+        codec.options = {
+            'preset': 'ultrafast',
+            'tune': 'zerolatency',
+            'profile': 'baseline',
+            'level': '3.0',
+            'crf': str(crf),
+            'colorprim': 'bt709',
+            'transfer': 'bt709',
+            'colormatrix': 'bt709',
+        }
+        codec.open()
+
+        self._encoder = codec
+        self._pts = 0
+        self._resolution = (width, height)
+        logger.info(f'[Viewport] H.264 encoder initialized: {width}x{height}, crf={crf}')
+
+    def encode(self, img_bgr, crf: int = 23):
+        """Encode a BGR numpy array to H.264.
+        
+        Note: Uses format='rgb24' with BGR data intentionally to compensate for
+        WebCodecs hardware decoder swapping R↔B during YUV→RGB conversion.
+        
+        Returns:
+            tuple: (data_bytes_with_header, is_keyframe, resolution_changed) or (None, False, False)
+        """
+        h, w = img_bgr.shape[:2]
+
+        resolution_changed = False
+        if self._encoder is None or self._resolution != (w, h) or self._crf != crf:
+            self._init(w, h, crf)
+            self._crf = crf
+            resolution_changed = True
+
+        vframe = av.VideoFrame.from_ndarray(img_bgr, format='rgb24')
+        vframe.pts = self._pts
+        self._pts += 1
+
+        packets = self._encoder.encode(vframe)
+        data = b''
+        is_keyframe = False
+        for pkt in packets:
+            data += bytes(pkt)
+            if pkt.is_keyframe:
+                is_keyframe = True
+
+        if not data:
+            return None, False, False
+
+        # Prepend 1-byte header: 0x01=keyframe, 0x00=delta
+        header = b'\x01' if is_keyframe else b'\x00'
+        return header + data, is_keyframe, resolution_changed
+
+    def close(self):
+        if self._encoder is not None:
+            try:
+                self._encoder.encode(None)
+                self._encoder.close()
+            except Exception:
+                pass
+            self._encoder = None
 
 
 class DeviceConnection:
@@ -179,85 +270,55 @@ class DeviceConnection:
             self._connected = False
         return None
 
-    def screenshot_encode(self, quality: int = 30, scale: float = 1.0, skip_unchanged: bool = False) -> Optional[bytes]:
-        """Get screenshot as JPEG bytes.
+    def screenshot_raw(self, scale: float = 1.0):
+        """Capture screenshot and return as numpy array (resized, BGR order).
 
-        Args:
-            quality: JPEG quality (1-100)
-            scale: Resolution scale (0.25-1.0), e.g. 0.5 = half resolution
-            skip_unchanged: If True, skip encoding when frame content is unchanged
+        Note: Returns BGR intentionally. The H264Encoder uses format='rgb24'
+        which pre-swaps R↔B to compensate for WebCodecs hardware decoder
+        doing an additional R↔B swap during YUV→RGB conversion.
 
         Returns:
-            bytes: Encoded frame data, or None if screenshot failed or frame unchanged.
+            numpy array (BGR) or None if failed.
         """
-        import time
-        t0 = time.perf_counter()
-
         img = self.screenshot()
-        t1 = time.perf_counter()
-
         if img is None:
             return None
+
         try:
-            # Update resolution if changed
             h, w = img.shape[:2]
             if (w, h) != self._resolution:
                 self._resolution = (w, h)
                 logger.info(f'[Viewport] Updated resolution: {self._resolution}')
 
-            # Resize if scale < 1.0
             if scale < 1.0:
-                new_w = int(w * scale)
-                new_h = int(h * scale)
-                img = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
+                w = int(w * scale)
+                h = int(h * scale)
+                img = cv2.resize(img, (w, h), interpolation=cv2.INTER_LINEAR)
 
-            # Frame-skip detection: only check when idle (skip_unchanged=True)
-            if skip_unchanged:
-                if hasattr(self, '_last_frame') and self._last_frame is not None:
-                    if self._last_frame.shape == img.shape:
-                        diff = cv2.absdiff(img, self._last_frame)
-                        if np.mean(diff) < 1.0:
-                            # Frame unchanged, skip
-                            return None
-            self._last_frame = img
+            return img
 
-            # Convert BGR to RGB for correct colors in browser
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            t2 = time.perf_counter()
-
-            # Encode to JPEG
-            _, encoded = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, quality])
-            t3 = time.perf_counter()
-
-            result = encoded.tobytes()
-            t4 = time.perf_counter()
-
-            # Log timing every 100 frames
-            if not hasattr(self, '_frame_count'):
-                self._frame_count = 0
-                self._total_times = [0, 0, 0, 0]
-            self._frame_count += 1
-            self._total_times[0] += t1 - t0  # screenshot
-            self._total_times[1] += t2 - t1  # resize + diff
-            self._total_times[2] += t3 - t2  # imencode
-            self._total_times[3] += t4 - t3  # tobytes
-
-            if self._frame_count >= 100:
-                avg = [t / self._frame_count * 1000 for t in self._total_times]
-                total = sum(avg)
-                out_h, out_w = img.shape[:2]
-                logger.info(
-                    f'[Viewport] Timing (avg ms): screenshot={avg[0]:.1f}, '
-                    f'resize={avg[1]:.1f}, imencode={avg[2]:.1f}, tobytes={avg[3]:.1f}, '
-                    f'total={total:.1f}, size={len(result)//1024}KB, res={out_w}x{out_h}'
-                )
-                self._frame_count = 0
-                self._total_times = [0, 0, 0, 0]
-
-            return result
         except Exception as e:
             if self._error_count == 0:
-                logger.info(f'[Viewport] Encode error: {e}')
+                logger.info(f'[Viewport] Screenshot processing error: {e}')
+            return None
+
+    def screenshot_jpeg(self, quality: int = 30, scale: float = 1.0) -> Optional[bytes]:
+        """Capture screenshot and encode as JPEG (fallback for browsers without WebCodecs)."""
+        img = self.screenshot()
+        if img is None:
+            return None
+        try:
+            h, w = img.shape[:2]
+            if (w, h) != self._resolution:
+                self._resolution = (w, h)
+
+            if scale < 1.0:
+                img = cv2.resize(img, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_LINEAR)
+
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            _, encoded = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, quality])
+            return encoded.tobytes()
+        except Exception:
             return None
 
     def touch(self, x: int, y: int):
@@ -758,10 +819,13 @@ async def websocket_endpoint(websocket: WebSocket):
     manager.add_client(instance_name)  # Track client connection
 
     try:
-        quality = 30
+        quality = 65
         scale = 0.5  # Resolution scale (1.0 = 720p, 0.5 = 360p, etc.) - default 360p for better performance
         target_fps = 30  # Default 30 FPS for smooth streaming
         is_paused = False  # Pause state for visibility-based streaming
+        use_h264 = True  # Use H.264 encoding by default, falls back to JPEG if frontend requests
+        codec_init_sent = False  # Track whether codec_init was sent to this client
+        h264_encoder = H264Encoder()  # Per-session H.264 encoder
 
         # Stats tracking
         stats_frame_count = 0
@@ -835,6 +899,9 @@ async def websocket_endpoint(websocket: WebSocket):
                     target_fps = max(1, min(60, int(data['fps'])))
                 elif action == 'set_scale':
                     scale = max(0.25, min(1.0, float(data['scale'])))
+                elif action == 'set_encoding':
+                    use_h264 = data.get('encoding', 'jpeg') == 'h264'
+                    logger.info(f'[Viewport] Encoding set to {"H.264" if use_h264 else "JPEG"} for {instance_name}')
                 elif action == 'resume_idle':
                     last_interaction_time = time.monotonic()
                     is_paused = False
@@ -919,28 +986,62 @@ async def websocket_endpoint(websocket: WebSocket):
             # Capture and send frame
             t_cap_start = time.monotonic()
             idle_seconds = t_cap_start - last_interaction_time
-            skip_unchanged = idle_seconds >= 5.0
             is_idle = idle_seconds >= 300.0
+
+            # Gradual FPS reduction when idle:
+            # 0-5s: full target_fps
+            # 5-30s: linearly reduce from target_fps to 1fps
+            # 30-300s: 1fps
+            # 300s+: stop entirely
+            if idle_seconds < 5.0:
+                effective_fps = target_fps
+            elif idle_seconds < 30.0:
+                # Linear interpolation: 5s→target_fps, 30s→1fps
+                t = (idle_seconds - 5.0) / 25.0  # 0.0 to 1.0
+                effective_fps = max(1, int(target_fps * (1 - t) + 1 * t))
+            else:
+                effective_fps = 1
 
             # When idle for 300s, skip capturing entirely (save CPU)
             if is_idle:
-                jpeg_data = None
+                frame_data = None
+            elif use_h264:
+                # Map quality slider (10-99) to CRF (51-18): lower CRF = higher quality
+                crf = int(51 - (quality - 10) * 33 / 89)
+                img_rgb = await loop.run_in_executor(
+                    executor, lambda: conn.screenshot_raw(scale)
+                )
+                if img_rgb is not None:
+                    frame_data, is_keyframe, resolution_changed = h264_encoder.encode(img_rgb, crf)
+                else:
+                    frame_data = None
+                    resolution_changed = False
+
+                # Send codec init on first frame or encoder reset
+                if frame_data and (resolution_changed or not codec_init_sent):
+                    codec_init_sent = True
+                    await websocket.send_json({
+                        'type': 'codec_init',
+                        'codec': 'avc1.42001e',
+                        'width': h264_encoder._resolution[0],
+                        'height': h264_encoder._resolution[1],
+                    })
             else:
-                jpeg_data = await loop.run_in_executor(
-                    executor, lambda: conn.screenshot_encode(quality, scale, skip_unchanged)
+                frame_data = await loop.run_in_executor(
+                    executor, lambda: conn.screenshot_jpeg(quality, scale)
                 )
             t_cap_end = time.monotonic()
 
-            if jpeg_data:
+            if frame_data:
                 t_send_start = time.monotonic()
-                await websocket.send_bytes(jpeg_data)
+                await websocket.send_bytes(frame_data)
                 t_send_end = time.monotonic()
 
                 # Update stats
                 frame_latency = (t_cap_end - t_cap_start) * 1000  # ms
                 stats_frame_count += 1
                 stats_total_latency += frame_latency
-                stats_total_bytes += len(jpeg_data)
+                stats_total_bytes += len(frame_data)
 
                 # Track WebSocket timing
                 if not hasattr(websocket, '_ws_frame_count'):
@@ -961,7 +1062,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     websocket._ws_cap_time = 0
                     websocket._ws_send_time = 0
 
-            # Calculate stats every second (outside if jpeg_data so stats update during skips)
+            # Calculate stats every second (outside if frame_data so stats update during skips)
             stats_elapsed = time.monotonic() - stats_start_time
             if stats_elapsed >= 1.0:
                 current_latency_ms = stats_total_latency / max(1, stats_frame_count)
@@ -990,9 +1091,9 @@ async def websocket_endpoint(websocket: WebSocket):
                     'idle': is_idle
                 })
 
-            # Frame rate limiting
+            # Frame rate limiting (use effective_fps for idle throttling)
             elapsed = time.monotonic() - frame_start
-            sleep_time = (1.0 / target_fps) - elapsed
+            sleep_time = (1.0 / effective_fps) - elapsed
             if sleep_time > 0.001:
                 await asyncio.sleep(sleep_time)
 
@@ -1001,6 +1102,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as e:
         logger.warning(f'[Viewport] WebSocket error for {instance_name}: {e}')
     finally:
+        h264_encoder.close()
         manager.remove_client(instance_name)  # Track client disconnection
         manager.release_connection(instance_name)
         logger.info(f'[Viewport] Stream ended for {instance_name}, clients remaining: {manager.get_client_count(instance_name)}')

@@ -391,8 +391,8 @@
         </div>
         <div class="slider-container">
             <label>Quality:</label>
-            <input type="range" id="qualitySlider" min="10" max="99" value="30">
-            <span class="slider-value" id="qualityValue">30</span>
+            <input type="range" id="qualitySlider" min="10" max="99" value="65">
+            <span class="slider-value" id="qualityValue">65</span>
         </div>
         <div class="slider-container">
             <label>FPS:</label>
@@ -528,13 +528,22 @@
         let clientCount = 0;   // Number of connected clients
         let zoomLevel = 100;   // Zoom percentage (50-150)
 
+        // H.264 / WebCodecs state
+        const supportsWebCodecs = typeof VideoDecoder !== 'undefined';
+        let videoDecoder = null;
+        let isH264Mode = false;
+        let h264Timestamp = 0;
+
         // Cached image object for frame rendering (prevents flickering)
         const frameImage = new Image();
         let pendingFrame = null;
 
         // Frame image onload handler - set once globally, reused for all frames
         frameImage.onload = () => {
-            ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+            // Only draw JPEG frames if NOT in H.264 mode
+            if (!isH264Mode) {
+                ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+            }
             if (pendingFrame) {
                 URL.revokeObjectURL(pendingFrame);
                 pendingFrame = null;
@@ -666,14 +675,35 @@
 
             ws.onmessage = (event) => {
                 if (event.data instanceof ArrayBuffer) {
-                    // Binary frame data (JPEG)
-                    // Use cached image object to prevent flickering
-                    if (pendingFrame) {
-                        URL.revokeObjectURL(pendingFrame);
+                    // Binary frame data
+                    if (isH264Mode && videoDecoder && videoDecoder.state !== 'closed') {
+                        // H.264 mode: first byte is type header, rest is NAL data
+                        const buffer = event.data;
+                        if (buffer.byteLength < 2) return;
+                        const view = new Uint8Array(buffer);
+                        const isKey = view[0] === 0x01;
+                        const nalData = buffer.slice(1);
+
+                        try {
+                            const chunk = new EncodedVideoChunk({
+                                type: isKey ? 'key' : 'delta',
+                                timestamp: h264Timestamp,
+                                data: nalData,
+                            });
+                            h264Timestamp += 33333; // ~30fps in microseconds
+                            videoDecoder.decode(chunk);
+                        } catch (e) {
+                            console.error('H.264 decode error:', e);
+                        }
+                    } else {
+                        // JPEG fallback mode
+                        if (pendingFrame) {
+                            URL.revokeObjectURL(pendingFrame);
+                        }
+                        pendingFrame = URL.createObjectURL(new Blob([event.data], { type: 'image/jpeg' }));
+                        frameImage.src = pendingFrame;
                     }
-                    pendingFrame = URL.createObjectURL(new Blob([event.data], { type: 'image/jpeg' }));
-                    frameImage.src = pendingFrame;
-                } else {
+                } else if (typeof event.data === 'string') {
                     // JSON message
                     try {
                         const data = JSON.parse(event.data);
@@ -700,10 +730,54 @@
                 console.error('WebSocket error:', err);
                 showError('Connection error', 'connection_error');
             };
+
+            // Request JPEG fallback if browser doesn't support WebCodecs
+            ws.addEventListener('open', () => {
+                if (!supportsWebCodecs) {
+                    console.log('WebCodecs not supported, requesting JPEG fallback');
+                    sendAction({ action: 'set_encoding', encoding: 'jpeg' });
+                }
+            });
         }
 
         function handleMessage(data) {
-            if (data.type === 'status') {
+            if (data.type === 'codec_init') {
+                // H.264 encoder initialized on backend, set up VideoDecoder
+                if (supportsWebCodecs) {
+                    if (videoDecoder && videoDecoder.state !== 'closed') {
+                        videoDecoder.close();
+                    }
+                    h264Timestamp = 0;
+                    videoDecoder = new VideoDecoder({
+                        output: (frame) => {
+                            ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+                            frame.close();
+                            // Update FPS counter
+                            frameCount++;
+                            const now = Date.now();
+                            if (now - lastFpsUpdate >= 1000) {
+                                currentFps = frameCount;
+                                frameCount = 0;
+                                lastFpsUpdate = now;
+                                fpsInfo.textContent = `${currentFps} FPS`;
+                            }
+                        },
+                        error: (e) => {
+                            console.error('VideoDecoder error:', e);
+                            // Fall back to JPEG on decoder error
+                            isH264Mode = false;
+                            sendAction({ action: 'set_encoding', encoding: 'jpeg' });
+                        }
+                    });
+                    videoDecoder.configure({
+                        codec: data.codec,
+                        codedWidth: data.width,
+                        codedHeight: data.height,
+                    });
+                    isH264Mode = true;
+                    console.log(`H.264 decoder configured: ${data.codec} ${data.width}x${data.height}`);
+                }
+            } else if (data.type === 'status') {
                 if (data.connected) {
                     connectingOverlay.classList.add('hidden');
                     errorOverlay.classList.add('hidden');
