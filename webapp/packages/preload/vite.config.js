@@ -1,11 +1,7 @@
-import {join, dirname} from 'path';
-import {builtinModules, createRequire} from 'module';
-import {fileURLToPath} from 'url';
+import {chrome} from '../../electron-vendors.config.json';
+import {join} from 'path';
+import {builtinModules} from 'module';
 
-const require = createRequire(import.meta.url);
-const {chrome} = require('../../electron-vendors.config.json');
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = __dirname;
 
 /**
