@@ -1,4 +1,4 @@
-from .campaign_base import CampaignBase
+from module.campaign.campaign_base import CampaignBase
 from module.map.map_base import CampaignMap
 from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
@@ -59,9 +59,6 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-    MAP_SWIPE_MULTIPLY = (1.216, 1.239)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.176, 1.198)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.142, 1.162)
 
 class Campaign(CampaignBase):
     MAP = MAP

@@ -5,7 +5,7 @@ from module.logger import logger
 
 MAP = CampaignMap('SP')
 MAP.shape = 'H7'
-MAP.camera_data = ['D2', 'D5', 'E2', 'E5']
+MAP.camera_data = ['D5', 'E2', 'E5']
 MAP.camera_data_spawn_point = ['D2']
 MAP.map_data = """
     -- -- -- -- ++ -- ME --
@@ -62,24 +62,15 @@ class Config:
 
     MAP_CHAPTER_SWITCH_20241219 = True
     STAGE_ENTRANCE = ['half', '20240725']
+    MAP_HAS_MODE_SWITCH = False
     STAGE_INCREASE_AB = True
-    MAP_IS_ONE_TIME_STAGE = True
-    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (80, 255 - 33),
-        'width': (0.9, 10),
-        'prominence': 10,
-        'distance': 35,
-    }
-    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (255 - 33, 255),
-        'prominence': 10,
-        'distance': 50,
-        'wlen': 1000
-    }
     MAP_WALK_USE_CURRENT_FLEET = True
-    MAP_SWIPE_MULTIPLY = (1.180, 1.202)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.141, 1.162)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.108, 1.128)
+    MAP_IS_ONE_TIME_STAGE = True
+    MAP_SIREN_HAS_BOSS_ICON_SMALL = True
+    MAP_SWIPE_MULTIPLY = (1.162, 1.184)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.124, 1.145)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.091, 1.111)
+
 
 class Campaign(CampaignBase):
     MAP = MAP

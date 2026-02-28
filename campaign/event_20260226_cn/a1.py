@@ -1,4 +1,4 @@
-from .campaign_base import CampaignBase
+from module.campaign.campaign_base import CampaignBase
 from module.map.map_base import CampaignMap
 from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
@@ -61,26 +61,14 @@ class Config:
     STAGE_ENTRANCE = ['half', '20240725']
     MAP_HAS_MODE_SWITCH = True
     STAGE_INCREASE_AB = True
-    INTERNAL_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (80, 255 - 33),
-        'width': (0.9, 10),
-        'prominence': 10,
-        'distance': 35,
-    }
-    EDGE_LINES_FIND_PEAKS_PARAMETERS = {
-        'height': (255 - 33, 255),
-        'prominence': 10,
-        'distance': 50,
-        'wlen': 1000
-    }
+    MAP_WALK_USE_CURRENT_FLEET = True
     MAP_SIREN_HAS_BOSS_ICON_SMALL = True
-    MAP_SWIPE_MULTIPLY = (1.162, 1.184)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.124, 1.145)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.091, 1.111)
+    MAP_SWIPE_MULTIPLY = (1.179, 1.201)
+    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.140, 1.161)
+    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.107, 1.127)
     STAGE_INCREASE_CUSTOM = [
         'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
     ]
-
 
 class Campaign(CampaignBase):
     MAP = MAP
