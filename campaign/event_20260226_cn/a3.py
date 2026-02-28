@@ -1,4 +1,4 @@
-from .campaign_base import CampaignBase
+from module.campaign.campaign_base import CampaignBase
 from module.map.map_base import CampaignMap
 from module.map.map_grids import SelectedGrids, RoadGrids
 from module.logger import logger
@@ -6,8 +6,8 @@ from .a1 import Config as ConfigBase
 
 MAP = CampaignMap('A3')
 MAP.shape = 'H8'
-MAP.camera_data = ['D2', 'D6', 'E2', 'E6']
-MAP.camera_data_spawn_point = ['D2']
+MAP.camera_data = ['D4', 'D6', 'E3']
+MAP.camera_data_spawn_point = ['D4']
 MAP.map_data = """
     ++ ++ -- -- ME -- -- ME
     ++ ++ MS -- -- -- ME --
@@ -57,9 +57,6 @@ class Config(ConfigBase):
     MAP_HAS_AMBUSH = False
     MAP_HAS_MYSTERY = False
     # ===== End of generated config =====
-    MAP_SWIPE_MULTIPLY = (1.150, 1.171)
-    MAP_SWIPE_MULTIPLY_MINITOUCH = (1.112, 1.133)
-    MAP_SWIPE_MULTIPLY_MAATOUCH = (1.080, 1.099)
 
 class Campaign(CampaignBase):
     MAP = MAP
