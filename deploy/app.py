@@ -46,8 +46,8 @@ class AppManager(DeployConfig):
     def app_update(self):
         logger.hr(f'Update app.asar', 0)
 
-        if not self.AutoUpdate:
-            logger.info('AutoUpdate is disabled, skip')
+        if not self.AppAsarUpdate:
+            logger.info('AppAsarUpdate is disabled, skip')
             return False
 
         return self.app_asar_replace(os.getcwd())
