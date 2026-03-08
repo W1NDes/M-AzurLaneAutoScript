@@ -155,6 +155,9 @@ Deploy:
     # '["alas"]' specified "alas" config
     # '["alas","alas2"]' specified "alas" "alas2" configs
     Run: null
+    # To update app.asar
+    # [In most cases] true
+    AppAsarUpdate: true
     # SSL support
     # Only effective when both parameters below are set
     # --ssl-key. Path to SSL key file

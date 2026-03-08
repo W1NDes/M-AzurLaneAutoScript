@@ -13,6 +13,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from module.webui.process_manager import ProcessManager
+from module.webui.setting import State
 from module.config.utils import alas_instance
 from module.submodule.utils import get_config_mod
 from module.logger import logger
@@ -327,6 +328,30 @@ async def batch_instance_status(request: Request):
         logger.error(f"Batch get status error: {e}")
         return create_response(False, f"批量获取状态失败: {str(e)}")
 
+async def restart_alas(request: Request):
+    """重启整套Alas脚本"""
+    try:
+        if State.restart_event is None:
+            return create_response(False, "重启功能不可用：请在部署设置中启用 EnableReload")
+
+        logger.info("API: Restarting Alas")
+
+        def _do_restart():
+            from module.webui.app import clearup
+            clearup()
+            State.restart_event.set()
+
+        # 使用BackgroundTask确保响应先发送，再执行重启
+        from starlette.background import BackgroundTask
+        return JSONResponse(
+            {"success": True, "message": "Alas正在重启"},
+            background=BackgroundTask(_do_restart)
+        )
+
+    except Exception as e:
+        logger.error(f"Restart Alas error: {e}")
+        return create_response(False, f"重启失败: {str(e)}")
+
 # 定义路由
 api_routes = [
     Route("/api/instances", list_instances, methods=["GET"]),
@@ -336,6 +361,7 @@ api_routes = [
     Route("/api/instances/batch-start", batch_start_instances, methods=["POST"]),
     Route("/api/instances/batch-stop", batch_stop_instances, methods=["POST"]),
     Route("/api/instances/batch-status", batch_instance_status, methods=["POST"]),
+    Route("/api/restart", restart_alas, methods=["POST"]),
 ]
 
 # 创建API应用，添加本地访问限制中间件
