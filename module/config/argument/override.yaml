@@ -73,7 +73,7 @@ Event:
       type: state
       display: display
     EventDailyCD:
-      value: false
+      value: c1 > c2 > c3 > d1 > d2 > d3
       type: state
       display: display
     EventResetStageAfterHours:
