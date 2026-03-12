@@ -22,6 +22,8 @@ Button:
   ClickToUpdate:
   RetryUpdate:
   CancelUpdate:
+  ViewportON:
+  ViewportOFF:
 
 Toast:
   DisableTranslateMode:

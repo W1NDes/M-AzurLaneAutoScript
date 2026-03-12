@@ -3225,7 +3225,9 @@
       "CheckUpdate": "アップデータチェック",
       "ClickToUpdate": "アップデータ実行",
       "RetryUpdate": "アップデータ再試行",
-      "CancelUpdate": "アップデータ中止"
+      "CancelUpdate": "アップデータ中止",
+      "ViewportON": "遠隔 ON",
+      "ViewportOFF": "遠隔 OFF"
     },
     "Toast": {
       "DisableTranslateMode": "クリックして翻訳モードを中止します",

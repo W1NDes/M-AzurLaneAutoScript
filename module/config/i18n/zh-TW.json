@@ -3225,7 +3225,9 @@
       "CheckUpdate": "檢查更新",
       "ClickToUpdate": "進行更新",
       "RetryUpdate": "重試更新",
-      "CancelUpdate": "取消更新"
+      "CancelUpdate": "取消更新",
+      "ViewportON": "遠控 開",
+      "ViewportOFF": "遠控 關"
     },
     "Toast": {
       "DisableTranslateMode": "點擊這裡關閉翻譯模式",
