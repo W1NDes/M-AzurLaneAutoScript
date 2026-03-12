@@ -456,6 +456,10 @@ pre.rich-traceback-code {
     width: 100%;
 }
 
+#pywebio-scope-viewport_container {
+    width: 100%;
+}
+
 #pywebio-scope-dashboard {
     font-weight: 400;
     width: 100%;

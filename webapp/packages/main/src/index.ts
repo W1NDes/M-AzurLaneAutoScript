@@ -5,6 +5,17 @@ import {webuiArgs, webuiPath, dpiScaling} from '/@/config';
 
 const path = require('path');
 
+// Allow self-signed certificates for local HTTPS connections
+app.on('certificate-error', (event, _webContents, url, _error, _certificate, callback) => {
+  // Only allow for local connections
+  if (url.startsWith('https://127.0.0.1') || url.startsWith('https://localhost')) {
+    event.preventDefault();
+    callback(true);
+  } else {
+    callback(false);
+  }
+});
+
 const isSingleInstance = app.requestSingleInstanceLock();
 
 if (!isSingleInstance) {
@@ -50,6 +61,16 @@ const createWindow = async () => {
       nativeWindowOpen: true,
       // preload: join(__dirname, '../../preload/dist/index.cjs'),
     },
+  });
+
+  // Ignore certificate errors for local connections (domain mismatch)
+  mainWindow.webContents.session.setCertificateVerifyProc((request, callback) => {
+    const {hostname} = new URL(request.hostname.includes('://') ? request.hostname : `https://${request.hostname}`);
+    if (hostname === '127.0.0.1' || hostname === 'localhost') {
+      callback(0); // 0 = success, ignore certificate errors for local
+    } else {
+      callback(-3); // -3 = use default verification
+    }
   });
 
   /**

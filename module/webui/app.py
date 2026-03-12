@@ -68,6 +68,14 @@ from module.webui.pin import put_input, put_select
 from module.webui.process_manager import ProcessManager
 from module.webui.remote_access import RemoteAccess
 from module.webui.setting import State
+try:
+    from module.webui.viewport import start_viewport_server, stop_viewport_server
+    VIEWPORT_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f'Viewport module not available: {e}')
+    VIEWPORT_AVAILABLE = False
+    def start_viewport_server(port=22999): pass
+    def stop_viewport_server(): pass
 from module.webui.updater import updater
 from module.webui.utils import (
     Icon,
@@ -523,8 +531,10 @@ class AlasGUI(Frame):
                             "log-bar-btns",
                             [
                                 put_scope("log_scroll_btn"),
+                                put_scope("viewport_btn"),
                             ],
                         ),
+                        put_scope("viewport_container"),
                     ],
                 ),
             else:
@@ -539,10 +549,12 @@ class AlasGUI(Frame):
                             [
                                 put_scope("log_scroll_btn"),
                                 put_scope("dashboard_btn"),
+                                put_scope("viewport_btn"),
                             ],
                         ),
                         put_html('<hr class="hr-group">'),
                         put_scope("dashboard"),
+                        put_scope("viewport_container"),
                     ],
                 ),
             put_scope("log", [put_html("")])
@@ -569,8 +581,95 @@ class AlasGUI(Frame):
             color_off="on",
             scope="dashboard_btn",
         )
+
+        # Viewport toggle button
+        self._viewport_visible = False
+        def toggle_viewport():
+            self._viewport_visible = not self._viewport_visible
+            with use_scope("viewport_container", clear=True):
+                if self._viewport_visible:
+                    viewport_port = State.deploy_config.ViewportPort if hasattr(State.deploy_config, 'ViewportPort') else 22999
+                    viewport_token = State.deploy_config.Password or ''
+                    # Use https if SSL is configured
+                    ssl_enabled = (
+                        hasattr(State.deploy_config, 'WebuiSSLKey') and State.deploy_config.WebuiSSLKey and
+                        hasattr(State.deploy_config, 'WebuiSSLCert') and State.deploy_config.WebuiSSLCert
+                    )
+                    # Use JavaScript to get current host for remote access compatibility
+                    put_html(f''' 
+
+                        <div id="viewport-wrapper" style="margin: 10px auto 0; border: 1px solid #444; border-radius: 4px; overflow: hidden;">
+                            <iframe
+                                id="viewport-iframe"
+                                style="width: 100%; border: none; display: block;"
+                                scrolling="no"
+                                allow="autoplay"
+                            ></iframe>
+                        </div>
+                        <script>
+                            (function() {{
+                                var protocol = window.location.protocol;
+                                var host = window.location.hostname;
+                                var viewportPort = {viewport_port};
+                                var instance = "{self.alas_name}";
+                                var token = "{viewport_token}";
+                                var src = protocol + "//" + host + ":" + viewportPort + "/?instance=" + instance + "&token=" + encodeURIComponent(token);
+                                var iframe = document.getElementById("viewport-iframe");
+                                var wrapper = document.getElementById("viewport-wrapper");
+                                iframe.src = src;
+
+                                // Listen for size messages from iframe
+                                var sizeInfo = null;
+                                window.addEventListener("message", function(event) {{
+                                    if (event.data && event.data.type === "viewport-size") {{
+                                        sizeInfo = event.data;
+                                        // Set max-width to prevent excessive stretching
+                                        if (sizeInfo.maxContentWidth) {{
+                                            wrapper.style.maxWidth = sizeInfo.maxContentWidth + "px";
+                                        }}
+                                        updateIframeSize();
+                                    }}
+                                }});
+
+                                function updateIframeSize() {{
+                                    if (!sizeInfo) return;
+                                    var wrapperWidth = wrapper.offsetWidth;
+                                    // Use the smaller of wrapper width or max content width for calculation
+                                    var effectiveWidth = sizeInfo.maxContentWidth ? Math.min(wrapperWidth, sizeInfo.maxContentWidth) : wrapperWidth;
+                                    // Calculate canvas height based on aspect ratio (subtract padding for canvas area)
+                                    var canvasWidth = effectiveWidth - sizeInfo.padding;
+                                    var canvasHeight = canvasWidth / sizeInfo.aspectRatio;
+                                    // Total height = statusBar + padding + canvas
+                                    var totalHeight = sizeInfo.statusBarHeight + sizeInfo.padding + canvasHeight;
+                                    iframe.style.height = totalHeight + "px";
+                                }}
+
+                                // Update size on window resize
+                                window.addEventListener("resize", updateIframeSize);
+
+                                // Initial size calculation after iframe loads
+                                iframe.onload = function() {{
+                                    setTimeout(updateIframeSize, 100);
+                                }};
+                            }})();
+                        </script>
+                    ''')
+
+        if VIEWPORT_AVAILABLE:
+            switch_viewport = BinarySwitchButton(
+                label_on=t("Gui.Button.ViewportON"),
+                label_off=t("Gui.Button.ViewportOFF"),
+                onclick_on=toggle_viewport,
+                onclick_off=toggle_viewport,
+                get_state=lambda: self._viewport_visible,
+                color_on="off",
+                color_off="on",
+                scope="viewport_btn",
+            )
         self.task_handler.add(switch_scheduler.g(), 1, True)
         self.task_handler.add(switch_log_scroll.g(), 1, True)
+        if VIEWPORT_AVAILABLE:
+            self.task_handler.add(switch_viewport.g(), 1, True)
         if 'Maa' not in self.ALAS_ARGS:
             self.task_handler.add(switch_dashboard.g(), 1, True)
         self.task_handler.add(self.alas_update_overview_task, 10, True)
@@ -1638,6 +1737,12 @@ def startup():
             and State.deploy_config.Password is not None
     ):
         task_handler.add(RemoteAccess.keep_ssh_alive(), 60)
+    # Start viewport server
+    if VIEWPORT_AVAILABLE:
+        viewport_port = State.deploy_config.ViewportPort if hasattr(State.deploy_config, 'ViewportPort') else 22999
+        ssl_keyfile = State.deploy_config.WebuiSSLKey if hasattr(State.deploy_config, 'WebuiSSLKey') else None
+        ssl_certfile = State.deploy_config.WebuiSSLCert if hasattr(State.deploy_config, 'WebuiSSLCert') else None
+        start_viewport_server(port=viewport_port, ssl_keyfile=ssl_keyfile, ssl_certfile=ssl_certfile)
 
 
 def clearup():
@@ -1649,6 +1754,8 @@ def clearup():
     RemoteAccess.kill_ssh_process()
     close_discord_rpc()
     stop_ocr_server_process()
+    if VIEWPORT_AVAILABLE:
+        stop_viewport_server()
     for alas in ProcessManager._processes.values():
         alas.stop()
     State.clearup()
