@@ -642,7 +642,7 @@ class SmallEvent(UI):
             logger.warning("未成功进入七天小任务页面")         
              
     def run(self):
-        if datetime.now() < datetime(2026, 2, 26, 18, 0, 0):#eventSet
+        if datetime.now() < datetime(2026, 3, 21, 18, 0, 0):#eventSet
             # ninja_city_result = self.ninja_city()
             # if ninja_city_result:
             #     logger.info("ninja_city success")
@@ -651,14 +651,14 @@ class SmallEvent(UI):
             ORC_API = self.ocr_api_init()
             if ORC_API:
                 #第一栏
-                # page_area = (281, 79, 1254, 560)
-                # goPage_result = self.goto_sevenD_page(page_area,ORC_API)
-                # self.sevenD_harvest(page_area,ORC_API,goPage_result)
-                #第二栏
-                page_area = (0, 0, 1280, 720)
-                goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
-                        button_text="伏波的完美计划",exclude_text=["无"],entry_index=2,page_text="活动汇总")
+                page_area = (281, 79, 1254, 560)
+                goPage_result = self.goto_sevenD_page(page_area,ORC_API)
                 self.sevenD_harvest(page_area,ORC_API,goPage_result)
+                #第二栏
+                # page_area = (0, 0, 1280, 720)
+                # goPage_result = self.goto_sevenD_page_general(page_area,ORC_API,
+                #         button_text="伏波的完美计划",exclude_text=["无"],entry_index=2,page_text="活动汇总")
+                # self.sevenD_harvest(page_area,ORC_API,goPage_result)
                 # page_area = (0, 0, 1280, 720)
                 # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
                 #                     button_text="纪念签到",exclude_text=["无"])#eventSet
