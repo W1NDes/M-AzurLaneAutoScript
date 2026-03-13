@@ -56,6 +56,7 @@ class ConfigModel:
     WebuiPort: int = 22267
     WebuiSSLKey: Optional[str] = None
     WebuiSSLCert: Optional[str] = None
+    ViewportPort: int = 22999
     Language: str = "en-US"
     Theme: str = "default"
     DpiScaling: bool = True
