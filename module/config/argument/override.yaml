@@ -427,6 +427,50 @@ PrivateQuarters:
     FailureInterval: 30
     ServerUpdate: 00:00
 
+Smallevent:
+  Scheduler:
+    SuccessInterval: 30
+    FailureInterval: 30
+    ServerUpdate: 13:00, 21:00
+  Smallevent:
+    deadline: 
+      value: 2026-03-21 12:00:00
+      type: state
+      display: display
+    OcrModel:
+      value: volc
+      type: state
+      display: display
+    lane_one_entry: 
+      value: true
+      type: state
+      display: display
+    lane_two_entry: 
+      value: false
+      type: state
+      display: display
+    lane_three_entry: 
+      value: false
+      type: state
+      display: display
+    special_task_entry: 
+      value: false
+      type: state
+      display: display
+    lane_two_page_text: 
+      value: 活动汇总
+      type: state
+      display: display
+    lane_two_button_text: 
+      value: 伏波的完美计划
+      type: state
+      display: display
+    lane_two_exclude_text: 
+      value: 无,無
+      type: state
+      display: display
+
+
 # ==================== Daily ====================
 
 Daily:

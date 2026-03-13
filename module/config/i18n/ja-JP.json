@@ -2524,19 +2524,51 @@
       "name": "Smallevent.SevenDayTask.name",
       "help": "Smallevent.SevenDayTask.help"
     },
+    "deadline": {
+      "name": "イベント締切時間",
+      "help": "イベントの締切時間。この時間を過ぎるとスクリプトはイベントタスクをスキップします"
+    },
     "UpdateInfoImmediately": {
-      "name": "Smallevent.UpdateInfoImmediately.name",
-      "help": "Smallevent.UpdateInfoImmediately.help"
+      "name": "タスク進捗を即時更新",
+      "help": "有効にすると、タスクの進捗を即時更新します（API呼び出しが1回増加）。無効の場合は翌日に更新されます"
     },
     "autoRetire": {
-      "name": "Smallevent.autoRetire.name",
-      "help": "Smallevent.autoRetire.help"
+      "name": "退役タスクを自動完了",
+      "help": "有効にすると、7日間タスクを完了するために自動的にワンクリック退役を実行します"
     },
     "OcrModel": {
-      "name": "Smallevent.OcrModel.name",
-      "help": "Smallevent.OcrModel.help",
+      "name": "OCRモデル",
+      "help": "OCRモデルを選択：火山OCRまたは百度OCR",
       "baidu": "baidu",
       "volc": "volc"
+    },
+    "lane_one_entry": {
+      "name": "第1列スイッチ",
+      "help": "有効にすると、イベント通知ページの第1列の7日間タスク受取を実行します"
+    },
+    "lane_two_entry": {
+      "name": "第2列スイッチ",
+      "help": "有効にすると、イベント準備ページの第2列の7日間タスク受取を実行します。下記のページテキストとボタンテキストの設定が必要です"
+    },
+    "lane_three_entry": {
+      "name": "第3列スイッチ",
+      "help": "有効にすると、イベント準備ページの第3列のタスクを実行します"
+    },
+    "special_task_entry": {
+      "name": "特殊タスクスイッチ",
+      "help": "有効にすると、特殊イベントタスクを実行します"
+    },
+    "lane_two_page_text": {
+      "name": "第2列ページタイトル",
+      "help": "第2列イベントページタイトルのOCR認識用キーワード"
+    },
+    "lane_two_button_text": {
+      "name": "第2列サブタイトル",
+      "help": "第2列イベント入口ボタンのOCR位置特定用キーワード"
+    },
+    "lane_two_exclude_text": {
+      "name": "第2列除外テキスト",
+      "help": "OCR認識時に除外するテキスト。複数の場合はカンマで区切ります"
     }
   },
   "Oilkeep": {

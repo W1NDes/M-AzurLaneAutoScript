@@ -9178,17 +9178,17 @@
       },
       "SuccessInterval": {
         "type": "input",
-        "value": 0,
+        "value": 30,
         "display": "hide"
       },
       "FailureInterval": {
         "type": "input",
-        "value": 120,
+        "value": 30,
         "display": "hide"
       },
       "ServerUpdate": {
         "type": "input",
-        "value": "00:00",
+        "value": "13:00, 21:00",
         "display": "hide"
       }
     },
@@ -9196,6 +9196,12 @@
       "SevenDayTask": {
         "type": "checkbox",
         "value": true
+      },
+      "deadline": {
+        "type": "state",
+        "value": "2026-03-21 12:00:00",
+        "validate": "datetime",
+        "display": "display"
       },
       "UpdateInfoImmediately": {
         "type": "checkbox",
@@ -9206,12 +9212,48 @@
         "value": false
       },
       "OcrModel": {
-        "type": "select",
+        "type": "state",
         "value": "volc",
         "option": [
           "baidu",
           "volc"
-        ]
+        ],
+        "display": "display"
+      },
+      "lane_one_entry": {
+        "type": "state",
+        "value": true,
+        "display": "display"
+      },
+      "lane_two_entry": {
+        "type": "state",
+        "value": false,
+        "display": "display"
+      },
+      "lane_three_entry": {
+        "type": "state",
+        "value": false,
+        "display": "display"
+      },
+      "special_task_entry": {
+        "type": "state",
+        "value": false,
+        "display": "display"
+      },
+      "lane_two_page_text": {
+        "type": "state",
+        "value": "活动汇总",
+        "display": "display"
+      },
+      "lane_two_button_text": {
+        "type": "state",
+        "value": "伏波的完美计划",
+        "display": "display"
+      },
+      "lane_two_exclude_text": {
+        "type": "state",
+        "value": "无,無",
+        "display": "display"
       }
     },
     "Storage": {

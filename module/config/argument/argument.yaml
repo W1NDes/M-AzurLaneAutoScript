@@ -735,11 +735,20 @@ Minigame:
   Collect: false
 Smallevent:
   SevenDayTask: true
+  deadline: 2020-01-01 00:00:00
   UpdateInfoImmediately: false
   autoRetire: false
   OcrModel:
     value: volc
     option: [ baidu, volc ]
+  lane_one_entry: false
+  lane_two_entry: false
+  lane_three_entry: false
+  special_task_entry: false
+  lane_two_page_text: 活动汇总
+  lane_two_button_text: 伏波的完美计划
+  lane_two_exclude_text: 无,無
+  
 Oilkeep:
   OilkeepLevel: 8000
   OilMaxGet: 3000
