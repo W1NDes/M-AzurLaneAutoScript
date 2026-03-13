@@ -166,3 +166,7 @@ Deploy:
     # --ssl-cert. Path to SSL cert file
     # [Default] null (no SSL)
     WebuiSSLCert: null
+    # --viewport-port. Port to listen
+    # You will be able to access webui via `http://{host}:{port}`
+    # [In most cases] Default to 22999
+    ViewportPort: 22999
