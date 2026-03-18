@@ -7,23 +7,7 @@
     <title>Game Viewport</title>
     <style>
         :root {
-            /* Dark theme (default) */
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-tertiary: #0f3460;
-            --text-primary: #eee;
-            --text-secondary: #aaa;
-            --text-muted: #666;
-            --accent: #e94560;
-            --accent-hover: #ff6b6b;
-            --success: #00d9a0;
-            --border: #0f3460;
-            --canvas-bg: #000;
-            --overlay-bg: rgba(26, 26, 46, 0.9);
-            --shadow: rgba(0, 0, 0, 0.5);
-        }
-
-        [data-theme="light"] {
+            /* Light theme (default) */
             --bg-primary: #f5f5f5;
             --bg-secondary: #ffffff;
             --bg-tertiary: #e0e0e0;
@@ -37,6 +21,22 @@
             --canvas-bg: #222;
             --overlay-bg: rgba(245, 245, 245, 0.95);
             --shadow: rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #eee;
+            --text-secondary: #aaa;
+            --text-muted: #666;
+            --accent: #e94560;
+            --accent-hover: #ff6b6b;
+            --success: #00d9a0;
+            --border: #0f3460;
+            --canvas-bg: #000;
+            --overlay-bg: rgba(26, 26, 46, 0.9);
+            --shadow: rgba(0, 0, 0, 0.5);
         }
 
         * {
@@ -458,18 +458,18 @@
         const themeToggle = document.getElementById('themeToggle');
 
         function getStoredTheme() {
-            return localStorage.getItem('viewport_theme') || 'dark';
+            return localStorage.getItem('viewport_theme') || 'light';
         }
 
         function setTheme(theme) {
-            if (theme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
-                themeToggle.textContent = '☀️';
-                themeToggle.title = 'Switch to dark mode';
-            } else {
-                document.documentElement.removeAttribute('data-theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
                 themeToggle.textContent = '🌙';
                 themeToggle.title = 'Switch to light mode';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.textContent = '☀️';
+                themeToggle.title = 'Switch to dark mode';
             }
             localStorage.setItem('viewport_theme', theme);
         }
@@ -568,6 +568,8 @@
         let pendingTouch = false;      // True between mousedown and deciding tap vs swipe
         let lastTouchMoveTime = 0;     // Throttle touch_move events
         let isIdle = false;            // True when backend reports idle
+        let networkRtt = 0;            // Network round-trip time in ms
+        let pingInterval = null;       // Ping timer handle
 
         // Idle overlay elements
         const idleOverlay = document.getElementById('idleOverlay');
@@ -716,6 +718,7 @@
 
             ws.onclose = (event) => {
                 console.log('WebSocket closed:', event.code, event.reason);
+                if (pingInterval) { clearInterval(pingInterval); pingInterval = null; }
                 if (event.code === 4001) {
                     // Authentication failed
                     localStorage.removeItem('viewport_token');
@@ -737,6 +740,12 @@
                     console.log('WebCodecs not supported, requesting JPEG fallback');
                     sendAction({ action: 'set_encoding', encoding: 'jpeg' });
                 }
+                // Start periodic ping for latency measurement
+                pingInterval = setInterval(() => {
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        sendAction({ action: 'ping', client_time: performance.now() });
+                    }
+                }, 2000);
             });
         }
 
@@ -777,6 +786,14 @@
                     isH264Mode = true;
                     console.log(`H.264 decoder configured: ${data.codec} ${data.width}x${data.height}`);
                 }
+            } else if (data.type === 'pong') {
+                // Measure network round-trip time
+                if (data.client_time) {
+                    networkRtt = performance.now() - data.client_time;
+                }
+                // Total latency = server processing + one-way network delay
+                const totalLatency = (data.server_latency_ms || 0) + networkRtt / 2;
+                latencyInfo.textContent = `${Math.round(totalLatency)}ms`;
             } else if (data.type === 'status') {
                 if (data.connected) {
                     connectingOverlay.classList.add('hidden');
@@ -808,9 +825,6 @@
                 }
 
                 // Update stats
-                if (data.latency_ms !== undefined) {
-                    latencyInfo.textContent = `${data.latency_ms}ms`;
-                }
                 if (data.bandwidth_kbps !== undefined) {
                     if (data.bandwidth_kbps >= 1000) {
                         bandwidthInfo.textContent = `${(data.bandwidth_kbps / 1000).toFixed(1)}Mbps`;
