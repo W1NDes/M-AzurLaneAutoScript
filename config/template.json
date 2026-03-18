@@ -1851,15 +1851,23 @@
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
       "Command": "Smallevent",
-      "SuccessInterval": 0,
-      "FailureInterval": 120,
-      "ServerUpdate": "00:00"
+      "SuccessInterval": 30,
+      "FailureInterval": 30,
+      "ServerUpdate": "13:00, 21:00"
     },
     "Smallevent": {
       "SevenDayTask": true,
+      "deadline": "2026-03-21 12:00:00",
       "UpdateInfoImmediately": false,
       "autoRetire": false,
-      "OcrModel": "volc"
+      "OcrModel": "volc",
+      "lane_one_entry": true,
+      "lane_two_entry": false,
+      "lane_three_entry": false,
+      "special_task_entry": false,
+      "lane_two_page_text": "活动汇总",
+      "lane_two_button_text": "伏波的完美计划",
+      "lane_two_exclude_text": "无,無"
     },
     "Storage": {
       "Storage": {}

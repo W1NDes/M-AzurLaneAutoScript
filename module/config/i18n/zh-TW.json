@@ -2524,19 +2524,51 @@
       "name": "Smallevent.SevenDayTask.name",
       "help": "Smallevent.SevenDayTask.help"
     },
+    "deadline": {
+      "name": "活動截止時間",
+      "help": "活動截止時間，超過此時間後腳本將跳過活動任務"
+    },
     "UpdateInfoImmediately": {
-      "name": "Smallevent.UpdateInfoImmediately.name",
-      "help": "Smallevent.UpdateInfoImmediately.help"
+      "name": "立即更新任務進度",
+      "help": "開啟後，會立即更新任務進度(多消耗一次api調用)，否則會等到第二天更新"
     },
     "autoRetire": {
-      "name": "Smallevent.autoRetire.name",
-      "help": "Smallevent.autoRetire.help"
+      "name": "自動完成退役任務",
+      "help": "開啟後，會自動一鍵退役艦船以完成7日小任務"
     },
     "OcrModel": {
-      "name": "Smallevent.OcrModel.name",
-      "help": "Smallevent.OcrModel.help",
+      "name": "OCR模型",
+      "help": "選擇OCR模型，火山OCR和百度OCR",
       "baidu": "baidu",
       "volc": "volc"
+    },
+    "lane_one_entry": {
+      "name": "第一欄開關",
+      "help": "開啟後，將執行活動通知頁第一欄的七天任務領取"
+    },
+    "lane_two_entry": {
+      "name": "第二欄開關",
+      "help": "開啟後，將執行活動準備頁第二欄的七天任務領取，需要配置下方的頁面文本和按鈕文本"
+    },
+    "lane_three_entry": {
+      "name": "第三欄開關",
+      "help": "開啟後，將執行活動準備頁第三欄的任務"
+    },
+    "special_task_entry": {
+      "name": "特殊任務開關",
+      "help": "開啟後，將執行特殊活動任務"
+    },
+    "lane_two_page_text": {
+      "name": "第二欄內部標題",
+      "help": "用於OCR識別第二欄活動頁面標題的關鍵字"
+    },
+    "lane_two_button_text": {
+      "name": "第二欄內部副標題",
+      "help": "用於OCR定位第二欄活動入口按鈕的關鍵字"
+    },
+    "lane_two_exclude_text": {
+      "name": "第二欄排除文本",
+      "help": "OCR識別時需要排除的文本，多個用英文逗號分隔"
     }
   },
   "Oilkeep": {

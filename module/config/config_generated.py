@@ -448,9 +448,17 @@ class GeneratedConfig:
 
     # Group `Smallevent`
     Smallevent_SevenDayTask = True
+    Smallevent_deadline = datetime.datetime(2020, 1, 1, 0, 0)
     Smallevent_UpdateInfoImmediately = False
     Smallevent_autoRetire = False
     Smallevent_OcrModel = 'volc'  # baidu, volc
+    Smallevent_lane_one_entry = False
+    Smallevent_lane_two_entry = False
+    Smallevent_lane_three_entry = False
+    Smallevent_special_task_entry = False
+    Smallevent_lane_two_page_text = '活动汇总'
+    Smallevent_lane_two_button_text = '伏波的完美计划'
+    Smallevent_lane_two_exclude_text = '无,無'
 
     # Group `Oilkeep`
     Oilkeep_OilkeepLevel = 8000

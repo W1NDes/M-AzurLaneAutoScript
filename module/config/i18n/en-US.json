@@ -2524,19 +2524,51 @@
       "name": "Smallevent.SevenDayTask.name",
       "help": "Smallevent.SevenDayTask.help"
     },
+    "deadline": {
+      "name": "Event Deadline",
+      "help": "Event deadline. The script will skip event tasks after this time"
+    },
     "UpdateInfoImmediately": {
-      "name": "Smallevent.UpdateInfoImmediately.name",
-      "help": "Smallevent.UpdateInfoImmediately.help"
+      "name": "Update Progress Immediately",
+      "help": "When enabled, task progress will be updated immediately (costs one extra API call). Otherwise it will update the next day"
     },
     "autoRetire": {
-      "name": "Smallevent.autoRetire.name",
-      "help": "Smallevent.autoRetire.help"
+      "name": "Auto Complete Retire Task",
+      "help": "When enabled, will auto one-click retire ships to complete the 7-day task"
     },
     "OcrModel": {
-      "name": "Smallevent.OcrModel.name",
-      "help": "Smallevent.OcrModel.help",
+      "name": "OCR Model",
+      "help": "Choose OCR model: Volcano OCR or Baidu OCR",
       "baidu": "baidu",
       "volc": "volc"
+    },
+    "lane_one_entry": {
+      "name": "Lane One Switch",
+      "help": "When enabled, will execute the 7-day task collection from the first lane on the event notification page"
+    },
+    "lane_two_entry": {
+      "name": "Lane Two Switch",
+      "help": "When enabled, will execute the 7-day task collection from the second lane on the event preparation page. Requires configuring page text and button text below"
+    },
+    "lane_three_entry": {
+      "name": "Lane Three Switch",
+      "help": "When enabled, will execute tasks from the third lane on the event preparation page"
+    },
+    "special_task_entry": {
+      "name": "Special Task Switch",
+      "help": "When enabled, will execute special event tasks"
+    },
+    "lane_two_page_text": {
+      "name": "Lane Two Page Title",
+      "help": "Keyword for OCR recognition of the second lane event page title"
+    },
+    "lane_two_button_text": {
+      "name": "Lane Two Subtitle",
+      "help": "Keyword for OCR to locate the second lane event entry button"
+    },
+    "lane_two_exclude_text": {
+      "name": "Lane Two Exclude Text",
+      "help": "Text to exclude during OCR recognition, separated by commas"
     }
   },
   "Oilkeep": {
