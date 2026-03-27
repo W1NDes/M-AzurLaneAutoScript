@@ -136,6 +136,7 @@ class DeviceConnection:
         self._connected = False
         self._ref_count = 0
         self._lock = threading.Lock()
+        self._control_lock = threading.Lock()
         self._resolution: tuple = (1280, 720)
         self._error_count = 0
         self._max_errors = 30
@@ -229,6 +230,12 @@ class DeviceConnection:
                     f'screenshot={self._screenshot_method}, control={self._control_method}, '
                     f'resolution={self._resolution}'
                 )
+
+                # Eagerly initialize control method to prevent concurrent lazy-init
+                # when multiple touch events arrive simultaneously from the thread pool.
+                # cached_property is not thread-safe, so we must init before any touch.
+                self._init_control_method()
+
                 return True, None
             except Exception as e:
                 logger.info(f'[Viewport] Device {self.instance_name} not ready: {e}')
@@ -239,6 +246,19 @@ class DeviceConnection:
             logger.warning(f'[Viewport] Failed to connect {self.instance_name}: {e}')
             self._connected = False
             return False, 'unknown_error'
+
+    def _init_control_method(self):
+        """Eagerly initialize the control method so it's ready before touch events."""
+        if self._device is None:
+            return
+        try:
+            if self._control_method in ('minitouch', 'MaaTouch'):
+                # Access minitouch_builder to trigger cached_property init
+                _ = self._device.minitouch_builder
+            elif self._control_method == 'scrcpy':
+                self._device.scrcpy_ensure_running()
+        except Exception as e:
+            logger.warning(f'[Viewport] Control method init failed for {self.instance_name}: {e}')
 
     def screenshot(self) -> Optional[np.ndarray]:
         """Get screenshot as numpy array (BGR format)."""
@@ -325,39 +345,41 @@ class DeviceConnection:
         """Send touch/click event."""
         if not self._connected or self._device is None:
             return
-        try:
-            # Call underlying click method directly based on control method
-            method_name = f'click_{self._control_method}'
-            if hasattr(self._device, method_name):
-                method = getattr(self._device, method_name)
-                method(x, y)
-            else:
-                # Fallback to adb click
-                self._device.click_adb(x, y)
-            # logger.info(f'[Viewport] Touch ({x}, {y})')
-        except Exception as e:
-            logger.debug(f'[Viewport] Touch error: {e}')
+        with self._control_lock:
+            try:
+                # Call underlying click method directly based on control method
+                method_name = f'click_{self._control_method}'
+                if hasattr(self._device, method_name):
+                    method = getattr(self._device, method_name)
+                    method(x, y)
+                else:
+                    # Fallback to adb click
+                    self._device.click_adb(x, y)
+                # logger.info(f'[Viewport] Touch ({x}, {y})')
+            except Exception as e:
+                logger.debug(f'[Viewport] Touch error: {e}')
 
     def swipe(self, x1: int, y1: int, x2: int, y2: int, duration: int = 300):
         """Send swipe event."""
         if not self._connected or self._device is None:
             return
-        try:
-            # Call underlying swipe method directly based on control method
-            method_name = f'swipe_{self._control_method}'
-            if hasattr(self._device, method_name):
-                method = getattr(self._device, method_name)
-                # minitouch/maatouch/nemu_ipc don't take duration, only adb does
-                if self._control_method in ('minitouch', 'MaaTouch', 'nemu_ipc', 'scrcpy'):
-                    method((x1, y1), (x2, y2))
+        with self._control_lock:
+            try:
+                # Call underlying swipe method directly based on control method
+                method_name = f'swipe_{self._control_method}'
+                if hasattr(self._device, method_name):
+                    method = getattr(self._device, method_name)
+                    # minitouch/maatouch/nemu_ipc don't take duration, only adb does
+                    if self._control_method in ('minitouch', 'MaaTouch', 'nemu_ipc', 'scrcpy'):
+                        method((x1, y1), (x2, y2))
+                    else:
+                        method((x1, y1), (x2, y2), duration / 1000.0)
                 else:
-                    method((x1, y1), (x2, y2), duration / 1000.0)
-            else:
-                # Fallback to adb swipe
-                self._device.swipe_adb((x1, y1), (x2, y2), duration / 1000.0)
-            logger.info(f'[Viewport] Swipe ({x1}, {y1}) -> ({x2}, {y2})')
-        except Exception as e:
-            logger.debug(f'[Viewport] Swipe error: {e}')
+                    # Fallback to adb swipe
+                    self._device.swipe_adb((x1, y1), (x2, y2), duration / 1000.0)
+                logger.info(f'[Viewport] Swipe ({x1}, {y1}) -> ({x2}, {y2})')
+            except Exception as e:
+                logger.debug(f'[Viewport] Swipe error: {e}')
 
     @property
     def supports_raw_touch(self) -> bool:
@@ -382,58 +404,61 @@ class DeviceConnection:
         """Atomically send touch down + first move (starts a swipe without click gap)."""
         if not self._connected or self._device is None:
             return
-        try:
-            if self._control_method in ('minitouch', 'MaaTouch'):
-                builder = self._device.minitouch_builder
-                builder.down(x_down, y_down).commit()
-                builder.move(x_move, y_move).commit()
-                self._minitouch_send_no_delay()
-            elif self._control_method == 'nemu_ipc':
-                self._device.nemu_ipc.down(x_down, y_down)
-                self._device.nemu_ipc.down(x_move, y_move)
-            elif self._control_method == 'scrcpy':
-                from module.device.method.scrcpy import const
-                self._device.scrcpy_ensure_running()
-                self._device._scrcpy_control.touch(x_down, y_down, const.ACTION_DOWN)
-                self._device._scrcpy_control.touch(x_move, y_move, const.ACTION_MOVE)
-        except Exception as e:
-            logger.debug(f'[Viewport] Swipe start error: {e}')
+        with self._control_lock:
+            try:
+                if self._control_method in ('minitouch', 'MaaTouch'):
+                    builder = self._device.minitouch_builder
+                    builder.down(x_down, y_down).commit()
+                    builder.move(x_move, y_move).commit()
+                    self._minitouch_send_no_delay()
+                elif self._control_method == 'nemu_ipc':
+                    self._device.nemu_ipc.down(x_down, y_down)
+                    self._device.nemu_ipc.down(x_move, y_move)
+                elif self._control_method == 'scrcpy':
+                    from module.device.method.scrcpy import const
+                    self._device.scrcpy_ensure_running()
+                    self._device._scrcpy_control.touch(x_down, y_down, const.ACTION_DOWN)
+                    self._device._scrcpy_control.touch(x_move, y_move, const.ACTION_MOVE)
+            except Exception as e:
+                logger.debug(f'[Viewport] Swipe start error: {e}')
 
     def touch_move(self, x: int, y: int):
         """Send touch move event (finger drag)."""
         if not self._connected or self._device is None:
             return
-        try:
-            if self._control_method in ('minitouch', 'MaaTouch'):
-                builder = self._device.minitouch_builder
-                builder.move(x, y).commit()
-                self._minitouch_send_no_delay()
-            elif self._control_method == 'nemu_ipc':
-                # nemu_ipc uses down() for move as well
-                self._device.nemu_ipc.down(x, y)
-            elif self._control_method == 'scrcpy':
-                from module.device.method.scrcpy import const
-                self._device._scrcpy_control.touch(x, y, const.ACTION_MOVE)
-        except Exception as e:
-            logger.debug(f'[Viewport] Touch move error: {e}')
+        with self._control_lock:
+            try:
+                if self._control_method in ('minitouch', 'MaaTouch'):
+                    builder = self._device.minitouch_builder
+                    builder.move(x, y).commit()
+                    self._minitouch_send_no_delay()
+                elif self._control_method == 'nemu_ipc':
+                    # nemu_ipc uses down() for move as well
+                    self._device.nemu_ipc.down(x, y)
+                elif self._control_method == 'scrcpy':
+                    from module.device.method.scrcpy import const
+                    self._device._scrcpy_control.touch(x, y, const.ACTION_MOVE)
+            except Exception as e:
+                logger.debug(f'[Viewport] Touch move error: {e}')
 
     def touch_up(self):
         """Send touch up event (finger release)."""
         if not self._connected or self._device is None:
             return
-        try:
-            if self._control_method in ('minitouch', 'MaaTouch'):
-                builder = self._device.minitouch_builder
-                builder.up().commit()
-                self._minitouch_send_no_delay()
-            elif self._control_method == 'nemu_ipc':
-                self._device.nemu_ipc.up()
-            elif self._control_method == 'scrcpy':
-                from module.device.method.scrcpy import const
-                # scrcpy needs coordinates for up, use (0,0) as placeholder
-                self._device._scrcpy_control.touch(0, 0, const.ACTION_UP)
-        except Exception as e:
-            logger.debug(f'[Viewport] Touch up error: {e}')
+        with self._control_lock:
+            try:
+                if self._control_method in ('minitouch', 'MaaTouch'):
+                    builder = self._device.minitouch_builder
+                    builder.up().commit()
+                    self._minitouch_send_no_delay()
+                elif self._control_method == 'nemu_ipc':
+                    self._device.nemu_ipc.up()
+                elif self._control_method == 'scrcpy':
+                    from module.device.method.scrcpy import const
+                    # scrcpy needs coordinates for up, use (0,0) as placeholder
+                    self._device._scrcpy_control.touch(0, 0, const.ACTION_UP)
+            except Exception as e:
+                logger.debug(f'[Viewport] Touch up error: {e}')
 
     def disconnect(self):
         self._connected = False
@@ -517,21 +542,22 @@ class ViewportManager:
         Returns:
             tuple: (DeviceConnection or None, error_code: str or None)
         """
-        if instance_name in self.connections:
-            conn = self.connections[instance_name]
-            if conn.connected:
+        with self._lock:
+            if instance_name in self.connections:
+                conn = self.connections[instance_name]
+                if conn.connected:
+                    return conn, None
+
+            if not self.instance_exists(instance_name):
+                logger.warning(f'[Viewport] Config not found for {instance_name}')
+                return None, 'config_not_found'
+
+            conn = DeviceConnection(instance_name)
+            success, error = conn.connect()
+            if success:
+                self.connections[instance_name] = conn
                 return conn, None
-
-        if not self.instance_exists(instance_name):
-            logger.warning(f'[Viewport] Config not found for {instance_name}')
-            return None, 'config_not_found'
-
-        conn = DeviceConnection(instance_name)
-        success, error = conn.connect()
-        if success:
-            self.connections[instance_name] = conn
-            return conn, None
-        return None, error
+            return None, error
 
     def release_connection(self, instance_name: str):
         conn = self.connections.get(instance_name)
@@ -720,7 +746,7 @@ def generate_homepage_html(instances: list) -> str:
         const themeToggle = document.getElementById('themeToggle');
 
         function getStoredTheme() {{
-            return localStorage.getItem('viewport_theme') || 'dark';
+            return localStorage.getItem('viewport_theme') || 'light';
         }}
 
         function setTheme(theme) {{
@@ -902,6 +928,12 @@ async def websocket_endpoint(websocket: WebSocket):
                 elif action == 'set_encoding':
                     use_h264 = data.get('encoding', 'jpeg') == 'h264'
                     logger.info(f'[Viewport] Encoding set to {"H.264" if use_h264 else "JPEG"} for {instance_name}')
+                elif action == 'ping':
+                    await websocket.send_json({
+                        'type': 'pong',
+                        'client_time': data.get('client_time', 0),
+                        'server_latency_ms': round(current_latency_ms, 1),
+                    })
                 elif action == 'resume_idle':
                     last_interaction_time = time.monotonic()
                     is_paused = False
@@ -1037,8 +1069,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 await websocket.send_bytes(frame_data)
                 t_send_end = time.monotonic()
 
-                # Update stats
-                frame_latency = (t_cap_end - t_cap_start) * 1000  # ms
+                # Update stats (capture + network send)
+                frame_latency = (t_send_end - t_cap_start) * 1000  # ms
                 stats_frame_count += 1
                 stats_total_latency += frame_latency
                 stats_total_bytes += len(frame_data)
@@ -1085,7 +1117,6 @@ async def websocket_endpoint(websocket: WebSocket):
                     'fps': target_fps,
                     'screenshot_method': conn.screenshot_method,
                     'control_method': conn.control_method,
-                    'latency_ms': round(current_latency_ms, 1),
                     'bandwidth_kbps': round(current_bandwidth_kbps, 0),
                     'client_count': manager.get_client_count(instance_name),
                     'idle': is_idle

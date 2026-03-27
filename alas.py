@@ -732,7 +732,17 @@ class AzurLaneAutoScript:
                         exit(1)
                     except GameNotRunningError as e:
                         if str(e) == "Game died":
-                            logger.warning("Game died when restarting")
+                            self.GameRestartBecauseErrorTimes += 1
+                            logger.critical(f'Game died when restarting, left Restart Time: {self.AutoRestart_AttemptsToRestart - self.GameRestartBecauseErrorTimes}')
+                            if self.GameRestartBecauseErrorTimes >= self.AutoRestart_AttemptsToRestart:
+                                self.GameRestartBecauseErrorTimes = 0
+                                logger.critical('Game died too many times during restart')
+                                handle_notify(
+                                    self.config.Error_OnePushConfig,
+                                    title=f"Alas <{self.config_name}> crashed",
+                                    content=f"<{self.config_name}> Game died too many times during restart",
+                                )
+                                exit(1)
                             self.is_first_task = False
                             continue
                         else:
