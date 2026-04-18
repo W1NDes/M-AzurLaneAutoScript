@@ -61,7 +61,7 @@ Event:
     AmbushEvade: true
   EventPt:
     Event2MapName: 
-      value: ht3
+      value: sp4
       type: state
       display: display
     EventDailyAMapName:
@@ -81,7 +81,7 @@ Event:
       type: state
       display: display
     EventResetStageName:
-      value: t1
+      value: sp1
       type: state
       display: display
 
