@@ -539,12 +539,12 @@
     },
     "EventPt": {
       "EventPtSwitch": false,
-      "Event2MapName": "sp4",
-      "EventDailyAMapName": false,
+      "Event2MapName": "HT3",
+      "EventDailyAMapName": "T1>T2>T3>HT1>HT2>HT3",
       "EventDailySpMapName": "sp",
       "EventDailyCD": false,
       "EventResetStageAfterHours": 72,
-      "EventResetStageName": "sp1",
+      "EventResetStageName": "T1",
       "EventResetStageRecord": "2020-01-01 00:00:00"
     },
     "Fleet": {
