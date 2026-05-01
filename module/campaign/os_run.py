@@ -22,12 +22,6 @@ class OSCampaignRun(OSMapOperation):
             self.config.opsi_task_delay(ap_limit=True)
 
     def opsi_shop(self):
-        if self.config.OpsiShop_BuySpecialRadar:
-            if Oilkeep(self.config, self.device).update_oil() > 6000:
-                campaign = self.load_campaign()
-                campaign.os_voucher_buy_loggerUnlock()
-            else:
-                logger.warning('oil < 6000, skip buying loggerUnlock')
         try:
             campaign = self.load_campaign()
             campaign.os_shop()
@@ -35,6 +29,12 @@ class OSCampaignRun(OSMapOperation):
             self.config.opsi_task_delay(ap_limit=True)
 
     def opsi_voucher(self):
+        if self.config.OpsiVoucher_BuySpecialRadar:
+            if Oilkeep(self.config, self.device).update_oil() > 6000:
+                campaign = self.load_campaign()
+                campaign.os_voucher_buy_loggerUnlock()
+            else:
+                logger.warning('oil < 6000, skip buying loggerUnlock')
         try:
             campaign = self.load_campaign()
             campaign.os_voucher()

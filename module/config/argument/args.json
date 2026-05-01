@@ -9705,10 +9705,6 @@
       }
     },
     "OpsiShop": {
-      "BuySpecialRadar": {
-        "type": "checkbox",
-        "value": false
-      },
       "PresetFilter": {
         "type": "select",
         "value": "max_benefit_meta",
@@ -9771,6 +9767,10 @@
       }
     },
     "OpsiVoucher": {
+      "BuySpecialRadar": {
+        "type": "checkbox",
+        "value": false
+      },
       "Filter": {
         "type": "textarea",
         "value": "LoggerAbyssal > LoggerObscure > Book > Coin > Fragment"

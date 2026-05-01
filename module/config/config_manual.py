@@ -18,10 +18,10 @@ class ManualConfig:
     > ShopFrequent > ShopOnce > Shipyard > Freebies > Daily > Hard 
     > Oilkeep > Event > RaidDaily
     > PrivateQuarters
-    > OpsiExplore
+    > OpsiVoucher > OpsiExplore
     > EventStory > Smallevent > Minigame > Awaken
     > OpsiAshBeacon
-    > OpsiDaily > OpsiShop > OpsiVoucher
+    > OpsiDaily > OpsiShop
     > OpsiAbyssal > OpsiStronghold > OpsiObscure > OpsiArchive
     > OpsiAshBeacon > OpsiAshAssist > OpsiMonthBoss
     > Sos > EventSp > EventA > EventB > EventC > EventD

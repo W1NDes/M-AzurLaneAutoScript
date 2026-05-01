@@ -2995,10 +2995,6 @@
       "name": "OpsiShop._info.name",
       "help": "OpsiShop._info.help"
     },
-    "BuySpecialRadar": {
-      "name": "戦闘情報記録器購入",
-      "help": "戦闘情報記録器（5000油道具）自動購入"
-    },
     "PresetFilter": {
       "name": "OpsiShop.PresetFilter.name",
       "help": "OpsiShop.PresetFilter.help",
@@ -3017,6 +3013,10 @@
     "_info": {
       "name": "OpsiVoucher._info.name",
       "help": "OpsiVoucher._info.help"
+    },
+    "BuySpecialRadar": {
+      "name": "戦闘情報記録器購入",
+      "help": "戦闘情報記録器（5000油道具）自動購入"
     },
     "Filter": {
       "name": "OpsiVoucher.Filter.name",
