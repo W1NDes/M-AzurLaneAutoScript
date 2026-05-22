@@ -2598,12 +2598,12 @@
       },
       "Event2MapName": {
         "type": "state",
-        "value": "HT3",
+        "value": "d3",
         "display": "display"
       },
       "EventDailyAMapName": {
         "type": "state",
-        "value": "T1>T2>T3>HT1>HT2>HT3",
+        "value": "a1>a2>a3>b1>b2>b3",
         "display": "display"
       },
       "EventDailySpMapName": {
@@ -2623,7 +2623,7 @@
       },
       "EventResetStageName": {
         "type": "state",
-        "value": "T1",
+        "value": "a1",
         "display": "display"
       },
       "EventResetStageRecord": {
@@ -3342,33 +3342,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20201126_cn",
-          "event_20250424_cn",
-          "event_20260417_cn"
+          "event_20221222_cn",
+          "event_20260520_cn"
         ],
         "option_cn": [
-          "event_20250424_cn",
-          "event_20201126_cn",
-          "event_20260417_cn"
+          "event_20260520_cn"
         ],
         "option_en": [
-          "event_20250424_cn",
-          "event_20201126_cn",
-          "event_20260417_cn"
+          "event_20260520_cn"
         ],
         "option_jp": [
-          "event_20250424_cn",
-          "event_20201126_cn",
-          "event_20260417_cn"
+          "event_20260520_cn"
         ],
         "option_tw": [
-          "event_20201126_cn",
-          "event_20260417_cn"
+          "event_20221222_cn"
         ],
         "option_bold": [
-          "event_20201126_cn",
-          "event_20250424_cn",
-          "event_20260417_cn"
+          "event_20221222_cn",
+          "event_20260520_cn"
         ]
       },
       "Mode": {
