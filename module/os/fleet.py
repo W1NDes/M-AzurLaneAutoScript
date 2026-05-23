@@ -62,7 +62,7 @@ class PercentageOcr(Ocr):
 
 
 FLEET_LOW_RESOLVE = Button(
-    area=(144, 148, 170, 175), color=(255, 44, 33), button=(144, 148, 170, 175),
+    area=(296, 83, 335, 115), color=(255, 44, 33), button=(296, 83, 335, 115),
     name='FLEET_LOW_RESOLVE')
 
 
@@ -203,7 +203,7 @@ class OSFleet(OSCamera, Combat, Fleet, OSAsh):
         Whether low resolve debuff appears on current fleet
         """
         return self.image_color_count(
-            FLEET_LOW_RESOLVE, color=FLEET_LOW_RESOLVE.color, threshold=221, count=250)
+            FLEET_LOW_RESOLVE, color=FLEET_LOW_RESOLVE.color, threshold=221, count=140)
 
     def get_sea_grids(self):
         """
