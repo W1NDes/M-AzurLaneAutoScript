@@ -539,12 +539,12 @@
     },
     "EventPt": {
       "EventPtSwitch": false,
-      "Event2MapName": "HT3",
-      "EventDailyAMapName": "T1>T2>T3>HT1>HT2>HT3",
+      "Event2MapName": "d3",
+      "EventDailyAMapName": "a1>a2>a3>b1>b2>b3",
       "EventDailySpMapName": "sp",
       "EventDailyCD": false,
       "EventResetStageAfterHours": 72,
-      "EventResetStageName": "T1",
+      "EventResetStageName": "a1",
       "EventResetStageRecord": "2020-01-01 00:00:00"
     },
     "Fleet": {
@@ -855,7 +855,7 @@
     },
     "Campaign": {
       "Name": "D3",
-      "Event": "war_archives_20230223_cn",
+      "Event": "war_archives_20230803_cn",
       "Mode": "normal",
       "UseClearMode": true,
       "UseFleetLock": true,
@@ -1999,7 +1999,6 @@
       "ServerUpdate": "00:00"
     },
     "OpsiShop": {
-      "BuySpecialRadar": false,
       "PresetFilter": "max_benefit_meta",
       "CustomFilter": "LoggerAbyssalT6 > LoggerAbyssalT5 > LoggerObscure > LoggerAbyssalT4 > ActionPoint > PurpleCoins\n> GearDesignPlanT3 > PlateRandomT4 > DevelopmentMaterialT3 > GearDesignPlanT2 > GearPart\n> OrdnanceTestingReportT3 > OrdnanceTestingReportT2 > DevelopmentMaterialT2 > OrdnanceTestingReportT1\n> METARedBook > CrystallizedHeatResistantSteel > NanoceramicAlloy > NeuroplasticProstheticArm > SupercavitationGenerator"
     },
@@ -2017,6 +2016,7 @@
       "ServerUpdate": "00:00"
     },
     "OpsiVoucher": {
+      "BuySpecialRadar": false,
       "Filter": "LoggerAbyssal > LoggerObscure > Book > Coin > Fragment"
     },
     "Storage": {
