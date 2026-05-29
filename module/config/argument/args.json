@@ -9213,7 +9213,7 @@
       },
       "deadline": {
         "type": "state",
-        "value": "2026-03-21 12:00:00",
+        "value": "2026-06-12 12:00:00",
         "validate": "datetime",
         "display": "display"
       },
@@ -9236,7 +9236,7 @@
       },
       "lane_one_entry": {
         "type": "state",
-        "value": true,
+        "value": false,
         "display": "display"
       },
       "lane_two_entry": {
@@ -9246,7 +9246,7 @@
       },
       "lane_three_entry": {
         "type": "state",
-        "value": false,
+        "value": true,
         "display": "display"
       },
       "special_task_entry": {
