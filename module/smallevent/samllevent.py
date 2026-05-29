@@ -424,7 +424,10 @@ class SmallEvent(UI):
                 continue
             
             if entried:
-                if title_correct >= -4:
+                if not page_text:
+                    # 未指定校验标题时，跳过标题识别直接进入后续按钮定位逻辑
+                    title_correct = 1
+                elif title_correct >= -4:
                     title_ocr_result = orc_api.request_ocr(image=crop(self.device.image, EVENT_PREPARE_PAGE_2.area), model="general_basic")
                     if 'words_result' in title_ocr_result and len(title_ocr_result['words_result']) > 0:
                         all_titles = "".join([word['words'] for word in title_ocr_result['words_result']])
@@ -663,10 +666,10 @@ class SmallEvent(UI):
                     self.sevenD_harvest(page_area, ORC_API, goPage_result)
                 #第三栏
                 if self.config.Smallevent_lane_three_entry:
-                    # page_area = (0, 0, 1280, 720)
-                    # self.sevenD_harvest(page_area,ORC_API,goto_sevenD_page_func=self.goto_sevenD_page_v3, 
-                    #                     button_text="纪念签到",exclude_text=["无"])#eventSet
-                    pass
+                    page_area = (0, 0, 1280, 720)
+                    goPage_result = self.goto_sevenD_page_general(
+                        page_area, ORC_API,button_text="",exclude_text=[""],
+                        entry_index=3)
                 if not any([self.config.Smallevent_lane_one_entry,
                             self.config.Smallevent_lane_two_entry,
                             self.config.Smallevent_lane_three_entry]):
