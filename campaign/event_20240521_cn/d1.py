@@ -79,6 +79,9 @@ class Config:
     MAP_SWIPE_MULTIPLY_MAATOUCH = (0.938, 0.955)
     MAP_ENSURE_EDGE_INSIGHT_CORNER = 'bottom'
     MAP_WALK_USE_CURRENT_FLEET = True
+    STAGE_INCREASE_CUSTOM = [
+        'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
+    ]
 
 
 class Campaign(CampaignBase):
