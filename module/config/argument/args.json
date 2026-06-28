@@ -1977,24 +1977,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -2508,24 +2508,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -2599,12 +2599,12 @@
       },
       "Event2MapName": {
         "type": "state",
-        "value": "d3",
+        "value": "ht3",
         "display": "display"
       },
       "EventDailyAMapName": {
         "type": "state",
-        "value": "a1>a2>a3>b1>b2>b3",
+        "value": false,
         "display": "display"
       },
       "EventDailySpMapName": {
@@ -2614,7 +2614,7 @@
       },
       "EventDailyCD": {
         "type": "state",
-        "value": "c1>c2>c3>d1>d2>d3",
+        "value": false,
         "display": "display"
       },
       "EventResetStageAfterHours": {
@@ -2624,7 +2624,7 @@
       },
       "EventResetStageName": {
         "type": "state",
-        "value": "a1",
+        "value": "t1",
         "display": "display"
       },
       "EventResetStageRecord": {
@@ -2946,24 +2946,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -3343,24 +3343,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -5102,24 +5102,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -5520,24 +5520,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -5938,24 +5938,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -6356,24 +6356,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -6774,24 +6774,24 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ],
         "option_cn": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_en": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_jp": [
-          "event_20240521_cn"
+          "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20260520_cn"
+          "event_20230223_cn"
         ],
         "option_bold": [
-          "event_20240521_cn",
-          "event_20260520_cn"
+          "event_20230223_cn",
+          "event_20260625_cn"
         ]
       },
       "Mode": {
@@ -9435,7 +9435,8 @@
           "sirius",
           "new_jersey",
           "taihou",
-          "aegir"
+          "aegir",
+          "nakhimov"
         ]
       }
     },
