@@ -3485,7 +3485,6 @@
         "type": "select",
         "value": "campaign_main",
         "option": [
-          "event_20230223_cn",
           "event_20260625_cn"
         ],
         "option_cn": [
@@ -3498,10 +3497,9 @@
           "event_20260625_cn"
         ],
         "option_tw": [
-          "event_20230223_cn"
+          "event_20260625_cn"
         ],
         "option_bold": [
-          "event_20230223_cn",
           "event_20260625_cn"
         ]
       },
