@@ -509,7 +509,8 @@ class CampaignRun(CampaignEvent, ShopStatus):
             if ensure_campaign_ui_result is False:
                 logger.info('Maybe Already pass the stage, goto next.')
                 self.campaign.handle_map_stop()
-                break
+                break       
+            self.config.override(Campaign_Mode=self.campaign.config.Campaign_Mode)
             self.disable_raid_on_event()
             self.handle_commission_notice()
 

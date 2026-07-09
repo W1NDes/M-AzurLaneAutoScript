@@ -4,7 +4,7 @@ from cnocr import CnOcr, consts
 from module.base.button import Button
 from module.base.timer import Timer
 from module.base.utils import *
-from module.exception import RequestHumanTakeover
+from module.exception import HardNotSatisfied
 from module.handler.assets import AUTO_SEARCH_SET_MOB, AUTO_SEARCH_SET_BOSS, \
     AUTO_SEARCH_SET_ALL, AUTO_SEARCH_SET_STANDBY, \
     AUTO_SEARCH_SET_SUB_AUTO, AUTO_SEARCH_SET_SUB_STANDBY
@@ -132,6 +132,7 @@ class FleetOperator:
             if str(self) == "FLEET_2":                   
                 self.main.device.click_adb(1050,330)      
             # raise RequestHumanTakeover                  
+            # raise HardNotSatisfied
 
     def clear(self, skip_first_screenshot=True):
         """
