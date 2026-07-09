@@ -67,7 +67,7 @@
       "help": ""
     },
     "Coalition": {
-      "name": "Light & Shadow Fashion Shoot",
+      "name": "Frostfall",
       "help": ""
     },
     "Event": {
@@ -99,7 +99,7 @@
       "help": "Due to the lack of maintenance of war archives, continuous clear may not work normally, if Alas runs abnormally, Please manually finish clearing and use auto search"
     },
     "CoalitionSp": {
-      "name": "Light & Shadow Fashion Shoot SP",
+      "name": "Frostfall SP",
       "help": ""
     },
     "EventA": {
@@ -1743,10 +1743,11 @@
     "Mode": {
       "name": "Mode",
       "help": "SP needs to use event daily SP to run",
-      "easy": "easy",
-      "normal": "normal",
-      "hard": "hard",
-      "sp": "sp"
+      "tc1": "tc1",
+      "tc2": "tc2",
+      "tc3": "tc3",
+      "sp": "sp",
+      "ex": "ex"
     },
     "Fleet": {
       "name": "Fleet",
@@ -1968,6 +1969,10 @@
     "FortChoreMeowfficer": {
       "name": "Do Fort Chores",
       "help": "Completes all 3 chores; clean, feed, and play with meowfficer to get fort exp"
+    },
+    "OverflowCoins": {
+      "name": "Buy Boxes On Coin Overflow",
+      "help": "When coins are above this value, keep buying boxes until coins drop to it or boxes run out; -1 to disable"
     }
   },
   "MeowfficerTrain": {

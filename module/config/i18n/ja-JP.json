@@ -67,7 +67,7 @@
       "help": ""
     },
     "Coalition": {
-      "name": "特集写真-撮影進行中",
+      "name": "星霜海嵐",
       "help": ""
     },
     "Event": {
@@ -99,7 +99,7 @@
       "help": ""
     },
     "CoalitionSp": {
-      "name": "特集写真-撮影進行中SP",
+      "name": "星霜海嵐SP",
       "help": ""
     },
     "EventA": {
@@ -1743,10 +1743,11 @@
     "Mode": {
       "name": "Coalition.Mode.name",
       "help": "Coalition.Mode.help",
-      "easy": "easy",
-      "normal": "normal",
-      "hard": "hard",
-      "sp": "sp"
+      "tc1": "tc1",
+      "tc2": "tc2",
+      "tc3": "tc3",
+      "sp": "sp",
+      "ex": "ex"
     },
     "Fleet": {
       "name": "Coalition.Fleet.name",
@@ -1968,6 +1969,10 @@
     "FortChoreMeowfficer": {
       "name": "Meowfficer.FortChoreMeowfficer.name",
       "help": "Meowfficer.FortChoreMeowfficer.help"
+    },
+    "OverflowCoins": {
+      "name": "Meowfficer.OverflowCoins.name",
+      "help": "Meowfficer.OverflowCoins.help"
     }
   },
   "MeowfficerTrain": {
