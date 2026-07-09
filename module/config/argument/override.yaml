@@ -261,22 +261,14 @@ Coalition:
     UseAutoSearch: false
     Use2xBook: false
     AmbushEvade: true
-    ClearAfterSinking: false
+  Coalition:
     Mode:
       option: [ tc1, tc2, tc3, ex ]
   StopCondition:
     MapAchievement: non_stop
+    StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
-  EventPt:
-    Event2MapName: 
-      value: HT6
-    EventDailyAMapName:
-      value: T1>T2>T3>T4>T5>T6
-    EventDailySpMapName:
-      value: sp
-    EventDailyCD:
-      value: HT1>HT2>HT3>HT4>HT5>HT6
   Emotion:
     Fleet2Value: 119
     Fleet2Record: 2020-01-01 00:00:00

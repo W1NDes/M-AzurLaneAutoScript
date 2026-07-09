@@ -66,6 +66,10 @@
       "name": "活動通用",
       "help": ""
     },
+    "Coalition": {
+      "name": "極地風暴",
+      "help": ""
+    },
     "Event": {
       "name": "活動圖",
       "help": ""
@@ -86,10 +90,6 @@
       "name": "深谷来信",
       "help": ""
     },
-    "Coalition": {
-      "name": "極地風暴",
-      "help": ""
-    },
     "MaritimeEscort": {
       "name": "商船護航",
       "help": ""
@@ -97,6 +97,10 @@
     "WarArchives": {
       "name": "作戰檔案",
       "help": "由於作戰檔案缺少維護，開荒功能不一定能正常使用，如果發現Alas運行異常，請手動完成開荒後使用自律尋敵功能"
+    },
+    "CoalitionSp": {
+      "name": "極地風暴SP",
+      "help": ""
     },
     "EventA": {
       "name": "活動每日A圖",
@@ -120,10 +124,6 @@
     },
     "RaidDaily": {
       "name": "共鬥活動每日",
-      "help": ""
-    },
-    "CoalitionSp": {
-      "name": "極地風暴SP",
       "help": ""
     },
     "EventStory": {
