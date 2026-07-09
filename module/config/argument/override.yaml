@@ -262,9 +262,8 @@ Coalition:
     Use2xBook: false
     AmbushEvade: true
     ClearAfterSinking: false
-  Coalition:
     Mode:
-      option: [ easy, normal, hard, ex ]
+      option: [ tc1, tc2, tc3, ex ]
   StopCondition:
     MapAchievement: non_stop
     GetNewShip: false

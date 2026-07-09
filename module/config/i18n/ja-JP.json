@@ -66,10 +66,6 @@
       "name": "イベント共通設定",
       "help": ""
     },
-    "Coalition": {
-      "name": "特集写真-撮影進行中",
-      "help": ""
-    },
     "Event": {
       "name": "イベント海域",
       "help": ""
@@ -90,16 +86,16 @@
       "name": "病院探訪",
       "help": ""
     },
+    "Coalition": {
+      "name": "星霜海嵐",
+      "help": ""
+    },
     "MaritimeEscort": {
       "name": "Maritime Escort",
       "help": ""
     },
     "WarArchives": {
       "name": "作戦履歴",
-      "help": ""
-    },
-    "CoalitionSp": {
-      "name": "特集写真-撮影進行中SP",
       "help": ""
     },
     "EventA": {
@@ -124,6 +120,10 @@
     },
     "RaidDaily": {
       "name": "Raid Daily",
+      "help": ""
+    },
+    "CoalitionSp": {
+      "name": "星霜海嵐SP",
       "help": ""
     },
     "EventStory": {
@@ -1743,10 +1743,11 @@
     "Mode": {
       "name": "Coalition.Mode.name",
       "help": "Coalition.Mode.help",
-      "easy": "easy",
-      "normal": "normal",
-      "hard": "hard",
-      "sp": "sp"
+      "tc1": "tc1",
+      "tc2": "tc2",
+      "tc3": "tc3",
+      "sp": "sp",
+      "ex": "ex"
     },
     "Fleet": {
       "name": "Coalition.Fleet.name",
@@ -1968,6 +1969,10 @@
     "FortChoreMeowfficer": {
       "name": "Meowfficer.FortChoreMeowfficer.name",
       "help": "Meowfficer.FortChoreMeowfficer.help"
+    },
+    "OverflowCoins": {
+      "name": "Meowfficer.OverflowCoins.name",
+      "help": "Meowfficer.OverflowCoins.help"
     }
   },
   "MeowfficerTrain": {
