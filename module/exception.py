@@ -71,3 +71,7 @@ class OtherLogin(Exception):
 
 class SpLimitError(Exception):
     ...
+
+
+class HardNotSatisfied(RequestHumanTakeover):
+    pass
