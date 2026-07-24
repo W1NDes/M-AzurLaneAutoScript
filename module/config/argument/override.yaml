@@ -283,7 +283,6 @@ Coalition:
       option: [ easy, normal, hard, sp ]
   StopCondition:
     MapAchievement: non_stop
-    StageIncrease: false
     GetNewShip: false
     ReachLevel: 0
   Emotion:
