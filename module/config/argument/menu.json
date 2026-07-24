@@ -43,8 +43,12 @@
       "EventC",
       "EventD",
       "EventSp",
+<<<<<<< HEAD
       "RaidDaily",
       "EventStory"
+=======
+      "RaidDaily"
+>>>>>>> upstream/master
     ]
   },
   "Reward": {
