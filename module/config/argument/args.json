@@ -300,6 +300,7 @@
           "cn_android-26",
           "cn_android-27",
           "cn_android-28",
+          "cn_android-29",
           "cn_ios-0",
           "cn_ios-1",
           "cn_ios-2",
@@ -2404,23 +2405,23 @@
         "value": "campaign_main",
         "option": [
           "coalition_20230323",
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_cn": [
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_en": [
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_jp": [
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_tw": [
           "coalition_20230323"
         ],
         "option_bold": [
           "coalition_20230323",
-          "coalition_20260122"
+          "coalition_20260723"
         ]
       },
       "Mode": {
@@ -2465,12 +2466,12 @@
       },
       "Mode": {
         "type": "select",
-        "value": "tc3",
+        "value": "hard",
         "option": [
-          "tc1",
-          "tc2",
-          "tc3",
-          "ex"
+          "easy",
+          "normal",
+          "hard",
+          "sp"
         ]
       },
       "Fleet": {
@@ -2505,8 +2506,7 @@
       },
       "StageIncrease": {
         "type": "checkbox",
-        "value": false,
-        "display": "hide"
+        "value": false
       },
       "GetNewShip": {
         "type": "checkbox",
@@ -4978,23 +4978,23 @@
         "value": "campaign_main",
         "option": [
           "coalition_20230323",
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_cn": [
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_en": [
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_jp": [
-          "coalition_20260122"
+          "coalition_20260723"
         ],
         "option_tw": [
           "coalition_20230323"
         ],
         "option_bold": [
           "coalition_20230323",
-          "coalition_20260122"
+          "coalition_20260723"
         ]
       },
       "Mode": {
@@ -5041,11 +5041,10 @@
         "type": "select",
         "value": "sp",
         "option": [
-          "tc1",
-          "tc2",
-          "tc3",
-          "sp",
-          "ex"
+          "easy",
+          "normal",
+          "hard",
+          "sp"
         ],
         "display": "hide"
       },

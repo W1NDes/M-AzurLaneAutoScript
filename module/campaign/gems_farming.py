@@ -344,7 +344,7 @@ class GemsFarming(CampaignRun, Dock):
             list[Ship]: Common rarity CVs that meet the level, emotion and fleet requirements.
         """
         self.dock_favourite_set(False, wait_loading=False)
-        self.dock_sort_method_dsc_set(True, wait_loading=False)
+        self.dock_sort_method_dsc_set(False, wait_loading=False)
         self.dock_filter_set(index='cv', rarity='common', extra='enhanceable', sort='total')
 
         logger.hr('FINDING FLAGSHIP')
@@ -540,7 +540,7 @@ class GemsFarming(CampaignRun, Dock):
         mount_button = globals()[f'FLEET_{self.fleet_to_attack}_VANGUARD_3']
 
         if self.appear(unmount_button, offset=(20, 20)):
-            logger.info('No flagship to unmount, skip unmounting.')
+            logger.info('No vanguard to unmount, skip unmounting.')
         else:
             self.ui_enter_ship(unmount_button, long_click=False)
             self.ui_click(DOCK_UNMOUNT, check_button=FLEET_PREPARATION, appear_button=DOCK_CHECK, 
