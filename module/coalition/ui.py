@@ -21,7 +21,7 @@ class TeamSwitch(Switch):
             bool
         """
         for data in self.state_list:
-            if main.image_color_count(data['check_button'], color=(191, 192, 198), threshold=221, count=100):
+            if main.image_color_count(data['check_button'], color=(191, 192, 198), threshold=221, count=1000):
                 return True
 
         return False
@@ -35,7 +35,7 @@ class TeamSwitch(Switch):
             str: state name or 'unknown'.
         """
         for data in self.state_list:
-            if main.image_color_count(data['check_button'], color=(191, 192, 198), threshold=221, count=100):
+            if main.image_color_count(data['check_button'], color=(191, 192, 198), threshold=221, count=1000):
                 return data['state']
 
         return 'unknown'
