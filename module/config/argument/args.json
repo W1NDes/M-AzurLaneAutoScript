@@ -2405,18 +2405,6 @@
         "value": "campaign_main",
         "option": [
           "coalition_20230323",
-<<<<<<< HEAD
-          "coalition_20260122"
-        ],
-        "option_cn": [
-          "coalition_20260122"
-        ],
-        "option_en": [
-          "coalition_20260122"
-        ],
-        "option_jp": [
-          "coalition_20260122"
-=======
           "coalition_20260723"
         ],
         "option_cn": [
@@ -2427,18 +2415,13 @@
         ],
         "option_jp": [
           "coalition_20260723"
->>>>>>> upstream/master
         ],
         "option_tw": [
           "coalition_20230323"
         ],
         "option_bold": [
           "coalition_20230323",
-<<<<<<< HEAD
-          "coalition_20260122"
-=======
           "coalition_20260723"
->>>>>>> upstream/master
         ]
       },
       "Mode": {
@@ -2477,20 +2460,10 @@
       }
     },
     "Coalition": {
-<<<<<<< HEAD
       "UseRecommendFleet": {
         "type": "checkbox",
         "value": true
       },
-      "Mode": {
-        "type": "select",
-        "value": "tc3",
-        "option": [
-          "tc1",
-          "tc2",
-          "tc3",
-          "ex"
-=======
       "Mode": {
         "type": "select",
         "value": "hard",
@@ -2499,7 +2472,6 @@
           "normal",
           "hard",
           "sp"
->>>>>>> upstream/master
         ]
       },
       "Fleet": {
@@ -5007,18 +4979,6 @@
         "value": "campaign_main",
         "option": [
           "coalition_20230323",
-<<<<<<< HEAD
-          "coalition_20260122"
-        ],
-        "option_cn": [
-          "coalition_20260122"
-        ],
-        "option_en": [
-          "coalition_20260122"
-        ],
-        "option_jp": [
-          "coalition_20260122"
-=======
           "coalition_20260723"
         ],
         "option_cn": [
@@ -5029,18 +4989,13 @@
         ],
         "option_jp": [
           "coalition_20260723"
->>>>>>> upstream/master
         ],
         "option_tw": [
           "coalition_20230323"
         ],
         "option_bold": [
           "coalition_20230323",
-<<<<<<< HEAD
-          "coalition_20260122"
-=======
           "coalition_20260723"
->>>>>>> upstream/master
         ]
       },
       "Mode": {
@@ -5079,40 +5034,24 @@
       }
     },
     "Coalition": {
-<<<<<<< HEAD
       "UseRecommendFleet": {
         "type": "checkbox",
         "value": true
       },
-=======
->>>>>>> upstream/master
       "Mode": {
         "type": "select",
         "value": "sp",
         "option": [
-<<<<<<< HEAD
-          "tc1",
-          "tc2",
-          "tc3",
-          "sp",
-          "ex"
-=======
           "easy",
           "normal",
           "hard",
           "sp"
->>>>>>> upstream/master
         ],
         "display": "hide"
       },
       "Fleet": {
-<<<<<<< HEAD
         "type": "state",
         "value": "multi",
-=======
-        "type": "select",
-        "value": "single",
->>>>>>> upstream/master
         "option": [
           "single",
           "multi"
@@ -7560,7 +7499,6 @@
       }
     }
   },
-<<<<<<< HEAD
   "EventStory": {
     "Scheduler": {
       "Enable": {
@@ -7606,8 +7544,6 @@
       }
     }
   },
-=======
->>>>>>> upstream/master
   "Commission": {
     "Scheduler": {
       "Enable": {

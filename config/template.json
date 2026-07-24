@@ -505,12 +505,8 @@
       "AmbushEvade": true
     },
     "Coalition": {
-<<<<<<< HEAD
       "UseRecommendFleet": true,
-      "Mode": "tc3",
-=======
       "Mode": "hard",
->>>>>>> upstream/master
       "Fleet": "single"
     },
     "StopCondition": {
@@ -966,14 +962,9 @@
       "AmbushEvade": true
     },
     "Coalition": {
-<<<<<<< HEAD
       "UseRecommendFleet": true,
       "Mode": "sp",
       "Fleet": "multi"
-=======
-      "Mode": "sp",
-      "Fleet": "single"
->>>>>>> upstream/master
     },
     "StopCondition": {
       "OilLimit": 1000,
@@ -1442,7 +1433,6 @@
       "Storage": {}
     }
   },
-<<<<<<< HEAD
   "EventStory": {
     "Scheduler": {
       "Enable": false,
@@ -1456,8 +1446,6 @@
       "Storage": {}
     }
   },
-=======
->>>>>>> upstream/master
   "Commission": {
     "Scheduler": {
       "Enable": true,
