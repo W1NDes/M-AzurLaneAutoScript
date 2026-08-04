@@ -90,10 +90,6 @@
       "name": "深谷来信",
       "help": ""
     },
-    "MaritimeEscort": {
-      "name": "商船护航",
-      "help": ""
-    },
     "WarArchives": {
       "name": "作战档案",
       "help": "由于作战档案缺少维护，开荒功能不一定能正常使用，如果发现Alas运行异常，请手动完成开荒后使用自律寻敌功能"
@@ -1744,16 +1740,6 @@
       "help": "例如1-T3表示白天的T3关卡，开头的0,1,2,3分别对应不刷PT，白天，下午，晚上，-后面则是关卡名。如果需要跳过全线索主线检查，请在末尾添加-Q，如2-T3-Q"
     }
   },
-  "MaritimeEscort": {
-    "_info": {
-      "name": "商船护航",
-      "help": "进一下就撤退，能拿约70%的奖励"
-    },
-    "Enable": {
-      "name": "启用商船护航",
-      "help": ""
-    }
-  },
   "Coalition": {
     "_info": {
       "name": "活动设置",
@@ -1766,10 +1752,10 @@
     "Mode": {
       "name": "难度",
       "help": "SP图需要使用活动每日SP运行",
-      "easy": "easy",
-      "normal": "normal",
-      "hard": "hard",
-      "sp": "sp"
+      "easy": "简单",
+      "normal": "普通",
+      "hard": "困难",
+      "sp": "SP"
     },
     "Fleet": {
       "name": "出击队伍",
