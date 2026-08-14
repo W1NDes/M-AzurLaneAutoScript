@@ -23,7 +23,11 @@ class ManualConfig:
     > OpsiAshBeacon
     > OpsiDaily > OpsiShop
     > OpsiAbyssal > OpsiStronghold > OpsiObscure > OpsiArchive
-    > OpsiAshBeacon > OpsiAshAssist > OpsiMonthBoss
+    > IslandFreebie > IslandCollect
+    > IslandBusiness > IslandSeasonTask
+    > IslandOrder
+    > IslandProduction
+    > OpsiAshAssist > OpsiMonthBoss
     > Sos > EventSp > EventA > EventB > EventC > EventD
     > CoalitionSp > WarArchives > MaritimeEscort
     > Event2 > Event3 > Raid > Hospital > Coalition > Main3 > Main > Main2

@@ -485,55 +485,6 @@
       "Storage": {}
     }
   },
-  "Coalition": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Coalition",
-      "SuccessInterval": 30,
-      "FailureInterval": 30,
-      "ServerUpdate": "00:00"
-    },
-    "Campaign": {
-      "Name": "dynamic",
-      "Event": "campaign_main",
-      "Mode": "normal",
-      "UseClearMode": true,
-      "UseFleetLock": true,
-      "UseAutoSearch": false,
-      "Use2xBook": false,
-      "AmbushEvade": true
-    },
-    "Coalition": {
-      "UseRecommendFleet": true,
-      "Mode": "hard",
-      "Fleet": "single"
-    },
-    "StopCondition": {
-      "OilLimit": 1000,
-      "RunCount": 0,
-      "MapAchievement": "non_stop",
-      "StageIncrease": false,
-      "GetNewShip": false,
-      "ReachLevel": 0
-    },
-    "Emotion": {
-      "Mode": "calculate",
-      "Fleet1Value": 119,
-      "Fleet1Record": "2020-01-01 00:00:00",
-      "Fleet1Control": "prevent_green_face",
-      "Fleet1Recover": "not_in_dormitory",
-      "Fleet1Oath": false,
-      "Fleet2Value": 119,
-      "Fleet2Record": "2020-01-01 00:00:00",
-      "Fleet2Control": "prevent_yellow_face",
-      "Fleet2Recover": "not_in_dormitory",
-      "Fleet2Oath": false
-    },
-    "Storage": {
-      "Storage": {}
-    }
-  },
   "Event": {
     "Scheduler": {
       "Enable": false,
@@ -563,12 +514,12 @@
     },
     "EventPt": {
       "EventPtSwitch": false,
-      "Event2MapName": "ht3",
-      "EventDailyAMapName": false,
+      "Event2MapName": "d3",
+      "EventDailyAMapName": "a1 > a2 > a3 > b1 > b2 > b3",
       "EventDailySpMapName": "sp",
       "EventDailyCD": false,
       "EventResetStageAfterHours": 72,
-      "EventResetStageName": "t1",
+      "EventResetStageName": "a1",
       "EventResetStageRecord": "2020-01-01 00:00:00"
     },
     "Fleet": {
@@ -852,17 +803,50 @@
       "Storage": {}
     }
   },
-  "MaritimeEscort": {
+  "Coalition": {
     "Scheduler": {
       "Enable": false,
       "NextRun": "2020-01-01 00:00:00",
-      "Command": "MaritimeEscort",
+      "Command": "Coalition",
       "SuccessInterval": 30,
       "FailureInterval": 30,
       "ServerUpdate": "00:00"
     },
-    "MaritimeEscort": {
-      "Enable": true
+    "Campaign": {
+      "Name": "dynamic",
+      "Event": "campaign_main",
+      "Mode": "normal",
+      "UseClearMode": true,
+      "UseFleetLock": true,
+      "UseAutoSearch": false,
+      "Use2xBook": false,
+      "AmbushEvade": true
+    },
+    "Coalition": {
+      "UseRecommendFleet": true,
+      "Mode": "hard",
+      "Fleet": "single"
+    },
+    "StopCondition": {
+      "OilLimit": 1000,
+      "RunCount": 0,
+      "MapAchievement": "non_stop",
+      "StageIncrease": false,
+      "GetNewShip": false,
+      "ReachLevel": 0
+    },
+    "Emotion": {
+      "Mode": "calculate",
+      "Fleet1Value": 119,
+      "Fleet1Record": "2020-01-01 00:00:00",
+      "Fleet1Control": "prevent_green_face",
+      "Fleet1Recover": "not_in_dormitory",
+      "Fleet1Oath": false,
+      "Fleet2Value": 119,
+      "Fleet2Record": "2020-01-01 00:00:00",
+      "Fleet2Control": "prevent_yellow_face",
+      "Fleet2Recover": "not_in_dormitory",
+      "Fleet2Oath": false
     },
     "Storage": {
       "Storage": {}
@@ -937,55 +921,6 @@
     },
     "EnemyPriority": {
       "EnemyScaleBalanceWeight": "default_mode"
-    },
-    "Storage": {
-      "Storage": {}
-    }
-  },
-  "CoalitionSp": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "CoalitionSp",
-      "SuccessInterval": 30,
-      "FailureInterval": 30,
-      "ServerUpdate": "00:00"
-    },
-    "Campaign": {
-      "Name": "sp",
-      "Event": "campaign_main",
-      "Mode": "normal",
-      "UseClearMode": true,
-      "UseFleetLock": true,
-      "UseAutoSearch": false,
-      "Use2xBook": false,
-      "AmbushEvade": true
-    },
-    "Coalition": {
-      "UseRecommendFleet": true,
-      "Mode": "sp",
-      "Fleet": "multi"
-    },
-    "StopCondition": {
-      "OilLimit": 1000,
-      "RunCount": 0,
-      "MapAchievement": "non_stop",
-      "StageIncrease": false,
-      "GetNewShip": false,
-      "ReachLevel": 0
-    },
-    "Emotion": {
-      "Mode": "calculate",
-      "Fleet1Value": 119,
-      "Fleet1Record": "2020-01-01 00:00:00",
-      "Fleet1Control": "prevent_green_face",
-      "Fleet1Recover": "not_in_dormitory",
-      "Fleet1Oath": false,
-      "Fleet2Value": 119,
-      "Fleet2Record": "2020-01-01 00:00:00",
-      "Fleet2Control": "prevent_yellow_face",
-      "Fleet2Recover": "not_in_dormitory",
-      "Fleet2Oath": false
     },
     "Storage": {
       "Storage": {}
@@ -1433,6 +1368,55 @@
       "Storage": {}
     }
   },
+  "CoalitionSp": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "CoalitionSp",
+      "SuccessInterval": 30,
+      "FailureInterval": 30,
+      "ServerUpdate": "00:00"
+    },
+    "Campaign": {
+      "Name": "sp",
+      "Event": "campaign_main",
+      "Mode": "normal",
+      "UseClearMode": true,
+      "UseFleetLock": true,
+      "UseAutoSearch": false,
+      "Use2xBook": false,
+      "AmbushEvade": true
+    },
+    "Coalition": {
+      "UseRecommendFleet": true,
+      "Mode": "sp",
+      "Fleet": "multi"
+    },
+    "StopCondition": {
+      "OilLimit": 1000,
+      "RunCount": 0,
+      "MapAchievement": "non_stop",
+      "StageIncrease": false,
+      "GetNewShip": false,
+      "ReachLevel": 0
+    },
+    "Emotion": {
+      "Mode": "calculate",
+      "Fleet1Value": 119,
+      "Fleet1Record": "2020-01-01 00:00:00",
+      "Fleet1Control": "prevent_green_face",
+      "Fleet1Recover": "not_in_dormitory",
+      "Fleet1Oath": false,
+      "Fleet2Value": 119,
+      "Fleet2Record": "2020-01-01 00:00:00",
+      "Fleet2Control": "prevent_yellow_face",
+      "Fleet2Recover": "not_in_dormitory",
+      "Fleet2Oath": false
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
   "EventStory": {
     "Scheduler": {
       "Enable": false,
@@ -1441,6 +1425,9 @@
       "SuccessInterval": 0,
       "FailureInterval": 120,
       "ServerUpdate": "00:00"
+    },
+    "EventStory": {
+      "SkipBattle": true
     },
     "Storage": {
       "Storage": {}
@@ -2025,7 +2012,7 @@
     },
     "OpsiShop": {
       "PresetFilter": "max_benefit_meta",
-      "CustomFilter": "LoggerAbyssalT6 > LoggerAbyssalT5 > LoggerObscure > LoggerAbyssalT4 > ActionPoint > PurpleCoins\n> GearDesignPlanT3 > PlateRandomT4 > DevelopmentMaterialT3 > GearDesignPlanT2 > GearPart\n> OrdnanceTestingReportT3 > OrdnanceTestingReportT2 > DevelopmentMaterialT2 > OrdnanceTestingReportT1\n> METARedBook > CrystallizedHeatResistantSteel > NanoceramicAlloy > NeuroplasticProstheticArm > SupercavitationGenerator"
+      "CustomFilter": "LoggerAbyssalT6 > LoggerAbyssalT5 > LoggerAbyssalT4 > LoggerObscureT6 > LoggerObscureT5 > LoggerObscureT4 > LoggerObscureT3 > ActionPoint > PurpleCoins\n> GearDesignPlanT3 > PlateRandomT4 > DevelopmentMaterialT3 > GearDesignPlanT2 > GearPart\n> OrdnanceTestingReportT3 > OrdnanceTestingReportT2 > DevelopmentMaterialT2 > OrdnanceTestingReportT1\n> METARedBook > CrystallizedHeatResistantSteel > NanoceramicAlloy > NeuroplasticProstheticArm > SupercavitationGenerator"
     },
     "Storage": {
       "Storage": {}
@@ -2221,6 +2208,121 @@
       "Storage": {}
     }
   },
+  "IslandProduction": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "IslandProduction",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "IslandProduction": {
+      "HardFloorItems": "{}",
+      "ReserveItems": "{}",
+      "DailyBufferItems": "{}",
+      "IdleAccumulatingItems": "{}"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandOrder": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "IslandOrder",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "IslandOrder": {
+      "StuckSeasonOrderId": 0
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandFreebie": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "IslandFreebie",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "IslandFreebie": {
+      "Share": true
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandCollect": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "IslandCollect",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "03:00, 18:00"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandSeasonTask": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "IslandSeasonTask",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "IslandSeasonTask": {
+      "TaskTarget": "{}"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandBusiness": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "IslandBusiness",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "IslandRestaurant": {
+      "KoiGrade": "bronze",
+      "KoiWaitress1": "any",
+      "KoiWaitress2": "none",
+      "KoiMenu": "{}",
+      "BearGrade": "bronze",
+      "BearWaitress1": "any",
+      "BearWaitress2": "none",
+      "BearMenu": "{}",
+      "EateryGrade": "bronze",
+      "EateryWaitress1": "any",
+      "EateryWaitress2": "none",
+      "EateryMenu": "{}",
+      "GrillGrade": "bronze",
+      "GrillWaitress1": "any",
+      "GrillWaitress2": "none",
+      "GrillMenu": "{}",
+      "CafeGrade": "bronze",
+      "CafeWaitress1": "any",
+      "CafeWaitress2": "none",
+      "CafeMenu": "{}"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
   "Daemon": {
     "Daemon": {
       "EnterMap": true
@@ -2233,6 +2335,19 @@
     "OpsiDaemon": {
       "RepairShip": true,
       "SelectEnemy": true
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandProductionPlanner": {
+    "IslandProductionPlanner": {
+      "RescanIslandTechnology": false,
+      "DailyProfitLowerLimit": 50000,
+      "DailyBufferSafetyMargin": 0,
+      "FieldsEfficiency": 0,
+      "OrchardEfficiency": 0,
+      "NurseryEfficiency": 0
     },
     "Storage": {
       "Storage": {}
