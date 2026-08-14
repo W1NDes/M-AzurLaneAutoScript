@@ -23,12 +23,12 @@
     "page": "setting",
     "tasks": [
       "EventGeneral",
-      "Coalition",
       "Event",
       "Event2",
       "Event3",
       "Raid",
       "Hospital",
+      "Coalition",
       "WarArchives"
     ]
   },
@@ -36,14 +36,17 @@
     "menu": "collapse",
     "page": "setting",
     "tasks": [
-      "CoalitionSp",
       "EventA",
       "EventB",
       "EventC",
       "EventD",
       "EventSp",
       "RaidDaily",
+<<<<<<< HEAD
       "EventStory"
+=======
+      "CoalitionSp"
+>>>>>>> upstream/master
     ]
   },
   "Reward": {
@@ -100,12 +103,29 @@
       "OpsiCrossMonth"
     ]
   },
+  "Island": {
+    "menu": "collapse",
+    "page": "setting",
+    "tasks": [
+      "IslandProduction",
+      "IslandOrder",
+      "IslandFreebie",
+      "IslandCollect",
+      "IslandSeasonTask",
+      "IslandBusiness"
+    ]
+  },
   "Tool": {
     "menu": "collapse",
     "page": "tool",
     "tasks": [
       "Daemon",
       "OpsiDaemon",
+<<<<<<< HEAD
+=======
+      "EventStory",
+      "IslandProductionPlanner",
+>>>>>>> upstream/master
       "Benchmark",
       "AzurLaneUncensored",
       "GameManager"
