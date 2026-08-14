@@ -126,6 +126,10 @@
       "name": "怪谈纪实每日SP",
       "help": ""
     },
+    "EventStory": {
+      "name": "活动剧情",
+      "help": ""
+    },
     "Commission": {
       "name": "委托",
       "help": ""
@@ -300,10 +304,6 @@
     },
     "OpsiDaemon": {
       "name": "大世界半自动",
-      "help": ""
-    },
-    "EventStory": {
-      "name": "活动剧情",
       "help": ""
     },
     "IslandProductionPlanner": {

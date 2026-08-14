@@ -126,6 +126,10 @@
       "name": "怪談紀實SP",
       "help": ""
     },
+    "EventStory": {
+      "name": "活動劇情",
+      "help": ""
+    },
     "Commission": {
       "name": "委託",
       "help": ""
@@ -300,10 +304,6 @@
     },
     "OpsiDaemon": {
       "name": "大世界半自動",
-      "help": ""
-    },
-    "EventStory": {
-      "name": "活動劇情",
       "help": ""
     },
     "IslandProductionPlanner": {

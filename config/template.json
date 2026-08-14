@@ -485,58 +485,6 @@
       "Storage": {}
     }
   },
-<<<<<<< HEAD
-  "Coalition": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "Coalition",
-      "SuccessInterval": 30,
-      "FailureInterval": 30,
-      "ServerUpdate": "00:00"
-    },
-    "Campaign": {
-      "Name": "dynamic",
-      "Event": "campaign_main",
-      "Mode": "normal",
-      "UseClearMode": true,
-      "UseFleetLock": true,
-      "UseAutoSearch": false,
-      "Use2xBook": false,
-      "AmbushEvade": true
-    },
-    "Coalition": {
-      "UseRecommendFleet": true,
-      "Mode": "hard",
-      "Fleet": "single"
-    },
-    "StopCondition": {
-      "OilLimit": 1000,
-      "RunCount": 0,
-      "MapAchievement": "non_stop",
-      "StageIncrease": false,
-      "GetNewShip": false,
-      "ReachLevel": 0
-    },
-    "Emotion": {
-      "Mode": "calculate",
-      "Fleet1Value": 119,
-      "Fleet1Record": "2020-01-01 00:00:00",
-      "Fleet1Control": "prevent_green_face",
-      "Fleet1Recover": "not_in_dormitory",
-      "Fleet1Oath": false,
-      "Fleet2Value": 119,
-      "Fleet2Record": "2020-01-01 00:00:00",
-      "Fleet2Control": "prevent_yellow_face",
-      "Fleet2Recover": "not_in_dormitory",
-      "Fleet2Oath": false
-    },
-    "Storage": {
-      "Storage": {}
-    }
-  },
-=======
->>>>>>> upstream/master
   "Event": {
     "Scheduler": {
       "Enable": false,
@@ -875,6 +823,7 @@
       "AmbushEvade": true
     },
     "Coalition": {
+      "UseRecommendFleet": true,
       "Mode": "hard",
       "Fleet": "single"
     },
@@ -977,58 +926,6 @@
       "Storage": {}
     }
   },
-<<<<<<< HEAD
-  "CoalitionSp": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "CoalitionSp",
-      "SuccessInterval": 30,
-      "FailureInterval": 30,
-      "ServerUpdate": "00:00"
-    },
-    "Campaign": {
-      "Name": "sp",
-      "Event": "campaign_main",
-      "Mode": "normal",
-      "UseClearMode": true,
-      "UseFleetLock": true,
-      "UseAutoSearch": false,
-      "Use2xBook": false,
-      "AmbushEvade": true
-    },
-    "Coalition": {
-      "UseRecommendFleet": true,
-      "Mode": "sp",
-      "Fleet": "multi"
-    },
-    "StopCondition": {
-      "OilLimit": 1000,
-      "RunCount": 0,
-      "MapAchievement": "non_stop",
-      "StageIncrease": false,
-      "GetNewShip": false,
-      "ReachLevel": 0
-    },
-    "Emotion": {
-      "Mode": "calculate",
-      "Fleet1Value": 119,
-      "Fleet1Record": "2020-01-01 00:00:00",
-      "Fleet1Control": "prevent_green_face",
-      "Fleet1Recover": "not_in_dormitory",
-      "Fleet1Oath": false,
-      "Fleet2Value": 119,
-      "Fleet2Record": "2020-01-01 00:00:00",
-      "Fleet2Control": "prevent_yellow_face",
-      "Fleet2Recover": "not_in_dormitory",
-      "Fleet2Oath": false
-    },
-    "Storage": {
-      "Storage": {}
-    }
-  },
-=======
->>>>>>> upstream/master
   "EventA": {
     "Scheduler": {
       "Enable": false,
@@ -1471,17 +1368,6 @@
       "Storage": {}
     }
   },
-<<<<<<< HEAD
-  "EventStory": {
-    "Scheduler": {
-      "Enable": false,
-      "NextRun": "2020-01-01 00:00:00",
-      "Command": "EventStory",
-      "SuccessInterval": 0,
-      "FailureInterval": 120,
-      "ServerUpdate": "00:00"
-    },
-=======
   "CoalitionSp": {
     "Scheduler": {
       "Enable": false,
@@ -1502,8 +1388,9 @@
       "AmbushEvade": true
     },
     "Coalition": {
+      "UseRecommendFleet": true,
       "Mode": "sp",
-      "Fleet": "single"
+      "Fleet": "multi"
     },
     "StopCondition": {
       "OilLimit": 1000,
@@ -1526,7 +1413,22 @@
       "Fleet2Recover": "not_in_dormitory",
       "Fleet2Oath": false
     },
->>>>>>> upstream/master
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "EventStory": {
+    "Scheduler": {
+      "Enable": false,
+      "NextRun": "2020-01-01 00:00:00",
+      "Command": "EventStory",
+      "SuccessInterval": 0,
+      "FailureInterval": 120,
+      "ServerUpdate": "00:00"
+    },
+    "EventStory": {
+      "SkipBattle": true
+    },
     "Storage": {
       "Storage": {}
     }
@@ -2438,16 +2340,6 @@
       "Storage": {}
     }
   },
-<<<<<<< HEAD
-=======
-  "EventStory": {
-    "EventStory": {
-      "SkipBattle": true
-    },
-    "Storage": {
-      "Storage": {}
-    }
-  },
   "IslandProductionPlanner": {
     "IslandProductionPlanner": {
       "RescanIslandTechnology": false,
@@ -2461,7 +2353,6 @@
       "Storage": {}
     }
   },
->>>>>>> upstream/master
   "Benchmark": {
     "Benchmark": {
       "DeviceType": "emulator",

@@ -42,11 +42,8 @@
       "EventD",
       "EventSp",
       "RaidDaily",
-<<<<<<< HEAD
+      "CoalitionSp",
       "EventStory"
-=======
-      "CoalitionSp"
->>>>>>> upstream/master
     ]
   },
   "Reward": {
@@ -121,11 +118,7 @@
     "tasks": [
       "Daemon",
       "OpsiDaemon",
-<<<<<<< HEAD
-=======
-      "EventStory",
       "IslandProductionPlanner",
->>>>>>> upstream/master
       "Benchmark",
       "AzurLaneUncensored",
       "GameManager"

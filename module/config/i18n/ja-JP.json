@@ -126,6 +126,10 @@
       "name": "怪談実録SP",
       "help": ""
     },
+    "EventStory": {
+      "name": "Event Story",
+      "help": ""
+    },
     "Commission": {
       "name": "委託",
       "help": ""
@@ -300,10 +304,6 @@
     },
     "OpsiDaemon": {
       "name": "セイレーン作戦半自動",
-      "help": ""
-    },
-    "EventStory": {
-      "name": "Event Story",
       "help": ""
     },
     "IslandProductionPlanner": {

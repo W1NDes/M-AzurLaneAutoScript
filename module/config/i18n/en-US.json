@@ -126,6 +126,10 @@
       "name": "Authentic Horror Story SP",
       "help": ""
     },
+    "EventStory": {
+      "name": "Event Story",
+      "help": ""
+    },
     "Commission": {
       "name": "Commission",
       "help": ""
@@ -300,10 +304,6 @@
     },
     "OpsiDaemon": {
       "name": "OpSi Semi-auto",
-      "help": ""
-    },
-    "EventStory": {
-      "name": "Event Story",
       "help": ""
     },
     "IslandProductionPlanner": {
