@@ -94,6 +94,10 @@
       "name": "怪談紀實",
       "help": ""
     },
+    "EventShop": {
+      "name": "活動商店",
+      "help": ""
+    },
     "WarArchives": {
       "name": "作戰檔案",
       "help": "由於作戰檔案缺少維護，開荒功能不一定能正常使用，如果發現Alas運行異常，請手動完成開荒後使用自律尋敵功能"
@@ -276,7 +280,7 @@
     },
     "IslandProduction": {
       "name": "離島生產",
-      "help": ""
+      "help": "需要先配置店鋪經營的店面屬性、店員，然後配置工具-離島生產規劃器，最後執行離島生產規劃器，規劃器執行得到結果後方可執行離島生產。\n詳細教程：https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Island-Planner-Auto-Farming-&-Configure"
     },
     "IslandOrder": {
       "name": "離島訂單",
@@ -1122,7 +1126,7 @@
       "event_20260417_cn": "假日航線閃耀海濱",
       "event_20260520_cn": "聖印前的同盟",
       "event_20260625_cn": "美夢巡演奇秒夜",
-      "event_20260813_cn": "Depths of the Astrarium",
+      "event_20260813_cn": "沉溺於星光之城",
       "raid_20200624": "特別演習埃塞克斯級(復刻)",
       "raid_20210708": "復刻穿越彼方的水線",
       "raid_20220127": "演習神秘事件調查",
@@ -1797,6 +1801,33 @@
       "multi": "多隊出擊"
     }
   },
+  "EventShop": {
+    "_info": {
+      "name": "活動商店",
+      "help": ""
+    },
+    "UnlockSSRShip": {
+      "name": "解鎖SSR艦船",
+      "help": ""
+    },
+    "BuyURShip": {
+      "name": "購買X艘UR艦船",
+      "help": "",
+      "0": "0",
+      "1": "1",
+      "2": "2"
+    },
+    "PresetFilter": {
+      "name": "活動商店過濾器",
+      "help": "一般不需要修改",
+      "all": "全部",
+      "custom": "自定義"
+    },
+    "CustomFilter": {
+      "name": "自定義活動商店過濾器",
+      "help": "使用自定義過濾器需將 \"活動商店過濾器\" 設定為 \"自定義過濾器\"，並閱讀 https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/filter_string_cn"
+    }
+  },
   "Commission": {
     "_info": {
       "name": "委託",
@@ -2363,37 +2394,6 @@
     "Filter": {
       "name": "商店過濾器",
       "help": ""
-    }
-  },
-  "EventShop": {
-    "_info": {
-      "name": "EventShop._info.name",
-      "help": "EventShop._info.help"
-    },
-    "Enable": {
-      "name": "EventShop.Enable.name",
-      "help": "EventShop.Enable.help"
-    },
-    "UnlockShipSSR": {
-      "name": "EventShop.UnlockShipSSR.name",
-      "help": "EventShop.UnlockShipSSR.help"
-    },
-    "BuyShipUR": {
-      "name": "EventShop.BuyShipUR.name",
-      "help": "EventShop.BuyShipUR.help",
-      "0": "0",
-      "1": "1",
-      "2": "2"
-    },
-    "PresetFilter": {
-      "name": "EventShop.PresetFilter.name",
-      "help": "EventShop.PresetFilter.help",
-      "all": "all",
-      "custom": "custom"
-    },
-    "CustomFilter": {
-      "name": "EventShop.CustomFilter.name",
-      "help": "EventShop.CustomFilter.help"
     }
   },
   "ShipyardDr": {
@@ -3187,19 +3187,19 @@
   "IslandProduction": {
     "_info": {
       "name": "離島生產",
-      "help": "需要先配置店鋪經營的店面屬性、店員，然後配置工具-離島生產規劃器，最後執行離島生產規劃器，規劃器執行得到結果後方可執行離島生產。"
+      "help": ""
     },
     "HardFloorItems": {
       "name": "硬性保底物品",
       "help": "使用者為手動使用設定的不可動用庫存\n不會被生產配方、餐廳和普通訂單消耗\n不作為 LP 的生產約束\n格式示例：\n(物品在當前伺服器的名稱): (數量)"
     },
-    "ReserveItems": {
-      "name": "軟性保底物品",
-      "help": "使用者為普通生產和訂單設定的最低庫存目標\n緊急訂單、季節訂單和餐廳可以消耗到低於此下限\n規劃器生成的餐廳菜單容量會合併到此下限\n格式示例：\n(物品在當前伺服器的名稱): (數量)"
-    },
     "DailyBufferItems": {
       "name": "每日緩衝物品",
-      "help": "生產規劃器生成的預期庫存區間寬度（最大值減軟性下限）\n配方生產目標為硬性保底、軟性保底和每日緩衝之和\n可以透過工具中的離島生產規劃器自動生成"
+      "help": "生產規劃器生成的預期庫存區間寬度\n配方生產目標為硬性保底、餐廳菜單預留（由已保存菜單派生，上限為貨架容量）和每日緩衝之和\n可以透過工具中的離島生產規劃器自動生成"
+    },
+    "ManualBufferItems": {
+      "name": "手動緩衝物品",
+      "help": "對每日緩衝物品的手動補充，不會被生產規劃器覆寫\n用於給LP規劃後沒有緩衝的物品在保底之上保留一段可消耗庫存，例如供普通訂單提交\n與每日緩衝物品按物品取較大值合併\n格式示例：\n(物品在當前伺服器的名稱): (數量)"
     },
     "IdleAccumulatingItems": {
       "name": "閒置累積物品",

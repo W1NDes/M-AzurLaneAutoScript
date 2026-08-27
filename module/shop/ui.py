@@ -3,7 +3,7 @@ from module.base.decorator import cached_property
 from module.handler.assets import POPUP_CONFIRM
 from module.logger import logger
 from module.shop.assets import *
-from module.ui.assets import ACADEMY_GOTO_MUNITIONS, SHOP_BACK_ARROW, SHOP_GOTO_MUNITIONS
+from module.ui.assets import ACADEMY_GOTO_MUNITIONS, SHOP_BACK_ARROW
 from module.ui.navbar import Navbar
 from module.ui.page import page_academy, page_munitions
 from module.ui.switch import Switch
@@ -144,34 +144,4 @@ class ShopUI(UI):
 
             # Large offset cause it camera in academy can be move around
             if self.appear_then_click(ACADEMY_GOTO_MUNITIONS, offset=(200, 200), interval=5):
-                continue
-    
-    def ui_goto_event_shop(self):
-        """
-        Goes to page_munitions
-        This route guarantees start
-        in event shop if exists
-
-        Pages:
-            in: Any
-            out: page_munitions
-        """
-        if self.ui_get_current_page() == page_munitions\
-                and self.shop_tab.get_active(main=self) == 2:
-            logger.info(f'Already at {page_munitions}')
-            return
-
-        self.ui_ensure(page_shop)
-
-        skip_first_screenshot = True
-        while 1:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.device.screenshot()
-            
-            if self.appear(page_munitions.check_button, offset=(20, 20)):
-                break
-            
-            if self.appear_then_click(SHOP_GOTO_MUNITIONS, offset=(20, 20), interval=5):
                 continue

@@ -1,33 +1,56 @@
+import re
+
 import cv2
 import numpy as np
 
-from module.base.utils import color_similar
+import module.config.server as server
+
+from module.base.utils import color_similarity_2d, color_similar, rgb2luma
 from module.logger import logger
-from module.ocr.ocr import Digit, Ocr
+from module.ocr.ocr import Ocr, Digit
+from module.shop_event.selector import FILTER_REGEX
 from module.statistics.item import Item, ItemGrid
+
+ITEM_SHAPE = (63, 63)
+GRID_SHAPE = (152, 206)
+DELTA_PRICE_BACKGROUND = (14, 164)
+DELTA_ITEM = (45, 44, 45 + ITEM_SHAPE[0], 33 + ITEM_SHAPE[1])
+DELTA_AMOUNT = (13, 144, 136, 160)
+DELTA_PRICE = (28, 164, 128, 193)
+DELTA_TAG = (108, 30, 155, 52)
+COUNTER_COLOR = (106, 120, 131)
+COUNTER_THRESHOLD = 150
+PRICE_THRESHOLD = 230
+PRICE_BACKGROUND_COLOR = (61, 78, 91)
+if server.server == 'jp':
+    COUNTER_LEFT_STRIP = 54
+elif server.server == 'en':
+    COUNTER_LEFT_STRIP = 42
+else:
+    COUNTER_LEFT_STRIP = 70
 
 
 class CounterOcr(Ocr):
-    def __init__(self, buttons, lang='azur_lane',
-                 letter=(255, 255, 255),
-                 threshold=128,
-                 alphabet='0123456789/IDSB@OQZl]i',
-                 name=None):
+    def __init__(self, buttons, lang='azur_lane', letter=(255, 255, 255), threshold=128,
+                 alphabet='0123456789/IDSB', name=None):
         super().__init__(buttons, lang=lang, letter=letter, threshold=threshold, alphabet=alphabet, name=name)
 
     def pre_process(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-        # add contrast to the image for better ocr results
-        cv2.convertScaleAbs(image, alpha=1.5, beta=-64, dst=image)
+        mask = color_similarity_2d(image, (255, 255, 255))
+        brightness = np.min(mask, axis=0)
+        match = np.where(brightness < COUNTER_THRESHOLD)[0]
+        if len(match):
+            left = match[0] + COUNTER_LEFT_STRIP
+            total = mask.shape[1]
+            if left < total:
+                image = image[:, left:]
+        image = super().pre_process(image)
         return image
 
     def after_process(self, result):
-        # print(result)
         result = super().after_process(result)
         result = result.replace('I', '1').replace('D', '0').replace('S', '5')
-        result = result.replace('B', '8').replace('Z', '2')
-        result = result.replace('@', '0').replace('O', '0').replace('Q', '0')
-        result = result.replace('l', '1').replace(']', '1').replace('i', '1')
+        result = result.replace('B', '8')
         return result
 
     def ocr(self, image, direct_ocr=False):
@@ -41,39 +64,78 @@ class CounterOcr(Ocr):
         Returns:
             list[list[int]: [[current, total]].
         """
-        result = super().ocr(image, direct_ocr=direct_ocr)
-        # if something goes wrong here, for example '/1',
-        # falls back to 1/1.
-        if isinstance(result, list):
-            result_list = []
-            for i in result:
-                try:
-                    current, total = [int(j) for j in i.split('/')]
-                    result_list.append([current, total])
-                except ValueError:
-                    logger.warning(f'Ocr result {i} is revised to 1/1')
-                    result_list.append([1, 1])
-            return result_list
-        else:
-            try:
-                current, total = [int(i) for i in result.split('/')]
-            except ValueError:
-                logger.warning(f'Ocr result {result} is revised to 1/1')
-                current = 1
-                total = 1
-            finally:
-                return [current, total]
+        result_list = super().ocr(image, direct_ocr=direct_ocr)
+        if isinstance(result_list, list):
+            parsed = []
+            for i in result_list:
+                if not i or '/' not in i:
+                    logger.warning(f'Invalid OCR result format: {i}')
+                    parsed.append([0, 0])
+                    continue
 
-COUNTER_OCR = CounterOcr([], lang='cnocr', name='Counter_ocr')
+                parts = i.split('/')
+                if len(parts) != 2:
+                    logger.warning(f'Invalid counter format: {i}')
+                    parsed.append([0, 0])
+                    continue
+                parsed.append([int(j) for j in parts])
+
+            return parsed
+        else:
+            if not result_list or '/' not in result_list:
+                logger.warning(f'Invalid OCR result: {result_list}')
+                return [0, 0]
+
+            parts = result_list.split('/')
+            if len(parts) != 2:
+                logger.warning(f'Invalid counter format: {result_list}')
+                return [0, 0]
+
+            return [int(i) for i in parts]
+
+
+class PriceOcr(Digit):
+    def pre_process(self, image):
+        mask = color_similarity_2d(image, PRICE_BACKGROUND_COLOR)
+        brightness = np.min(mask, axis=0)
+        match = np.where(brightness < PRICE_THRESHOLD)[0]
+        if len(match):
+            left = match[0] + 20
+            total = mask.shape[1]
+            if left < total:
+                image = image[:, left:]
+        image = super().pre_process(image)
+        return image
+
+PRICE_OCR = PriceOcr([], letter=(221, 221, 221), threshold=128, name='Price_ocr')
+
+
+URPT_PRICE_IN_PT = 150  # 1 URpt costs 150 pt
+COIN_PRICE_IN_URPT = 1  # 1 Coin costs 1 URpt
+UR_SHIP_PRICES_IN_URPT = [200, 300]  # UR Ships cost 200 or 300 URpt
 
 
 class EventShopItem(Item):
-    # mainly used to distinguish equip skin box and event equip
+    IMAGE_SHAPE = ITEM_SHAPE
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.is_ship = False
         self._scroll_pos = None
-        self.total_count = 1
+        self.total_count = -1
         self.count = 1
+
+    def __str__(self):
+        name = f'{self.name}_x{self.amount}_{self.count}/{self.total_count}_{self.cost}_x{self.price}'
+
+        if self.tag is not None:
+            name = f'{name}_{self.tag}'
+
+        return name
+
+    def predict_valid(self):
+        luma = rgb2luma(self.image)
+        return np.mean(luma > 127) >= 0.2
 
     @property
     def scroll_pos(self):
@@ -83,110 +145,88 @@ class EventShopItem(Item):
     def scroll_pos(self, value):
         self._scroll_pos = value
 
-    def __str__(self):
-        if self.name != 'DefaultItem' and self.cost == 'DefaultCost':
-            name = f'{self.name}_x{self.amount}'
-        elif self.name == 'DefaultItem' and self.cost != 'DefaultCost':
-            name = f'{self.cost}_x{self.price}'
-        elif self.name.isdigit():
-            name = f'{self.name}_{self.count}/{self.total_count}_{self.cost}_x{self.price}'
-        else:
-            name = f'{self.name}_x{self.amount}_{self.cost}_x{self.price}'
-
-        if self.tag is not None:
-            name = f'{name}_{self.tag}'
-
-        return name
-
     def __eq__(self, other):
         return id(self) == id(other)
 
-    def identify_name(self):
-        if not self.name.isdigit():
-            return
-        elif self.price == 8000 and self.cost == "Pt":
-            self.name = "ShipSSR"
-        elif self.price in [200, 300] and self.cost == "URPt":
-            self.name = "ShipUR"
-        elif self.price == 2000 and self.cost == "Pt":
-            if self.total_count == 4:
-                self.name = "Meta"
-            elif self.total_count == 10:
-                self.name = "SkinBox"
-            elif self.total_count == 1:
-                self.name = "EquipSSR"
-        elif self.price == 10000 and self.cost == "URPt":
-            self.name = "EquipUR"
-        elif self.price == 150 and self.cost == "Pt" and self.total_count == 500:
-            self.name = "PtUR"
+    def correct_name_and_cost(self):
+        if self.price in UR_SHIP_PRICES_IN_URPT and self.total_count == 1:
+            self.name = 'ShipUR'
+            self.cost = 'URpt'
+            self.is_ship = True
+        elif self.price == COIN_PRICE_IN_URPT and self.total_count == 350:
+            # URpt to Coin
+            self.name = 'Coin'
+            self.cost = 'URpt'
         else:
-            if self.cost == "Pt":
-                self.name = "EquipSSR"
-            elif self.cost == "URPt":
-                self.name = "EquipUR"
+            self.cost = 'pt'
+            if self.price == 2000:
+                if self.total_count == 10:
+                    self.name = 'SkinBox'
+                elif self.total_count == 4:
+                    self.name = 'Meta'
+                else:
+                    self.name = 'EquipSSR'
+            elif self.price == 8000:
+                self.name = 'ShipSSR'
+                self.is_ship = True
+            elif self.price == 10000:
+                self.name = 'EquipUR'
+            elif self.price == URPT_PRICE_IN_PT and self.total_count == 500:
+                self.name = 'URpt'
+            elif self.name.isdigit():
+                logger.warning(f'Unrecognized item with price {self.price} and total count {self.total_count}, '
+                               # f'defaulting to EquipSSR')
+                               f'saving image for analysis.')
+                import os
+                from module.base.utils import save_image
+                os.mkdir('assets/shop/event/new_templates/') if not os.path.exists('assets/shop/event/new_templates/') else None
+                save_image(self.image, f'assets/shop/event/new_templates/{self.name}.png')
+                # self.name = 'EquipSSR'
+
+    def predict_genre(self):
+        self.group, self.sub_genre, self.tier = None, None, None
+
+        # Can use regular expression to quickly populate
+        # the new attributes
+        name = self.name.lower()
+        result = re.search(FILTER_REGEX, name)
+        if result:
+            self.group, self.sub_genre, self.tier = \
+            [group.lower()
+             if group is not None else None
+             for group in result.groups()]
 
 
 class EventShopItemGrid(ItemGrid):
     item_class = EventShopItem
-    cost_similarity = 0.5
-    # similarity = 0.95
-    extract_similarity = 0.95
 
-    def __init__(self, grids, templates, template_area=(40, 21, 89, 70), amount_area=(60, 71, 96, 97),
-                 cost_area=(6, 123, 84, 166), price_area=(52, 132, 132, 156), tag_area=(0, 74, 1, 92),
-                 counter_area=(80, 170, 138, 190)):
+    def __init__(self,
+                 grids,
+                 templates,
+                 template_area=(0, 0, ITEM_SHAPE[0], ITEM_SHAPE[1]),
+                 amount_area=(31, 50, ITEM_SHAPE[0], ITEM_SHAPE[1]),
+                 cost_area=(DELTA_PRICE[0] - DELTA_ITEM[0], DELTA_PRICE[1] - DELTA_ITEM[1],
+                            DELTA_PRICE[2] - DELTA_ITEM[0], DELTA_PRICE[3] - DELTA_ITEM[1]),
+                 price_area=(DELTA_PRICE[0] - DELTA_ITEM[0], DELTA_PRICE[1] - DELTA_ITEM[1],
+                             DELTA_PRICE[2] - DELTA_ITEM[0], DELTA_PRICE[3] - DELTA_ITEM[1]),
+                 tag_area=(DELTA_TAG[0] - DELTA_ITEM[0], DELTA_TAG[1] - DELTA_ITEM[1],
+                           DELTA_TAG[2] - DELTA_ITEM[0], DELTA_TAG[3] - DELTA_ITEM[1]),
+                 counter_area=(DELTA_AMOUNT[0] - DELTA_ITEM[0], DELTA_AMOUNT[1] - DELTA_ITEM[1],
+                               DELTA_AMOUNT[2] - DELTA_ITEM[0], DELTA_AMOUNT[3] - DELTA_ITEM[1]),
+                 ):
         super().__init__(grids, templates, template_area, amount_area, cost_area, price_area, tag_area)
-        self.counter_ocr = COUNTER_OCR
+        self.counter_ocr = CounterOcr([], letter=COUNTER_COLOR, name="CounterOcr")
         self.counter_area = counter_area
+        self.price_ocr = PRICE_OCR
 
-    def match_cost_template(self, item):
-        """
-        Overwrite ItemGrid.match_cost_template.
-
-        Returns:
-            str: Template name = 'Pt' or 'URPt'.
-        """
-        image = item.crop(self.cost_area)
-        names = np.array(list(self.cost_templates.keys()))[np.argsort(list(self.cost_templates_hit.values()))][::-1]
-        for name in names:
-            if not name in ["Pt", "URPt"]:
-                continue
-
-            res = cv2.matchTemplate(image, self.cost_templates[name], cv2.TM_CCOEFF_NORMED)
-            _, similarity, _, _ = cv2.minMaxLoc(res)
-            if similarity > self.cost_similarity:
-                self.cost_templates_hit[name] += 1
-                return name
-
+    def predict_tag(self, image):
+        color = cv2.mean(np.array(image))[:3]
+        if color_similar(color1=color, color2=(255, 72, 72), threshold=50):
+            return 'unobtained'
         return None
 
-    @staticmethod
-    def predict_tag(image):
-        """
-        Args:
-            image (np.ndarray): The tag_area of the item.
-
-        Returns:
-            str: Tags are like `unobtained`. Default to None
-        """
-        threshold = 50
-        color = cv2.mean(np.array(image))[:3]
-        if color_similar(color1=color, color2=(255, 89, 90), threshold=threshold):
-            # red
-            return 'unobtained'
-        else:
-            return None
-
-    def predict(self, image, counter=True, scroll_pos=None):
-        super().predict(image, name=True, amount=True, cost=True, price=True, tag=True)
-
-        # temporary code to distinguish between DR and PR. Shit code.
-        for item in self.items:
-            if item.name.startswith('DR') and item.price == 500:
-                item.name = 'P' + item.name[1:]
-            if item.name.startswith('PR') and item.price == 1000:
-                item.name = 'D' + item.name[1:]
-
+    def predict(self, image, name=True, amount=True, cost=False, price=True, tag=True, counter=True, scroll_pos=None):
+        super().predict(image, name=name, amount=amount, cost=cost, price=price, tag=tag)
         if counter and len(self.items):
             counter_list = [item.crop(self.counter_area) for item in self.items]
             counter_list = self.counter_ocr.ocr(counter_list, direct_ocr=True)
@@ -197,7 +237,8 @@ class EventShopItemGrid(ItemGrid):
             for i in self.items:
                 i.scroll_pos = scroll_pos
 
-        for item in self.items:
-            item.identify_name()
+        for i in self.items:
+            i.correct_name_and_cost()
+            i.predict_genre()
 
         return self.items

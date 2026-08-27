@@ -94,6 +94,10 @@
       "name": "怪谈纪实",
       "help": ""
     },
+    "EventShop": {
+      "name": "活动商店",
+      "help": ""
+    },
     "WarArchives": {
       "name": "作战档案",
       "help": "由于作战档案缺少维护，开荒功能不一定能正常使用，如果发现Alas运行异常，请手动完成开荒后使用自律寻敌功能"
@@ -276,7 +280,7 @@
     },
     "IslandProduction": {
       "name": "岛屿生产",
-      "help": "需要先配置店铺经营的店面属性、店员，然后配置工具-岛屿生产规划器，最后运行岛屿生产规划器，规划器运行得到结果后方可运行岛屿生产。"
+      "help": "需要先配置店铺经营的店面属性、店员，然后配置工具-岛屿生产规划器，最后运行岛屿生产规划器，规划器运行得到结果后方可运行岛屿生产。\n详细教程：https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Island-Planner-Auto-Farming-&-Configure"
     },
     "IslandOrder": {
       "name": "岛屿订单",
@@ -1797,6 +1801,33 @@
       "multi": "多队出击"
     }
   },
+  "EventShop": {
+    "_info": {
+      "name": "活动商店",
+      "help": ""
+    },
+    "UnlockSSRShip": {
+      "name": "解锁SSR舰船",
+      "help": ""
+    },
+    "BuyURShip": {
+      "name": "购买X只UR舰船",
+      "help": "",
+      "0": "0",
+      "1": "1",
+      "2": "2"
+    },
+    "PresetFilter": {
+      "name": "活动商店过滤器",
+      "help": "一般默认全买即可",
+      "all": "全部",
+      "custom": "自定义"
+    },
+    "CustomFilter": {
+      "name": "自定义过滤器",
+      "help": "使用自定义过滤器需将“活动商店过滤器”设置为“自定义”，并阅读 https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/filter_string_cn"
+    }
+  },
   "Commission": {
     "_info": {
       "name": "委托",
@@ -2363,37 +2394,6 @@
     "Filter": {
       "name": "商店过滤器",
       "help": ""
-    }
-  },
-  "EventShop": {
-    "_info": {
-      "name": "活动商店",
-      "help": "活动船只将会在活动结束后购买"
-    },
-    "Enable": {
-      "name": "启用活动商店",
-      "help": ""
-    },
-    "UnlockShipSSR": {
-      "name": "解锁活动金船",
-      "help": "如果不启用，将会抛掉过滤器中的ShipSSR和Meta"
-    },
-    "BuyShipUR": {
-      "name": "购买X只活动彩船",
-      "help": "",
-      "0": "0",
-      "1": "1",
-      "2": "2"
-    },
-    "PresetFilter": {
-      "name": "活动商店过滤器",
-      "help": "",
-      "all": "全部",
-      "custom": "自定义"
-    },
-    "CustomFilter": {
-      "name": "自定义过滤器",
-      "help": "使用自定义过滤器需将 \"活动商店过滤器\" 设置为 \"自定义\"，并阅读 https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/reward_shop_filter_string"
     }
   },
   "ShipyardDr": {
@@ -3193,13 +3193,13 @@
       "name": "硬性保底物品",
       "help": "用户为手动使用设置的不可动用库存\n不会被生产配方、餐厅和普通订单消耗\n不作为 LP 的生产约束\n格式示例：\n(物品在当前服务器的名称): (数量)"
     },
-    "ReserveItems": {
-      "name": "软性保底物品",
-      "help": "用户为普通生产和订单设置的最低库存目标\n紧急订单、季节订单和餐厅可以消耗到低于此下限\n规划器生成的餐厅菜单容量会合并到此下限\n格式示例：\n(物品在当前服务器的名称): (数量)"
-    },
     "DailyBufferItems": {
       "name": "每日缓冲物品",
-      "help": "生产规划器生成的预期库存区间宽度（最大值减软性下限）\n配方生产目标为硬性保底、软性保底和每日缓冲之和\n可以通过工具中的岛屿生产规划器自动生成"
+      "help": "生产规划器生成的预期库存区间宽度\n配方生产目标为硬性保底、餐厅菜单预留（由已保存菜单派生，上限为货架容量）和每日缓冲之和\n可以通过工具中的岛屿生产规划器自动生成"
+    },
+    "ManualBufferItems": {
+      "name": "手动缓冲物品",
+      "help": "对每日缓冲物品的手动补充，不会被生产规划器覆写\n用于给LP规划后没有缓冲的物品在保底之上保留一段可消耗库存，例如供普通订单提交\n与每日缓冲物品按物品取较大值合并\n格式示例：\n(物品在当前服务器的名称): (数量)"
     },
     "IdleAccumulatingItems": {
       "name": "闲置累积物品",

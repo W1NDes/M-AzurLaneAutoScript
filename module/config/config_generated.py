@@ -288,6 +288,12 @@ class GeneratedConfig:
     Coalition_Mode = 'hard'  # easy, normal, hard, sp
     Coalition_Fleet = 'single'  # single, multi
 
+    # Group `EventShop`
+    EventShop_UnlockSSRShip = True
+    EventShop_BuyURShip = 2  # 0, 1, 2
+    EventShop_PresetFilter = 'all'  # all, custom
+    EventShop_CustomFilter = 'EquipUR > EquipSSR > Cube > GachaTicket\n> Array > Chip > CatT3 \n> Meta > SkinBox\n> Oil > Coin > Medal > ExpBookT1 > FoodT1\n> DR > PR\n> AugmentCore > AugmentEnhanceT2 > AugmentChangeT2 > AugmentChangeT1\n> CatT2 > CatT1 > PlateGeneralT3 > PlateT3 > BoxT4\n> ShipSSR'
+
     # Group `Commission`
     Commission_PresetFilter = 'cube'  # cube, cube_24h, chip, chip_24h, oil, custom
     Commission_CustomFilter = 'DailyEvent > Gem-4 > Gem-2 > Gem-8 > ExtraCube-0:30\n> UrgentCube-1:30 > UrgentCube-1:45 > UrgentCube-3\n> ExtraDrill-5:20 > ExtraDrill-2 > ExtraDrill-3:20\n> UrgentCube-2:15 > UrgentCube-4\n> ExtraDrill-1 > UrgentCube-6 > ExtraCube-1:30\n> ExtraDrill-2:40 > ExtraDrill-0:20\n> Major > DailyChip > DailyResource\n> ExtraPart-0:30 > ExtraOil-1 > UrgentBox-6\n> ExtraCube-3 > ExtraPart-1 > UrgentBox-3\n> ExtraCube-4 > ExtraPart-1:30 > ExtraOil-4\n> UrgentBox-1 > ExtraCube-5 > UrgentBox-1\n> ExtraCube-8 > ExtraOil-8\n> UrgentDrill-4 > UrgentDrill-2:40 > UrgentDrill-2\n> UrgentDrill-1 > UrgentDrill-1:30 > UrgentDrill-1:10\n> Extra-0:20 > Extra-0:30 > Extra-1:00 > Extra-1:30 > Extra-2:00\n> shortest'
@@ -404,13 +410,6 @@ class GeneratedConfig:
 
     # Group `CoreShop`
     CoreShop_Filter = 'Array'
-
-    # Group `EventShop`
-    EventShop_Enable = False
-    EventShop_UnlockShipSSR = True
-    EventShop_BuyShipUR = 1  # 0, 1, 2
-    EventShop_PresetFilter = 'custom'  # all, custom
-    EventShop_CustomFilter = 'EquipUR > EquipSSR > GachaTicket\n> DR > PR > Array > Chip > CatT3\n> Meta > SkinBox\n> Oil > Coin > FoodT1\n> AugmentCore > AugmentEnhanceT2 > AugmentChangeT2 > AugmentChangeT1\n> Cube > Medal > ExpBookT1\n> CatT2 > CatT1 > PlateGeneralT3 > PlateT3 > BoxT4\n> ShipSSR'
 
     # Group `ShipyardDr`
     ShipyardDr_ResearchSeries = 2  # 2, 3, 4, 5
@@ -585,8 +584,8 @@ class GeneratedConfig:
 
     # Group `IslandProduction`
     IslandProduction_HardFloorItems = '{}'
-    IslandProduction_ReserveItems = '{}'
     IslandProduction_DailyBufferItems = '{}'
+    IslandProduction_ManualBufferItems = '{}'
     IslandProduction_IdleAccumulatingItems = '{}'
 
     # Group `IslandOrder`

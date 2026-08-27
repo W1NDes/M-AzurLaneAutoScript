@@ -121,6 +121,9 @@ Event:
       - Coalition
       - StopCondition
       - Emotion
+    EventShop:
+      - Scheduler
+      - EventShop
     WarArchives:
       - Scheduler
       - Campaign
@@ -267,7 +270,6 @@ DailyMission:
       - MedalShop2
       - MeritShop
       - CoreShop
-      - EventShop
     Shipyard:
       - Scheduler
       - ShipyardDr
