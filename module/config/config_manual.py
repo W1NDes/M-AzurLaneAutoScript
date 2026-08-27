@@ -15,7 +15,7 @@ class ManualConfig:
     > Exercise
     > Dorm > Meowfficer > Guild > Gacha
     > Reward
-    > ShopFrequent > ShopOnce > Shipyard > Freebies > Daily > Hard 
+    > ShopFrequent > EventShop > ShopOnce > Shipyard > Freebies > Daily > Hard
     > Oilkeep > Event > RaidDaily
     > PrivateQuarters
     > OpsiVoucher > OpsiExplore
@@ -116,6 +116,17 @@ class ManualConfig:
     # such as compulsory confirm before abyssal, interaction of siren scanning devices and logging devices
     # Don't click SKIP at the situation above
     STORY_ALLOW_SKIP = True
+
+    """
+    module.island_handler.recipe
+    """
+    # Max hours of workload committed per idle_accumulating dispatch.
+    # Idle accumulation is filler work: a full production queue can occupy a
+    # slot for 30h and block normal replenishment from preempting, so one
+    # dispatch is capped at roughly this many hours (at least one batch).
+    # Smaller values let normal replenishment cut in sooner, at the cost of
+    # more frequent task wakeups and idle slots while Alas is not running.
+    ISLAND_IDLE_ACCUMULATING_DISPATCH_HOURS = 6
 
     """
     module.map.fleet
@@ -382,7 +393,7 @@ class ManualConfig:
     SHOP_EXTRACT_TEMPLATE = False
 
     """
-    module.event_shop
+    module.shop_event
     """
     EVENT_SHOP_IGNORE_DEADLINE = False
 

@@ -94,6 +94,10 @@
       "name": "怪談実録",
       "help": ""
     },
+    "EventShop": {
+      "name": "イベント商店",
+      "help": ""
+    },
     "WarArchives": {
       "name": "作戦履歴",
       "help": ""
@@ -276,7 +280,7 @@
     },
     "IslandProduction": {
       "name": "離島生産",
-      "help": ""
+      "help": "先に店舗経営の店舗属性と店員を設定し、ツール-離島生産ソルバーを設定して実行してください。ソルバーの結果が得られてから離島生産を実行できます。\nチュートリアル：https://github.com/LmeSzinc/AzurLaneAutoScript/wiki/Island-Planner-Auto-Farming-&-Configure"
     },
     "IslandOrder": {
       "name": "離島依頼",
@@ -1797,6 +1801,33 @@
       "multi": "multi"
     }
   },
+  "EventShop": {
+    "_info": {
+      "name": "EventShop._info.name",
+      "help": "EventShop._info.help"
+    },
+    "UnlockSSRShip": {
+      "name": "EventShop.UnlockSSRShip.name",
+      "help": "EventShop.UnlockSSRShip.help"
+    },
+    "BuyURShip": {
+      "name": "EventShop.BuyURShip.name",
+      "help": "EventShop.BuyURShip.help",
+      "0": "0",
+      "1": "1",
+      "2": "2"
+    },
+    "PresetFilter": {
+      "name": "EventShop.PresetFilter.name",
+      "help": "EventShop.PresetFilter.help",
+      "all": "all",
+      "custom": "custom"
+    },
+    "CustomFilter": {
+      "name": "EventShop.CustomFilter.name",
+      "help": "EventShop.CustomFilter.help"
+    }
+  },
   "Commission": {
     "_info": {
       "name": "Commission._info.name",
@@ -2363,37 +2394,6 @@
     "Filter": {
       "name": "CoreShop.Filter.name",
       "help": "CoreShop.Filter.help"
-    }
-  },
-  "EventShop": {
-    "_info": {
-      "name": "EventShop._info.name",
-      "help": "EventShop._info.help"
-    },
-    "Enable": {
-      "name": "EventShop.Enable.name",
-      "help": "EventShop.Enable.help"
-    },
-    "UnlockShipSSR": {
-      "name": "EventShop.UnlockShipSSR.name",
-      "help": "EventShop.UnlockShipSSR.help"
-    },
-    "BuyShipUR": {
-      "name": "EventShop.BuyShipUR.name",
-      "help": "EventShop.BuyShipUR.help",
-      "0": "0",
-      "1": "1",
-      "2": "2"
-    },
-    "PresetFilter": {
-      "name": "EventShop.PresetFilter.name",
-      "help": "EventShop.PresetFilter.help",
-      "all": "all",
-      "custom": "custom"
-    },
-    "CustomFilter": {
-      "name": "EventShop.CustomFilter.name",
-      "help": "EventShop.CustomFilter.help"
     }
   },
   "ShipyardDr": {
@@ -3193,13 +3193,13 @@
       "name": "ハード下限品目",
       "help": "手動使用のためにユーザーが指定するデッドストックです。\n生産レシピ、レストラン、通常依頼から保護されます。\nLPの生産制約には使用されません。\n形式例：\n(現在のサーバーでの品目名): (数量)"
     },
-    "ReserveItems": {
-      "name": "ソフト下限品目",
-      "help": "通常の生産と依頼向けにユーザーが指定する最低在庫目標です。\n緊急依頼、シーズン依頼、レストランはこの下限を下回って消費できます。\nプランナーが生成したレストランのメニュー容量もこの下限に加算されます。\n形式例：\n(現在のサーバーでの品目名): (数量)"
-    },
     "DailyBufferItems": {
       "name": "日次バッファ品目",
-      "help": "プランナーが生成する想定在庫範囲の幅（最大値－ソフト下限）です。\nレシピ生産はハード下限、ソフト下限、日次バッファの合計を目標にします。\nこれはツール内の島生産プランナーで自動生成できます。"
+      "help": "プランナーが生成する想定在庫範囲の幅です。\nレシピ生産はハード下限、レストランメニュー予約（保存済みメニューから導出、棚容量が上限）、日次バッファの合計を目標にします。\nこれはツール内の島生産プランナーで自動生成できます。"
+    },
+    "ManualBufferItems": {
+      "name": "手動バッファアイテム",
+      "help": "デイリーバッファアイテムへの手動補充で、生産プランナーに上書きされません\nLP計画でバッファがないアイテムに、下限より上の消費可能な在庫帯を確保します（通常注文の提出などに）\nデイリーバッファアイテムとはアイテムごとに大きい方の値で統合されます\nフォーマット例：\n(現在のサーバーでのアイテム名): (数量)"
     },
     "IdleAccumulatingItems": {
       "name": "アイドル累積品目",
