@@ -9,7 +9,7 @@ from module.coalition.assets import NEONCITY_FLEET_PREPARATION, NEONCITY_PREPARA
 from module.combat.assets import GET_SHIP
 from module.exercise.assets import EXERCISE_PREPARATION
 from module.handler.assets import (AUTO_SEARCH_MENU_EXIT, GAME_TIPS,  LOGIN_CHECK, MAINTENANCE_ANNOUNCE)
-from module.map.assets import (FLEET_PREPARATION, MAP_PREPARATION, MAP_PREPARATION_OLD, MAP_PREPARATION_CANCEL, WITHDRAW)
+from module.map.assets import (FLEET_PREPARATION, MAP_PREPARATION, MAP_PREPARATION_HARD, MAP_PREPARATION_CANCEL, WITHDRAW)
 from module.meowfficer.assets import MEOWFFICER_BUY
 from module.os_handler.assets import AUTO_SEARCH_REWARD
 from module.raid.assets import *
@@ -77,7 +77,7 @@ class Handbook(Dock):
 
         # Campaign preparation
         if self.appear(MAP_PREPARATION, offset=(30, 30), interval=3) \
-                or self.appear(MAP_PREPARATION_OLD, offset=(30, 30), interval=3) \
+                or self.appear(MAP_PREPARATION_HARD, offset=(30, 30), interval=3) \
                 or self.appear(FLEET_PREPARATION, offset=(20, 50), interval=3) \
                 or self.appear(RAID_FLEET_PREPARATION, offset=(30, 30), interval=3):
             self.device.click(MAP_PREPARATION_CANCEL)
