@@ -165,7 +165,11 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
                     continue
 
                 # Map preparation
-                if map_timer.reached() and self.handle_map_mode_switch(mode) and self.handle_map_preparation():
+                if map_timer.reached() and self.handle_map_mode_switch(mode):
+                    prep_button = self.handle_map_preparation()
+                else:
+                    prep_button = None
+                if prep_button:
                     self.map_get_info()
                     self.handle_map_walk_speedup()
                     self.handle_fast_forward()
@@ -174,7 +178,7 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
                         self.enter_map_cancel()
                         self.handle_map_stop()
                         raise ScriptEnd(f'Reach condition: {self.config.StopCondition_MapAchievement}')
-                    self.device.click(MAP_PREPARATION)
+                    self.device.click(prep_button)
                     map_click += 1
                     map_timer.reset()
                     campaign_timer.reset()
@@ -265,7 +269,7 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
                 break
 
             if self.appear(MAP_PREPARATION, offset=(20, 20), interval=2) \
-                    or self.appear(MAP_PREPARATION_OLD, offset=(20, 20), interval=2):
+                    or self.appear(MAP_PREPARATION_HARD, offset=(20, 20), interval=2):
                 self.device.click(MAP_PREPARATION_CANCEL)
                 continue
             if self.appear(FLEET_PREPARATION, offset=(20, 50), interval=2):
@@ -346,22 +350,27 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
     def handle_map_preparation(self):
         """
         Returns:
-            bool: If MAP_PREPARATION and tha animation of map information finished
+            Button | None: The MAP_PREPARATION button (normal or hard) if the
+                map preparation page appears and the animation of map
+                information finished, else None.
         """
-        if not self.appear(MAP_PREPARATION, offset=(20, 20)) \
-                and not self.appear(MAP_PREPARATION_OLD, offset=(20, 20)):
+        if self.appear(MAP_PREPARATION, offset=(20, 20)):
+            prep_button = MAP_PREPARATION
+        elif self.appear(MAP_PREPARATION_HARD, offset=(20, 20)):
+            prep_button = MAP_PREPARATION_HARD
+        else:
             self.map_clear_percentage_prev = -1
             self.map_clear_percentage_timer.reset()
-            return False
+            return None
         if not self.config.MAP_HAS_CLEAR_PERCENTAGE:
             logger.attr('MAP_HAS_CLEAR_PERCENTAGE', self.config.MAP_HAS_CLEAR_PERCENTAGE)
-            return True
+            return prep_button
         if self.config.MAP_IS_ONE_TIME_STAGE:
             logger.attr('MAP_IS_ONE_TIME_STAGE', self.config.MAP_IS_ONE_TIME_STAGE)
-            return True
+            return prep_button
         # info_bar covers percentage and MAP_GREEN
         if self.info_bar_count():
-            return False
+            return None
 
         percent = self.get_map_clear_percentage()
         logger.attr('Map_clear_percentage', f'{int(percent * 100)}%')
@@ -369,17 +378,17 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
         # 2022.08.21 Still enable this when `percent` was raised from 0.
         if percent > 0.95 and 0 <= self.map_clear_percentage_prev < 0.95:
             # map clear percentage 100%, exit directly
-            return True
+            return prep_button
         if abs(percent - self.map_clear_percentage_prev) < 0.02:
             self.map_clear_percentage_prev = percent
             if self.map_clear_percentage_timer.reached():
-                return True
+                return prep_button
             else:
-                return False
+                return None
         else:
             self.map_clear_percentage_prev = percent
             self.map_clear_percentage_timer.reset()
-            return False
+            return None
 
     def withdraw(self, skip_first_screenshot=True):
         """
@@ -456,4 +465,3 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
             return False
 
         return self.fleet_set(index=2)
-
