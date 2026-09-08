@@ -1775,6 +1775,7 @@
     },
     "MeritShop": {
       "Refresh": false,
+      "BuyUnobtainedShip": false,
       "Filter": "Cube"
     },
     "CoreShop": {
