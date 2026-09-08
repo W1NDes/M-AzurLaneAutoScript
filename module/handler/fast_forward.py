@@ -126,13 +126,13 @@ class FastForwardHandler(AutoSearchHandler):
         > 15-1 > 15-2 > 15-3 > 15-4
         > 16-1 > 16-2 > 16-3 > 16-4
         """,
-        'A1 > A2 > A3',
-        'B1 > B2 > B3',
-        'C1 > C2 > C3',
-        'D1 > D2 > D3',
+        # Chapters are chained across the whole event, campaign_name_increase()
+        # skips stages that have no map file, so T3 > HT1 works on 3-stage events
+        # and T6 > HT1 works on 6-stage events without per-event STAGE_INCREASE_CUSTOM
+        'A1 > A2 > A3 > B1 > B2 > B3 > C1 > C2 > C3 > D1 > D2 > D3',
+        'T1 > T2 > T3 > T4 > T5 > T6 > HT1 > HT2 > HT3 > HT4 > HT5 > HT6',
         'SP1 > SP2 > SP3 > SP4 > SP5',
-        'T1 > T2 > T3 > T4 > T5 > T6',
-        'HT1 > HT2 > HT3 > HT4 > HT5 > HT6',
+        'TS1 > TS2 > TS3 > TS4 > TS5 > TS6',
     ]
     map_fleet_checked = False
 
@@ -372,10 +372,7 @@ class FastForwardHandler(AutoSearchHandler):
         # Copy STAGE_INCREASE to avoid potential duplicate inserting
         stage_increase = [r for r in self.STAGE_INCREASE]
         # Insert custom increase logic
-        if self.config.STAGE_INCREASE_AB:
-            stage_increase = [
-                'A1 > A2 > A3 > B1 > B2 > B3',                
-            ] + stage_increase
+        # STAGE_INCREASE_AB is no longer needed, A > B > C > D are chained in STAGE_INCREASE
         custom = self.config.STAGE_INCREASE_CUSTOM
         if custom:
             if isinstance(custom, str):
@@ -388,23 +385,22 @@ class FastForwardHandler(AutoSearchHandler):
             increase = [i.strip(' \t\r\n') for i in increase.split('>')]
             if name in increase:
                 index = increase.index(name) + 1
-                if index < len(increase):
-                    new = increase[index]
-                    # Don't check main stages, assume all exist
-                    # Main stages are named like campaign_7_2, but user inputs 7-2
-                    if self.config.Campaign_Event == 'campaign_main':
-                        return new
-                    # Check if map file exist
-                    existing = map_files(self.config.Campaign_Event)
-                    logger.info(f'Existing files: {existing}')
-                    if new.lower() in existing:
-                        return new
-                    else:
-                        logger.info(f'Stage increase reach end, new map {new} does not exist')
-                        return name
-                else:
+                if index >= len(increase):
                     logger.info('Stage increase reach end')
                     return name
+                # Don't check main stages, assume all exist
+                # Main stages are named like campaign_7_2, but user inputs 7-2
+                if self.config.Campaign_Event == 'campaign_main':
+                    return increase[index]
+                # Check if map file exist, skip stages without map file
+                existing = map_files(self.config.Campaign_Event)
+                logger.info(f'Existing files: {existing}')
+                for new in increase[index:]:
+                    if new.lower() in existing:
+                        return new
+                    logger.info(f'Stage increase skip {new}, map file does not exist')
+                logger.info('Stage increase reach end, no more map file exists')
+                return name
 
         return name
 
