@@ -15,6 +15,7 @@ from module.map.assets import *
 from module.ui.assets import *
 from module.ui.page import page_campaign_menu
 from module.ui.ui import UI
+from module.ui_white.assets import RERUN_SELECT_CHECK
 
 
 class LoginHandler(UI):
@@ -78,6 +79,10 @@ class LoginHandler(UI):
                 continue
             if self.appear(EVENT_LIST_CHECK, offset=(30, 30), interval=5):
                 self.device.click(BACK_ARROW)
+                continue
+            # rerun event select page, ui_additional() is not called during login
+            if self.appear(RERUN_SELECT_CHECK, offset=(30, 30), interval=5):
+                self.device.click(SHOP_BACK_ARROW)
                 continue
             # Updates and maintenance
             if self.appear_then_click(MAINTENANCE_ANNOUNCE, offset=(30, 30), interval=5):
