@@ -20,7 +20,7 @@ class HospitalSwitch(Switch):
             str: state name or 'unknown'.
         """
         for data in self.state_list:
-            if main.image_color_count(data['check_button'], color=(33, 77, 189), threshold=221, count=100):
+            if main.image_color_count(data['check_button'], color=(33, 77, 189), threshold=30, count=100):
                 return data['state']
 
         return 'unknown'
@@ -44,10 +44,10 @@ T4 = Button(area=(990, 400, 1010, 420), color=(), button=(990, 400, 1010, 420),n
 
 class Hospital(HospitalClue, HospitalCombat):
     def daily_red_dot_appear(self):
-        return self.image_color_count(DAILY_RED_DOT, color=(189, 69, 66), threshold=221, count=35)
+        return self.image_color_count(DAILY_RED_DOT, color=(189, 69, 66), threshold=30, count=35)
 
     def daily_reward_receive_appear(self):
-        return self.image_color_count(DAILY_REWARD_RECEIVE, color=(41, 73, 198), threshold=221, count=200)
+        return self.image_color_count(DAILY_REWARD_RECEIVE, color=(41, 73, 198), threshold=30, count=200)
 
     def is_in_daily_reward(self, interval=0):
         return self.match_template_color(HOSIPITAL_CLUE_CHECK, offset=(30, 30), interval=interval)
@@ -156,7 +156,7 @@ class Hospital(HospitalClue, HospitalCombat):
         logger.info('Loop hospital invest end')
 
     def invest_reward_appear(self) -> bool:
-        return self.image_color_count(INVEST_REWARD_RECEIVE, color=(33, 77, 189), threshold=221, count=100)
+        return self.image_color_count(INVEST_REWARD_RECEIVE, color=(33, 77, 189), threshold=30, count=100)
 
     def claim_invest_reward(self):
         if self.invest_reward_appear():

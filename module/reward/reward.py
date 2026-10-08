@@ -119,7 +119,7 @@ class Reward(UI):
                 continue
             if self.appear_then_click(GET_ITEMS_2, offset=(30, 30), interval=1):
                 continue
-            if self.appear_then_click(GET_SHIP, interval=1):
+            if self.appear_then_click(GET_SHIP, offset=(20, 20), interval=1):
                 continue
             if self.handle_mission_popup_ack():
                 continue
@@ -193,7 +193,7 @@ class Reward(UI):
         Returns:
             bool, if handled
         """
-        if not self.image_color_count(MISSION_WEEKLY_RED_DOT, color=(206, 81, 66), threshold=221, count=20):
+        if not self.image_color_count(MISSION_WEEKLY_RED_DOT, color=(206, 81, 66), threshold=30, count=20):
             logger.info('No MISSION_WEEKLY_RED_DOT')
             return False
 
@@ -211,7 +211,7 @@ class Reward(UI):
         if self.appear(MISSION_NOTICE):
             logger.info('Found mission notice MISSION_NOTICE')
             return True
-        if self.image_color_count(MISSION_NOTICE_WHITE, color=(214, 117, 99), threshold=221, count=20):
+        if self.image_color_count(MISSION_NOTICE_WHITE, color=(214, 117, 99), threshold=30, count=20):
             logger.info('Found mission notice MISSION_NOTICE_WHITE')
             return True
 

@@ -203,7 +203,7 @@ class OSFleet(OSCamera, Combat, Fleet, OSAsh):
         Whether low resolve debuff appears on current fleet
         """
         return self.image_color_count(
-            FLEET_LOW_RESOLVE, color=FLEET_LOW_RESOLVE.color, threshold=221, count=140)
+            FLEET_LOW_RESOLVE, color=FLEET_LOW_RESOLVE.color, threshold=30, count=140)
 
     def get_sea_grids(self):
         """

@@ -769,7 +769,7 @@ PrivateQuarters:
     TargetInteract: true
     TargetShip:
       value: anchorage
-      option: [ anchorage, noshiro, sirius, new_jersey, taihou, aegir, nakhimov ]
+      option: [ anchorage, noshiro, sirius, new_jersey, taihou, aegir, nakhimov, implacable ]
 # ==================== Daily ====================
 
 Daily:
@@ -955,6 +955,7 @@ IslandProduction:
     type: textarea
     value: |-
       {}
+  SkipBufferSurplus: true
 IslandOrder:
   StuckSeasonOrderId: 0
 IslandFreebie:

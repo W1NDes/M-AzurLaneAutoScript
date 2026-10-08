@@ -182,6 +182,10 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
                     map_click += 1
                     map_timer.reset()
                     campaign_timer.reset()
+                    # always clear self.map_fleet_checked after MAP_PREPARATION
+                    # we will enter FLEET_PREPARATION very soon,
+                    # fleets get reset when leaving FLEET_PREPARATION, it only get stored after entering stage,
+                    self.map_fleet_checked = False
                     continue
 
                 # Fleet preparation
@@ -192,6 +196,11 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
                         self.handle_auto_submarine_call_disable()
                         self.handle_auto_search_setting()
                         self.map_fleet_checked = True
+                        # re-check FLEET_PREPARATION after tons of preparation clicks
+                        # and also update FLEET_PREPARATION.button because fleet_bar re-detected it as avoid_area
+                        if not self.appear(FLEET_PREPARATION, offset=(20, 50)):
+                            logger.warning('FLEET_PREPARATION button disappeared after fleet_preparation()')
+                            continue
                     self.device.click(FLEET_PREPARATION)
                     fleet_click += 1
                     fleet_timer.reset()
@@ -423,14 +432,14 @@ class MapOperation(MysteryHandler, FleetPreparation, Retirement, FastForwardHand
         """
         if not self.map_cat_attack_timer.reached():
             return False
-        if self.image_color_count(MAP_CAT_ATTACK, color=(255, 231, 123), threshold=221, count=100):
+        if self.image_color_count(MAP_CAT_ATTACK, color=(255, 231, 123), threshold=30, count=100):
             logger.info('Skip map cat attack')
             self.device.click(MAP_CAT_ATTACK)
             self.map_cat_attack_timer.reset()
             return True
         if not self.map_is_clear_mode:
             # Threat: Med has 106 pixels count, MAP_CAT_ATTACK_MIRROR has 290.
-            if self.image_color_count(MAP_CAT_ATTACK_MIRROR, color=(255, 231, 123), threshold=221, count=200):
+            if self.image_color_count(MAP_CAT_ATTACK_MIRROR, color=(255, 231, 123), threshold=30, count=200):
                 logger.info('Skip map being attack')
                 self.device.click(MAP_CAT_ATTACK)
                 self.map_cat_attack_timer.reset()

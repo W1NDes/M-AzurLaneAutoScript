@@ -15,6 +15,7 @@ from module.map.assets import *
 from module.ui.assets import *
 from module.ui.page import page_campaign_menu
 from module.ui.ui import UI
+from module.ui_white.assets import RERUN_SELECT_CHECK
 
 
 class LoginHandler(UI):
@@ -79,6 +80,10 @@ class LoginHandler(UI):
             if self.appear(EVENT_LIST_CHECK, offset=(30, 30), interval=5):
                 self.device.click(BACK_ARROW)
                 continue
+            # rerun event select page, ui_additional() is not called during login
+            if self.appear(RERUN_SELECT_CHECK, offset=(30, 30), interval=5):
+                self.device.click(SHOP_BACK_ARROW)
+                continue
             # Updates and maintenance
             if self.appear_then_click(MAINTENANCE_ANNOUNCE, offset=(30, 30), interval=5):
                 continue
@@ -116,7 +121,7 @@ class LoginHandler(UI):
 
         right = self.image_color_button(
             area=(640, 360, 1280, 720), color=(78, 189, 234),
-            color_threshold=245, encourage=25, name='AGREEMENT_CONFIRM')
+            threshold=10, encourage=25, name='AGREEMENT_CONFIRM')
         if right is None:
             return False
         # 2026.04.17 No scroll anymore, just bare swipe before clicking confirm
@@ -124,7 +129,7 @@ class LoginHandler(UI):
         # if having both, it's a blue button at middle confirming login
         left = self.image_color_button(
             area=(0, 360, 640, 720), color=(78, 189, 234),
-            color_threshold=245, encourage=25, name='AGREEMENT_CONFIRM')
+            threshold=10, encourage=25, name='AGREEMENT_CONFIRM')
         if left is None:
             # User agreement
             # just somewhere at the middle

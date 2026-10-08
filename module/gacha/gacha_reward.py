@@ -237,7 +237,7 @@ class RewardGacha(GachaUI, Retirement):
                 confirm_timer.reset()
                 continue
             if self.config.DropRecord_NewShipRecord != "save":
-                if self.appear(GET_SHIP, interval=1):
+                if self.appear(GET_SHIP, offset=(20, 20), interval=1):
                     self.device.click(STORY_SKIP)  # Fast forward for multiple orders
                     confirm_timer.reset()
                     continue
@@ -407,7 +407,7 @@ class RewardGacha(GachaUI, Retirement):
         Returns:
             bool:
         """
-        if not self.appear(GET_SHIP, interval=5):
+        if not self.appear(GET_SHIP, offset=(20, 20), interval=5):
             return False
 
         if 'save' in self.config.DropRecord_NewShipRecord:
