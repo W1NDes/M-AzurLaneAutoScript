@@ -7,8 +7,8 @@ from module.shop.assets import SHOP_CLICK_SAFE_AREA
 
 
 class Navbar:
-    def __init__(self, grids, active_color=(247, 251, 181), inactive_color=(140, 162, 181), active_threshold=180,
-                 inactive_threshold=180, active_count=100, inactive_count=50, name=None):
+    def __init__(self, grids, active_color=(247, 251, 181), inactive_color=(140, 162, 181), active_threshold=75,
+                 inactive_threshold=75, active_count=100, inactive_count=50, name=None):
         """
         Args:
             grids (ButtonGrid):
@@ -128,7 +128,7 @@ class Navbar:
             return False
 
         # Handle shop obstructions
-        if main.appear(GET_SHIP, interval=1):
+        if main.appear(GET_SHIP, offset=(20, 20), interval=1):
             main.device.click(SHOP_CLICK_SAFE_AREA)
             return True
         if main.appear(GET_ITEMS_1, offset=(30, 30), interval=1):

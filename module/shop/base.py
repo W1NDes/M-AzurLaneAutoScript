@@ -36,9 +36,9 @@ FILTER_REGEX = re.compile(
     '|red|blue|yellow'
     '|general|gun|torpedo|antiair|plane|wild'
     '|dd|cl|bb|cv'
-    '|iris'
+    '|iris|sardegna'
     '|abyssal|archive|obscure|unlock'
-    '|combat|offense|survival)?'
+    '|combat|offence|offense|survival)?'
 
     '(s[1-5]|t[1-6])?$',
     flags=re.IGNORECASE)
@@ -218,7 +218,7 @@ class ShopBase(UI):
             bool:
         """
         # Handle shop obstructions
-        if self.appear(GET_SHIP, interval=1):
+        if self.appear(GET_SHIP, offset=(20, 20), interval=1):
             logger.info(f'Shop obstruct: {GET_SHIP} -> {SHOP_CLICK_SAFE_AREA}')
             self.device.click(SHOP_CLICK_SAFE_AREA)
             return True
