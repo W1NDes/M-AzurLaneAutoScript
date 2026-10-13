@@ -1,6 +1,6 @@
 from module.base.timer import Timer
 from module.base.utils import rgb2gray
-from module.campaign.campaign_ui import CampaignUI
+from module.campaign.campaign_ui import MODE_SWITCH_20241219, CampaignUI
 from module.combat.combat import Combat
 from module.eventstory.assets import *
 from module.exception import GameStuckError
@@ -25,6 +25,11 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         else:
             # most events show as page_event
             self.ui_ensure(page_event)
+        # No story/combat switch, account has no event story (e.g. capsule rerun not opened)
+        # Setting the switch would click until GameTooManyClickError
+        if not MODE_SWITCH_20241219.wait(main=self):
+            logger.info('No event story mode switch, skip event story')
+            return 'finish'
         self.campaign_ensure_mode_20241219('story')
 
         state = 'unknown'
