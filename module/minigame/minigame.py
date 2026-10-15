@@ -40,10 +40,10 @@ class MinigameRun(UI):
             else:
                 self.device.screenshot()
             # End
-            # both minigame main and minigame list has GOTO_CHOOSE_GAME
-            if self.appear(GAME_ROOM_CHECK, offset=(5, 5)) and not self.appear(GOTO_CHOOSE_GAME, offset=(20, 20)):
-                if MINIGAME_SCROLL.appear(main=self):
-                    break
+            # both minigame main and minigame list has GOTO_CHOOSE_GAME, use list page title instead
+            # MINIGAME_SCROLL alone may be false positive on minigame main by the chibi sprite (#4758)
+            if self.appear(CHOOSE_GAME_CHECK, offset=(5, 5)) and MINIGAME_SCROLL.appear(main=self):
+                break
             # unable to get more ticket popup
             if self.deal_popup():
                 continue
