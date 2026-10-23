@@ -19,6 +19,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         event = self.config.cross_get('Event.Campaign.Event', '')
         if event in [
             'event_20251023_cn',
+            'event_20261022_cn',
         ]:
             # SP event
             self.ui_ensure(page_sp)
@@ -255,7 +256,7 @@ class EventStory(CampaignUI, Combat, LoginHandler):
         return 'unknown'
 
     def run(self):
-        if datetime.now() < datetime(2026, 10, 15, 12, 59, 0):#eventSet
+        if datetime.now() < datetime(2026, 11, 5, 12, 0, 0):#eventSet
             self.run_event_story()
         else:
             logger.info('Event story expired')
