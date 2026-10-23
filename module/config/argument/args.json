@@ -2532,12 +2532,12 @@
       },
       "Event2MapName": {
         "type": "state",
-        "value": "d3",
+        "value": "t6",
         "display": "display"
       },
       "EventDailyAMapName": {
         "type": "state",
-        "value": "a1 > a2 > a3 > b1 > b2 > b3",
+        "value": false,
         "display": "display"
       },
       "EventDailySpMapName": {
@@ -2557,7 +2557,7 @@
       },
       "EventResetStageName": {
         "type": "state",
-        "value": "a1",
+        "value": "t1",
         "display": "display"
       },
       "EventResetStageRecord": {
