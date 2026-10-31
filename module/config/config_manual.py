@@ -25,7 +25,7 @@ class ManualConfig:
     > OpsiAbyssal > OpsiStronghold > OpsiObscure > OpsiArchive
     > IslandFreebie > IslandCollect
     > IslandBusiness > IslandSeasonTask
-    > IslandOrder
+    > IslandOrder > IslandTransport
     > IslandProduction
     > OpsiAshAssist > OpsiMonthBoss
     > Sos > EventSp > EventA > EventB > EventC > EventD
