@@ -956,6 +956,7 @@ IslandProduction:
     value: |-
       {}
   SkipBufferSurplus: true
+  UseWorkerjuuByDefault: true
 IslandOrder:
   StuckSeasonOrderId: 0
 IslandFreebie:

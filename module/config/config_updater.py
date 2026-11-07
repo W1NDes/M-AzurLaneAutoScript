@@ -624,6 +624,8 @@ class ConfigUpdater:
         # ('Coalition.Coalition.Mode', 'Coalition.Coalition.Mode', coalition_to_little_academy),
         # 2026.01.22
         ('Coalition.Coalition.Mode', 'Coalition.Coalition.Mode', coalition_to_fashion_shoot),
+        ('IslandProduction.IslandProduction.UseManjuuByDefault',
+         'IslandProduction.IslandProduction.UseWorkerjuuByDefault'),
     ]
 
     # redirection += [
