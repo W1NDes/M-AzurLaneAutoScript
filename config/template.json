@@ -882,7 +882,7 @@
     },
     "Campaign": {
       "Name": "D3",
-      "Event": "war_archives_20251023_cn",
+      "Event": "war_archives_20230817_cn",
       "Mode": "normal",
       "UseClearMode": true,
       "UseFleetLock": true,
@@ -2216,6 +2216,14 @@
       "SuccessInterval": 0,
       "FailureInterval": 120,
       "ServerUpdate": "00:00"
+    },
+    "Storage": {
+      "Storage": {}
+    }
+  },
+  "IslandGeneral": {
+    "IslandGeneral": {
+      "Season": "season_20261105_cn"
     },
     "Storage": {
       "Storage": {}

@@ -358,6 +358,8 @@ Island:
   menu: 'collapse'
   page: 'setting'
   tasks:
+    IslandGeneral:
+      - IslandGeneral
     IslandProduction:
       - Scheduler
       - IslandProduction
