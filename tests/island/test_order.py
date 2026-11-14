@@ -1,10 +1,15 @@
 """Order recognition goldens and season-order scheduling rules."""
-from datetime import datetime
-
-import module.config.server as server
-from module.island.data import DIC_ISLAND_ACTIVITY
+from module.island.assets import ISLAND_ORDER_SPEED_UP_CLOSE
+from module.island.season_data import DIC_ISLAND_SEASON
 from module.island.order import IslandOrder, get_season_order_id
 from module.testing.screenshot import image
+
+
+def selected_order_names(main):
+    return [button.name
+            for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
+            for button in getattr(main, kind)
+            if main.is_order_selected(button)]
 
 
 class TestRequirementsJP:
@@ -17,7 +22,7 @@ class TestRequirementsJP:
             for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
         }
         requirements = main.scan_current_order_requirements()
-        actual = dict(orders=orders, requirements=requirements)
+        actual = dict(orders=orders, requirements=requirements, selected_orders=selected_order_names(main))
         regions = [(entry['area'], '{} #{}'.format(kind, index))
                    for kind, entries in orders.items() for index, entry in enumerate(entries)]
         regions += [(button.area, 'requirement #{}'.format(index))
@@ -53,6 +58,7 @@ class TestRequirementsJP:
                 'urgent_orders': [],
             },
             'requirements': {2602: (0, 22, -22), 2802: (130, 1, 129)},
+            'selected_orders': ['ORDER_AT_476_118'],
         }
 
     @image('island/order/e601dbec', server='jp')
@@ -64,7 +70,7 @@ class TestRequirementsJP:
             for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
         }
         requirements = main.scan_current_order_requirements()
-        actual = dict(orders=orders, requirements=requirements)
+        actual = dict(orders=orders, requirements=requirements, selected_orders=selected_order_names(main))
         regions = [(entry['area'], '{} #{}'.format(kind, index))
                    for kind, entries in orders.items() for index, entry in enumerate(entries)]
         regions += [(button.area, 'requirement #{}'.format(index))
@@ -95,6 +101,7 @@ class TestRequirementsJP:
                 ],
             },
             'requirements': {2701: (116, 4, 112), 2800: (3093, 3, 3090)},
+            'selected_orders': ['ORDER_AT_628_596'],
         }
 
     @image('island/order/0b608c56', server='jp')
@@ -106,7 +113,7 @@ class TestRequirementsJP:
             for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
         }
         requirements = main.scan_current_order_requirements()
-        actual = dict(orders=orders, requirements=requirements)
+        actual = dict(orders=orders, requirements=requirements, selected_orders=selected_order_names(main))
         regions = [(entry['area'], '{} #{}'.format(kind, index))
                    for kind, entries in orders.items() for index, entry in enumerate(entries)]
         regions += [(button.area, 'requirement #{}'.format(index))
@@ -142,6 +149,7 @@ class TestRequirementsJP:
                 'urgent_orders': [],
             },
             'requirements': {2006: (2275, 2, 2273), 5006: (0, 7, -7)},
+            'selected_orders': ['ORDER_AT_524_431'],
         }
 
 
@@ -155,7 +163,7 @@ class TestRequirementsCN:
             for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
         }
         requirements = main.scan_current_order_requirements()
-        actual = dict(orders=orders, requirements=requirements)
+        actual = dict(orders=orders, requirements=requirements, selected_orders=selected_order_names(main))
         regions = [(entry['area'], '{} #{}'.format(kind, index))
                    for kind, entries in orders.items() for index, entry in enumerate(entries)]
         regions += [(button.area, 'requirement #{}'.format(index))
@@ -190,6 +198,7 @@ class TestRequirementsCN:
                 'urgent_orders': [],
             },
             'requirements': {2006: (1035, 30, 1005), 2008: (22177, 27, 22150), 2602: (1, 24, -23)},
+            'selected_orders': ['ORDER_AT_632_454'],
         }
 
     @image('island/order/344c3c01', server='cn')
@@ -201,7 +210,7 @@ class TestRequirementsCN:
             for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
         }
         requirements = main.scan_current_order_requirements()
-        actual = dict(orders=orders, requirements=requirements)
+        actual = dict(orders=orders, requirements=requirements, selected_orders=selected_order_names(main))
         regions = [(entry['area'], '{} #{}'.format(kind, index))
                    for kind, entries in orders.items() for index, entry in enumerate(entries)]
         regions += [(button.area, 'requirement #{}'.format(index))
@@ -242,6 +251,7 @@ class TestRequirementsCN:
                 ],
             },
             'requirements': {2602: (1, 16, -15), 2701: (289, 1, 288), 5001: (198, 9, 189)},
+            'selected_orders': ['ORDER_AT_632_454'],
         }
 
 
@@ -255,7 +265,7 @@ class TestRequirementsEN:
             for kind in ('regular_orders', 'regular_cooldown_orders', 'urgent_orders', 'season_orders')
         }
         requirements = main.scan_current_order_requirements()
-        actual = dict(orders=orders, requirements=requirements)
+        actual = dict(orders=orders, requirements=requirements, selected_orders=selected_order_names(main))
         regions = [(entry['area'], '{} #{}'.format(kind, index))
                    for kind, entries in orders.items() for index, entry in enumerate(entries)]
         regions += [(button.area, 'requirement #{}'.format(index))
@@ -296,7 +306,31 @@ class TestRequirementsEN:
                 'urgent_orders': [],
             },
             'requirements': {2005: (1726, 7, 1719), 3005: (0, 6, -6), 3011: (83, 1, 82)},
+            'selected_orders': ['ORDER_AT_805_79'],
         }
+
+
+class TestSelectedOrderJP:
+    @image('island/order/adjacent_regular_orders_jp.png', server='jp')
+    def test_adjacent_regular_orders(self, main: IslandOrder):
+        main.detect_all_orders()
+        actual = {'selected_orders': selected_order_names(main)}
+        main.device.review(actual)
+        assert actual == {'selected_orders': ['ORDER_AT_701_94']}
+
+    @image('island/order/selected_season_order_jp.png', server='jp')
+    def test_season_order(self, main: IslandOrder):
+        main.detect_all_orders()
+        actual = {'selected_orders': selected_order_names(main)}
+        main.device.review(actual)
+        assert actual == {'selected_orders': ['ORDER_AT_639_303']}
+
+    @image('island/order/cooldown_with_speedup_button_jp.webp', server='jp')
+    def test_cooldown_order(self, main: IslandOrder):
+        main.detect_all_orders()
+        actual = {'selected_orders': selected_order_names(main)}
+        main.device.review(actual)
+        assert actual == {'selected_orders': ['ORDER_AT_804_80']}
 
 
 class StoredOrderConfig:
@@ -312,13 +346,10 @@ class StoredOrderConfig:
 
 
 class TestSeasonOrderScheduling:
-    def test_repeated_autumn_order_prefers_current_activity(self):
-        activity = DIC_ISLAND_ACTIVITY[990023]
-        start = datetime.strptime(activity['start_time'][server.server], '%Y-%m-%d %H:%M:%S')
-        end = datetime.strptime(activity['end_time'][server.server], '%Y-%m-%d %H:%M:%S')
+    def test_repeated_autumn_order_prefers_selected_season(self):
         assert get_season_order_id(
             {4011: 5, 4013: 5},
-            current_time=start + (end - start) / 2,
+            DIC_ISLAND_SEASON['season_20260806_cn'],
         ) == 100060
 
     def test_unchanged_stuck_order_does_not_replan_after_date_change(self):
@@ -335,3 +366,25 @@ class TestSeasonOrderScheduling:
         order.run()
 
         assert order.config.delayed
+
+
+class TestSpeedupPopupJP:
+    @image('island/order/speedup_popup_jp.webp', server='jp')
+    def test_speedup_popup_is_closed_on_every_detection(self, main: IslandOrder):
+        assert main.handle_island_additional()
+        assert main.handle_island_additional()
+
+        actual = {'clicks': [button.name for button in main.device.clicks],
+                  'button': ISLAND_ORDER_SPEED_UP_CLOSE.button}
+        main.device.review(actual, [(ISLAND_ORDER_SPEED_UP_CLOSE.button, 'close speedup')])
+        assert actual == {
+            'clicks': ['ISLAND_ORDER_SPEED_UP_CLOSE', 'ISLAND_ORDER_SPEED_UP_CLOSE'],
+            'button': (1026, 89, 1063, 126),
+        }
+
+    @image('island/order/cooldown_with_speedup_button_jp.webp', server='jp')
+    def test_cooldown_page_has_no_popup(self, main: IslandOrder):
+        handled = main.handle_island_additional()
+        actual = {'handled': handled, 'clicks': [button.name for button in main.device.clicks]}
+        main.device.review(actual, [(ISLAND_ORDER_SPEED_UP_CLOSE.area, 'popup close absent')])
+        assert actual == {'handled': False, 'clicks': []}
