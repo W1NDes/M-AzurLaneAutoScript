@@ -674,8 +674,19 @@ class ConfigUpdater:
         # ('Coalition.Coalition.Mode', 'Coalition.Coalition.Mode', coalition_to_little_academy),
         # 2026.01.22
         ('Coalition.Coalition.Mode', 'Coalition.Coalition.Mode', coalition_to_fashion_shoot),
-        ('IslandProduction.IslandProduction.UseManjuuByDefault',
-         'IslandProduction.IslandProduction.UseWorkerjuuByDefault'),
+        # ('IslandProduction.IslandProduction.UseManjuuByDefault',
+        #  'IslandProduction.IslandProduction.UseWorkerjuuByDefault'),
+        # UseManjuuByDefault never shipped, UseWorkerjuuByDefault is a new key,
+        # so there is nothing to migrate and the redirect stays disabled.
+    ]
+    redirection += [
+        (
+            f'IslandBusiness.IslandRestaurant.{restaurant}Waitress{slot}',
+            f'IslandBusiness.IslandRestaurant.{restaurant}Waitress{slot}',
+            island_waitress_redirect,
+        )
+        for restaurant in ('Koi', 'Bear', 'Eatery', 'Grill', 'Cafe')
+        for slot in (1, 2)
     ]
 
     # redirection += [

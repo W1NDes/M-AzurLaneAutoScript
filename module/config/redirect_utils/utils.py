@@ -145,3 +145,8 @@ def coalition_to_fashion_shoot(value: str):
         return 'hard'
     else:
         return value
+
+
+def island_waitress_redirect(value):
+    """Rename automatic restaurant staffing to business-grade priority."""
+    return 'business_grade' if value in ('any', 'auto') else value
