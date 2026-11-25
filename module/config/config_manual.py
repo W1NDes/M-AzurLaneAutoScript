@@ -26,11 +26,11 @@ class ManualConfig:
     > IslandFreebie > IslandCollect
     > IslandBusiness > IslandSeasonTask
     > IslandOrder > IslandTransport
-    > IslandProduction
     > OpsiAshAssist > OpsiMonthBoss
     > Sos > EventSp > EventA > EventB > EventC > EventD
     > CoalitionSp > WarArchives > MaritimeEscort
     > Event2 > Event3 > Raid > Hospital > Coalition > Main3 > Main > Main2
+    > IslandProduction
     > ShipIr
     > OpsiMeowfficerFarming
     > GemsFarming

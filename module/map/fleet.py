@@ -375,6 +375,11 @@ class Fleet(Camera, AmbushHandler):
                     walk_timeout.reset()
                     continue
 
+                # Manjuu gif
+                if self.handle_manjuu():
+                    walk_timeout.reset()
+                    continue
+
                 if self.handle_walk_out_of_step():
                     logger.warning('handle_walk_out_of_step')
                     self.walk_error_count += 1
